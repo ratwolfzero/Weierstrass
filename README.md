@@ -1,4 +1,4 @@
-# 🔍 **Exploring the Weierstrass Function with Manual Deep Zoom**
+# 🔍 **Exploring the Weierstrass Function with Deep Zoom**
 
 ✅ Continuous everywhere | ❌ Differentiable nowhere
 
