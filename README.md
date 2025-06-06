@@ -3,6 +3,8 @@
 
 This project visualizes the **Weierstrass function**, a classic example of a **continuous but nowhere differentiable function**, using a manual zoom slider that acts like a microscope revealing intricate fractal details.
 
+![Weierstrass](weierstrass_1.png)
+
 ## ✨ Features
 
 - 🔎 Zoom slider allowing deep zoom from a wide view (±2 units) down to extremely fine scales (±0.00025 units).
