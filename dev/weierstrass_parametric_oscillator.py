@@ -5,7 +5,7 @@ from matplotlib.colors import LogNorm
 
 # Parameters
 omega0 = 1.0       # Natural frequency
-h = 1.0            # Modulation strength (0 to 1)
+h = 0.3            # Modulation strength (0 to 1)
 a = 0.5            # Weierstrass amplitude decay (0 < a < 1)
 b = 7              # Weierstrass frequency scaling (odd integer ≥3)
 n_terms = 30       # Truncated series terms
