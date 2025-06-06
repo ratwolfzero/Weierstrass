@@ -61,4 +61,3 @@ This hands-on visualization bridges abstract theory and tangible intuition.
 ## 📁 **References**
 
 * K. Weierstrass, *Mathematische Werke*, Vol 2, 1872. [Archive.org](https://archive.org/details/mathematischewer02weieuoft/page/n101)
-* E.W. Weisstein, “Weierstrass Function,” [MathWorld](https://mathworld.wolfram.com/WeierstrassFunction.html)
