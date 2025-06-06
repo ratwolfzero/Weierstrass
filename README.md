@@ -4,7 +4,7 @@
 
 ![Weierstrass](weierstrass_1.png)
 
-The Weierstrass function is a classic example of a pathological function — a mathematical object that defies our everyday intuition. Despite being continuous at every point, it’s differentiable nowhere. That means it has no well-defined slope or tangent, no matter how closely you examine it. Its infinitely “rough” structure exhibits intricate wiggles at every scale, making it both fascinating and frustrating
+The Weierstrass function is a classic example of a pathological function — a mathematical object that defies our everyday intuition. Despite being continuous at every point, it’s differentiable nowhere. That means it has no well-defined slope or tangent, no matter how closely you examine it. Its infinitely “rough” structure exhibits intricate wiggles at every scale, making it both fascinating and frustrating.
 
 ---
 
