@@ -104,17 +104,6 @@ E = 0.5*(v**2 + omega0**2*(1 + h*W)*x**2)
 plt.plot(t, E)  # Should be ~constant for good integration
 ```
 
-### Interactive Exploration
-
-```python
-from ipywidgets import interact
-
-@interact(h=(0.0, 1.0, 0.1), b=(3, 21, 2))
-def explore(h=0.3, b=7):
-    x, v = solve_oscillator(t, 1.0, h, 0.5, b, 30, 0.01)
-    plot_results(t, x, v, h)
-```
-
 ## Requirements
 
 - Python 3.8+
