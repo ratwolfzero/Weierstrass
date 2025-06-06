@@ -51,7 +51,7 @@ Thus, the visualization remains mathematically rigorous, respecting the infinite
 
 Run the provided Python script to interactively explore the Weierstrass function’s fractal structure. Move the zoom slider and watch this elegant mathematical object reveal detail at every scale — a vivid demonstration of how continuity and roughness coexist in analysis.
 
-This hands-on visualization bridges abstract theory and tangible intuition, highlighting why the Weierstrass function continues to captivate mathematicians and educators alike.
+This hands-on visualization bridges abstract theory and tangible intuition.
 
 ---
 
