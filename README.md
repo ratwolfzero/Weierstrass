@@ -25,6 +25,9 @@ subject to the conditions:
 
 These constraints guarantee the function’s fractal, nowhere differentiable behavior, ensuring it oscillates wildly no matter how closely you zoom in.
 
+Weierstrass originally required only ab>1, later work by G.H. Hardy (1916) showed that the stronger condition in the formula above is needed to guarantee that the function is nowhere differentiable.
+This implementation enforces Hardy's stricter condition to ensure mathematical certainty of the function's fractal behaviour at all scales.
+
 ---
 
 ## 🎨 **Visualizing the Function**
