@@ -1,76 +1,139 @@
-# 🔍 **Exploring the Weierstrass Function with Deep Zoom**
+# Weierstrass-Modulated Parametric Oscillator Simulation
 
-✅ Continuous everywhere | ❌ Differentiable nowhere
+This project simulates a parametric oscillator driven by the Weierstrass function, exploring both regular and fractal dynamical regimes. The simulation visualizes phase space patterns and time series behavior under different modulation strengths.
 
-![Weierstrass](weierstrass_1.png)
+## Key Features
 
-The Weierstrass function is a classic example of a pathological function — a mathematical object that defies our everyday intuition. Despite being continuous at every point, it’s differentiable nowhere. That means it has no well-defined slope or tangent, no matter how closely you examine it. Its infinitely “rough” structure exhibits intricate wiggles at every scale, making it both fascinating and frustrating.
+- **Physics Accuracy**: Models the differential equation:
 
----
+```markdown
 
-## 📐 **The Mathematics Behind It**
+  ẍ + ω₀²(1 + h·W(t))x = 0
 
-Formally, the function is defined as an infinite sum:
+  ```
 
-$$
-\Huge
-W(x) = \sum_{n=0}^{\infty} a^{n} \cos\left(b^{n} \pi x\right)
-$$
+  where W(t) is the Weierstrass function.
 
-subject to the conditions:
+- **Numerical Efficiency**:
+  - Numba-accelerated ODE solver
+  - Velocity Verlet integration (energy-preserving)
+  - Adaptive visualization (switches between direct/density plots)
 
-* $\large 0 < a < 1$
-* $\large b$ is an odd integer
-* $\large a \times b > 1 + \frac{3\pi}{2}$
+- **Visualization**:
+  - Time series of position x(t)
+  - 2D/3D phase space plots
+  - Energy conservation diagnostics
 
-These constraints guarantee the function’s fractal, nowhere differentiable behavior, ensuring it oscillates wildly no matter how closely you zoom in.
+## Mathematical Background
 
-Weierstrass originally required only ab>1, later work by G.H. Hardy (1916) showed that the stronger condition in the formula above is needed to guarantee that the function is nowhere differentiable.
-This implementation enforces Hardy's stricter condition to ensure mathematical certainty of the function's fractal behaviour at all scales.
+### Governing Equation
 
----
+The system represents a harmonic oscillator with stiffness modulated by the Weierstrass function:
 
-## 🎨 **Visualizing the Function**
+```markdown
 
-Visualizing such a fractal object poses challenges — zooming in reveals ever more oscillations without any smoothening. To explore this phenomenon interactively, I developed a Python visualization featuring a manual zoom slider functioning like a microscope.
+W(t) = Σₙ aⁿ cos(bⁿ t)
 
-Starting from a broad view, you can zoom in as deeply as ±0.00025 units. The plot dynamically updates its sampling density to keep the curve smooth at every scale. The y-axis rescales automatically to highlight the local amplitude of oscillations clearly.
+```
 
----
+where:
 
-## 🔍 **What Happens at Extreme Zoom?**
+- 0 < a < 1 (amplitude decay)
+- b is an odd integer > 1 + 3π/2
+- ab > 1 (ensures fractal properties)
 
-At the highest zoom levels, the function’s graph may visually appear as a single peak or smooth segment. This, however, does **not** imply differentiability. Instead:
+### Special Cases
 
-* The narrow viewing window captures just one local wavelet.
-* Finer oscillations exist beyond the visible resolution or sample density.
-* Increasing the sample density further reveals smaller-scale oscillations, endlessly unfolding the fractal complexity.
+1. **h = 0**: Simple harmonic oscillator (perfect ellipse/circle in phase space)
+2. **0 < h < 0.3**: Perturbed periodic motion
+3. **h > 0.5**: Potential chaos or strange non-chaotic attractors
 
-Thus, the visualization remains mathematically rigorous, respecting the infinite intricacy of the Weierstrass function, while providing an intuitive, microscope-like exploration experience.
+## Usage
 
----
+### Basic Simulation
 
-## 🧠 Why Does This Matter?
+```python
+# Set parameters
+omega0 = 1.0  # Natural frequency
+h = 0.3       # Modulation strength (0 to 1)
+t_max = 100   # Simulation duration
 
-Originally constructed as a counterexample to challenge assumptions in 19th-century analysis, the Weierstrass function has since inspired a deeper understanding of fractals, roughness, and irregularity in mathematical systems. Beyond pure theory, concepts derived from such functions inform:
+# Run and plot
+x, v = solve_oscillator(t, omega0, h, a=0.5, b=7, n_terms=30, dt=0.01)
+plot_results(t, x, v, h)
+```
 
-* Signal processing – modeling noise and irregular waveforms
-* Fractal geometry – foundational for textures in computer graphics
-* Time series analysis – describing self-similar patterns in finance and nature
-* Mathematical rigor – sharpening definitions in real analysis and functional spaces  
+### Parameter Exploration
 
-Though often labeled “pathological,” the Weierstrass function has found its place as a valuable tool for understanding complexity and unpredictability in both theory and application.
+| Parameter | Effect | Typical Range |
+|-----------|--------|---------------|
+| `h`       | Modulation strength | 0 (none) to 1 (strong) |
+| `a`       | Weierstrass amplitude decay | 0.1-0.9 |
+| `b`       | Frequency scaling | Odd integers ≥3 |
+| `ω₀`      | Natural frequency | 0.5-2.0 |
 
----
+## Visualization Examples
 
-## 🚀 **Try It Yourself**
+### h = 0 (No modulation)
 
-Run the provided Python script to interactively explore the Weierstrass function’s fractal structure. Move the zoom slider and watch this elegant mathematical object reveal detail at every scale — a vivid demonstration of how continuity and roughness coexist in analysis.
+![h=0 Phase Space](h=0_Phase_Space.png)
 
-This hands-on visualization bridges abstract theory and tangible intuition.
+- Perfect circular orbit (ω₀=1)
+- Constant energy
 
----
+### h = 0.3 (Weak modulation)
 
-## 📁 **References**
+![h=0.3 Phase Space](h=0.3_Phase_Space.png)
 
-* K. Weierstrass, *Mathematische Werke*, Vol 2, 1872. [Archive.org](https://archive.org/details/mathematischewer02weieuoft/page/n101)
+- Slightly distorted ellipse
+- Small energy fluctuations
+
+### h = 1.0 (Strong modulation)
+
+![h=1.0 Phase Space](h=1_Phase_Space.png)
+
+- Fractal phase space structure
+- Intermittent energy jumps
+
+## Advanced Features
+
+### Energy Conservation Check
+
+```python
+E = 0.5*(v**2 + omega0**2*(1 + h*W)*x**2)
+plt.plot(t, E)  # Should be ~constant for good integration
+```
+
+### Interactive Exploration
+
+```python
+from ipywidgets import interact
+
+@interact(h=(0.0, 1.0, 0.1), b=(3, 21, 2))
+def explore(h=0.3, b=7):
+    x, v = solve_oscillator(t, 1.0, h, 0.5, b, 30, 0.01)
+    plot_results(t, x, v, h)
+```
+
+## Requirements
+
+- Python 3.8+
+- NumPy
+- Matplotlib
+- Numba (for acceleration)
+
+## References
+
+1. Weierstrass function: Hardy (1916)
+2. Parametric oscillators: Nayfeh & Mook (1979)
+3. Chaos theory: Strogatz (2014)
+
+```md
+
+This README provides:
+1. **Clear physics context** for the simulation
+2. **Ready-to-run code examples**
+3. **Visual examples** of expected outputs
+4. **Parameter tuning guide**
+5. **Advanced diagnostics**
+
