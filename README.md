@@ -34,7 +34,7 @@ This implementation enforces Hardy's stricter condition to ensure mathematical c
 
 Visualizing such a fractal object poses challenges — zooming in reveals ever more oscillations without any smoothening. To explore this phenomenon interactively, I developed a Python visualization featuring a manual zoom slider functioning like a microscope.
 
-Starting from a broad view (±2 units), you can zoom in as deeply as ±0.00025 units. The plot dynamically updates its sampling density to keep the curve smooth at every scale. The y-axis rescales automatically to highlight the local amplitude of oscillations clearly.
+Starting from a broad view, you can zoom in as deeply as ±0.00025 units. The plot dynamically updates its sampling density to keep the curve smooth at every scale. The y-axis rescales automatically to highlight the local amplitude of oscillations clearly.
 
 ---
 
