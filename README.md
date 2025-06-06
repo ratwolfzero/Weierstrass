@@ -57,7 +57,8 @@ Originally constructed as a counterexample to challenge assumptions in 19th-cent
 * Signal processing – modeling noise and irregular waveforms
 * Fractal geometry – foundational for textures in computer graphics
 * Time series analysis – describing self-similar patterns in finance and nature
-* Mathematical rigor – sharpening definitions in real analysis and functional spaces
+* Mathematical rigor – sharpening definitions in real analysis and functional spaces  
+
 Though often labeled “pathological,” the Weierstrass function has found its place as a valuable tool for understanding complexity and unpredictability in both theory and application.
 
 ---
