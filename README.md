@@ -50,7 +50,7 @@ Thus, the visualization remains mathematically rigorous, respecting the infinite
 
 ---
 
-🧠 Why Does This Matter?
+## 🧠 Why Does This Matter?
 
 Originally constructed as a counterexample to challenge assumptions in 19th-century analysis, the Weierstrass function has since inspired a deeper understanding of fractals, roughness, and irregularity in mathematical systems. Beyond pure theory, concepts derived from such functions inform:
 
