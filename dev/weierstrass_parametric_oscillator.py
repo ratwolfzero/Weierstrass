@@ -5,7 +5,7 @@ from matplotlib.colors import LogNorm
 
 # Parameters
 omega0 = 1.0       # Natural frequency (set to 1 for circular phase space at h=0)
-h = 0.2            # Modulation strength (0 for testing, then try 0.3, 1.0)
+h = 0.6            # Modulation strength (0 for testing, then try 0.3, 1.0)
 a = 0.5            # Weierstrass parameter (0 < a < 1)
 b = 7              # Weierstrass parameter (b odd, ab > 1 + 3π/2)
 n_terms = 30       # Truncated series terms
