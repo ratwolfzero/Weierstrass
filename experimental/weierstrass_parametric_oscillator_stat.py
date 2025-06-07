@@ -211,8 +211,8 @@ def plot_bifurcation_and_lyapunov(h_vals, t, omega0, a, b, n_terms, dt):
 if __name__ == '__main__':
     # Define parameters for the oscillator and Weierstrass function
     omega0 = 1.0
-    a = 0.7
-    b = 9
+    a = 0.5
+    b = 7
     n_terms = 30
     dt = 0.001
     T_max = 500  # Total simulation time
