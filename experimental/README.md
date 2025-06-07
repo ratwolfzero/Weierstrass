@@ -1,6 +1,8 @@
 # Weierstrass-Modulated Parametric Oscillator Simulation
 
-This project simulates a parametric oscillator driven by the Weierstrass function, exploring both regular and fractal dynamical regimes. The simulation visualizes phase space patterns and time series behavior under different modulation strengths.
+This project simulates a parametric oscillator with stiffness modulated by the fractal Weierstrass function. As modulation strength increases, phase space patterns evolve from regular oscillations to complex fractal-like shapes.
+
+Despite strong modulation, the system’s Lyapunov exponent stays ≤ 0, indicating no chaos but rather strange non-chaotic attractors—fractally structured but without sensitive dependence on initial conditions.
 
 ## Key Features
 
@@ -96,6 +98,10 @@ plot_results(t, x, v, h)
 - Intermittent energy jumps
 
 ![Statistics](statistic.png)
+
+Lyapunov Exponent vs. Modulation Strength
+
+The Lyapunov exponent remains at or below zero across all tested modulation strengths, confirming the absence of chaos. This suggests fractal complexity arises through strange non-chaotic attractors rather than classical chaotic dynamics.
 
 ## Advanced Features
 
