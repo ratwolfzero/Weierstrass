@@ -92,7 +92,7 @@ plot_results(t, x, v, h)
 
 ![h=1.0 Phase Space](h=1_Phase_Space.png)
 
-- Self-similar patterns under zooming (suggests fractality)
+- Self-similar patterns under zooming (suggests fractality?)
 - Intermittent energy jumps
 
 ## Advanced Features
