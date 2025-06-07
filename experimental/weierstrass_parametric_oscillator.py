@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Parameters
 omega0 = 1.0       # Natural frequency
-h = 1.0            # Modulation strength (0 to 1)
+h = 0.3            # Modulation strength (0 to 1)
 a = 0.5            # Weierstrass parameter (0 < a < 1)
 b = 7              # Weierstrass parameter (b odd, ab > 1 + 3π/2)
 n_terms = 30       # Truncated series terms

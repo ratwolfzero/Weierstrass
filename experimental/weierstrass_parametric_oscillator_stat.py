@@ -94,7 +94,7 @@ def plot_bifurcation_and_lyapunov(h_vals, t, omega0, a, b, n_terms, dt):
 
 # Example usage
 h_vals = np.linspace(0, 1.0, 100)
-t = np.arange(0, 200, 0.01)
+t = np.arange(0, 500, 0.001)
 om = 1.0
 
 plot_bifurcation_and_lyapunov(h_vals, t, omega0=om, a=0.5, b=7, n_terms=30, dt=0.01)
