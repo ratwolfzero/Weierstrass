@@ -1,6 +1,6 @@
 # Fractal-Driven Chaotic Oscillator
 
-![Comparison](oscillator_comparison.png)
+![Alian](alien.png)
 
 ## 🔍 Overview
 
