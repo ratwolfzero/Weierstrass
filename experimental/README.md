@@ -76,24 +76,26 @@ plot_results(t, x, v, h)
 
 ### h = 0 (No modulation)
 
-![h=0 Phase Space](h=0_Phase_Space.png)
+![h=0 Phase Space](h=0.png)
 
 - Perfect circular orbit (ω₀=1)
 - Constant energy
 
 ### h = 0.3 (Weak modulation)
 
-![h=0.3 Phase Space](h=0.3_Phase_Space.png)
+![h=0.3 Phase Space](h=0.3.png)
 
 - Slightly distorted ellipse
 - Small energy fluctuations
 
 ### h = 1.0 (Strong modulation)
 
-![h=1.0 Phase Space](h=1_Phase_Space.png)
+![h=1.0 Phase Space](h=1.png)
 
 - Self-similar patterns under zooming (suggests fractality?)
 - Intermittent energy jumps
+
+![Statistics](statistic.png)
 
 ## Advanced Features
 
