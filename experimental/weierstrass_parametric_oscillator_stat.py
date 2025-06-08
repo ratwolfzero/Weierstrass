@@ -97,11 +97,12 @@ def plot_bifurcation_and_lyapunov(h_vals, t, omega0, a, b, n_terms, dt):
     fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
     # Precompute Lyapunov exponents for coloring
-    exponents = np.array([compute_lyapunov_with_W(t, omega0, h, W, dt) for h in h_vals])
-    
+    exponents = np.array([compute_lyapunov_with_W(
+        t, omega0, h, W, dt) for h in h_vals])
+
     # Create a diverging colormap: blue (negative) -> white (0) -> red (positive)
-    cmap = plt.cm.coolwarm  
-    
+    cmap = plt.cm.coolwarm
+
     # Normalize exponents with 0 at the center
     max_abs = max(abs(exponents.min()), abs(exponents.max()))
     norm = plt.Normalize(vmin=-max_abs, vmax=max_abs)
@@ -116,27 +117,29 @@ def plot_bifurcation_and_lyapunov(h_vals, t, omega0, a, b, n_terms, dt):
         peaks = get_maxima(x, t)
         if len(peaks) > 0:
             color = cmap(norm(exponents[i]))
-            axs[0].plot([h]*len(peaks), peaks, '.', color=color, markersize=1, alpha=0.7)
-    
+            axs[0].plot([h]*len(peaks), peaks, '.',
+                        color=color, markersize=1, alpha=0.7)
+
     axs[0].set_xlabel('h (modulation strength)')
     axs[0].set_ylabel('x(t) maxima')
     axs[0].set_title('Bifurcation Diagram (colored by Lyapunov exponent)')
     axs[0].grid(True)
-    
+
     # Add colorbar to the bifurcation plot
     cbar = fig.colorbar(sm, ax=axs[0])
     cbar.set_label('Lyapunov Exponent')
 
     # Plot Lyapunov exponents
-    axs[1].plot(h_vals, exponents, 'k-', linewidth=1)  # Now in black for clarity
+    # Now in black for clarity
+    axs[1].plot(h_vals, exponents, 'k-', linewidth=1)
     axs[1].axhline(0, color='gray', linestyle='--')
-    
+
     # Color the area under the curve based on exponent sign
-    axs[1].fill_between(h_vals, exponents, where=(exponents>=0), 
-                       color='red', alpha=0.3, interpolate=True)
-    axs[1].fill_between(h_vals, exponents, where=(exponents<0), 
-                       color='blue', alpha=0.3, interpolate=True)
-    
+    axs[1].fill_between(h_vals, exponents, where=(exponents >= 0),
+                        color='red', alpha=0.3, interpolate=True)
+    axs[1].fill_between(h_vals, exponents, where=(exponents < 0),
+                        color='blue', alpha=0.3, interpolate=True)
+
     axs[1].set_xlabel('h (modulation strength)')
     axs[1].set_ylabel('Lyapunov Exponent')
     axs[1].set_title('Lyapunov Exponent vs h')
