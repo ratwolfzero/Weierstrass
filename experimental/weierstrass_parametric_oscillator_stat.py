@@ -148,8 +148,8 @@ def plot_bifurcation_and_lyapunov(h_vals, t, omega0, a, b, n_terms, dt):
 
 # Example usage
 omega0 = 1.0
-a = 0.5
-b = 7
+a = 0.7
+b = 9
 n_terms = 30
 dt = 0.001
 T_max = 1000

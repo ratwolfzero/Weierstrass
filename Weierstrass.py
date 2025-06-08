@@ -2,12 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 
-# Weierstrass function
+import numpy as np
+
+import numpy as np
+
 def weierstrass(x, a=0.7, b=9, n_terms=100):
     assert 0 < a < 1, "a must be in (0, 1)"
-    assert b % 2 == 1, "b must be an odd integer"
-    assert a * b > 1 + (3 * np.pi / 2), "ab must exceed 1 + 3π/2 for nowhere differentiability"
-    result = np.zeros_like(x)
+    assert isinstance(b, int) and b > 1, "b must be a positive integer greater than 1"
+    assert a * b > 1 + (3 * np.pi / 2), "ab must exceed 1 + 3π/2 for nowhere differentiability (Weierstrass condition)"
+    
+    result = np.zeros_like(x, dtype=float)
     for n in range(n_terms):
         result += (a ** n) * np.cos((b ** n) * np.pi * x)
     return result
