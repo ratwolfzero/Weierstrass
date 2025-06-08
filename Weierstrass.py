@@ -6,7 +6,7 @@ import numpy as np
 
 import numpy as np
 
-def weierstrass(x, a=0.7, b=9, n_terms=100):
+def weierstrass(x, a=0.7, b=9, n_terms=30):
     assert 0 < a < 1, "a must be in (0, 1)"
     assert isinstance(b, int) and b > 1, "b must be a positive integer greater than 1"
     assert a * b > 1 + (3 * np.pi / 2), "ab must exceed 1 + 3π/2 for nowhere differentiability (Weierstrass condition)"
@@ -17,7 +17,7 @@ def weierstrass(x, a=0.7, b=9, n_terms=100):
     return result
 
 # Parameters
-a, b, n_terms = 0.7, 9, 100
+a, b, n_terms = 0.7, 9, 30
 samples_per_unit = 10000
 min_zoom = 0.0005
 max_zoom = 4
