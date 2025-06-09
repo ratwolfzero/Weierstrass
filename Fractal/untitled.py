@@ -40,7 +40,7 @@ density = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
 
 # --- Plot setup ---
 fig, ax = plt.subplots(figsize=(8, 8))
-plt.subplots_adjust(left=0.1, bottom=0.35) 
+plt.subplots_adjust(left=0.1, bottom=0.35)  # More space for widgets
 
 im = ax.imshow(density, extent=(-1, 1, -1, 1), cmap='inferno')
 cbar = plt.colorbar(im, ax=ax, label='Density')
@@ -69,8 +69,8 @@ def update(val):
     if show_density:
         Z_data = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
         im.set_clim(vmin=0, vmax=np.max(Z_data))
-        im.set_cmap('hot')
-        cbar.set_label('inferno')
+        im.set_cmap('inferno')
+        cbar.set_label('Density')
         title.set_text(f'Weierstrass Density (a={a:.2f}, b={int(b)})')
     else:
         Z_data = Z_norm
