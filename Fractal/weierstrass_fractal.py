@@ -70,7 +70,7 @@ def update(val):
         Z_data = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
         im.set_clim(vmin=0, vmax=np.max(Z_data))
         im.set_cmap('hot')
-        cbar.set_label('inferno')
+        cbar.set_label('Density')
         title.set_text(f'Weierstrass Density (a={a:.2f}, b={int(b)})')
     else:
         Z_data = Z_norm
