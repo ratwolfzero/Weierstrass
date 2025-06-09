@@ -1,6 +1,7 @@
 # Weierstrass Function Density Visualization
 
 ![Weierstrass Fractal](fractal_1.png)
+
 *Example output for* `a = 0.3`, `b = 5`
 
 ---
