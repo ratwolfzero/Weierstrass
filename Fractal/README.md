@@ -16,7 +16,7 @@ This project visualizes the **2D Weierstrass function**—a fascinating extensio
 
 * Interactive sliders for parameters `a` (amplitude decay) and `b` (frequency scaling, **odd integers only**)
 * Real-time updates via **Numba-accelerated computation**
-* **Histogram-based density approximation** to highlight value distributions in a more perceptual way
+* **Histogram-based density approximation** to highlight value distributions in a perceptual way
 
 ---
 
@@ -38,18 +38,28 @@ Where:
 
 ## Key Properties
 
-| Property                   | Description                                                  |
-| -------------------------- | ------------------------------------------------------------ |
-| **Continuity**             | Uniformly convergent sum → continuous surface                |
-| **Nowhere differentiable** | No well-defined tangent plane at any point                   |
-| **Self-similar**           | Fractal behavior at all zoom levels                          |
-| **Parameter-sensitive**    | Small changes in `a` or `b` yield visually distinct patterns |
+| Property                        | Description                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| **Continuity**                  | Uniformly convergent sum → continuous surface                  |
+| **Nowhere differentiable**      | No well-defined tangent plane at any point                     |
+| **Approximate self-similarity** | Fractal features emerge progressively, depending on parameters |
+| **Parameter-sensitive**         | Small changes in `a` or `b` yield visually distinct patterns   |
+
+---
+
+## ⚠️ Note on Parameter Constraint $a b \geq 1$
+
+In the classic 1D Weierstrass function, the condition $a b \geq 1$ with b restricted to odd integers ensures strong fractal behavior—sharp, jagged irregularities at all scales.
+
+For this 2D extension, the same condition influences roughness but does **not** guarantee a clear fractal transition. The 2D function combines oscillations in both dimensions, which tends to smooth features and makes fractality more subtle and gradual.
+
+While the 2D Weierstrass function exhibits fractal-like complexity, its fractal nature is less visually striking than the 1D case and depends on additional factors beyond $a$ and $b$.
 
 ---
 
 ## Why 2D?
 
-The 1D Weierstrass function produces jagged lines—interesting, but limited. The 2D version, however, produces stunning fractal surfaces, useful for:
+The 1D Weierstrass function produces jagged lines—interesting, but limited. The 2D version produces stunning fractal surfaces, useful for:
 
 * Terrain generation
 * Procedural textures
@@ -69,10 +79,10 @@ The 1D Weierstrass function produces jagged lines—interesting, but limited. Th
 
 ### Parameter Effects
 
-| Parameter | Role                      | Visual Impact                                |
-| --------- | ------------------------- | -------------------------------------------- |
-| `a`       | Controls term amplitude   | ↑ `a` = rougher terrain, more sharp contrast |
-| `b`       | Controls frequency growth | ↑ `b` = more fine-grained fractal detail     |
+| Parameter | Role                      | Visual Impact                                           |
+| --------- | ------------------------- | ------------------------------------------------------- |
+| `a`       | Controls term amplitude   | ↑ `a` = rougher terrain, more sharp contrast            |
+| `b`       | Controls frequency growth | ↑ `b` = more fine-grained fractal detail, gradual onset |
 
 ---
 
