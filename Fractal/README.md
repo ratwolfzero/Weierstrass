@@ -2,7 +2,7 @@
 
 ![Weierstrass Fractal](fractal_1.png)
 
-*Example output for* `a = 0.3`, `b = 5`
+*Example output for* `a = 0.22`, `b = 5`
 
 ---
 
