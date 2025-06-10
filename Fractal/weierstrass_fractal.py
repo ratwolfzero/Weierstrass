@@ -45,7 +45,7 @@ Z_norm = Z / np.max(np.abs(Z))
 density = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
 
 # --- Plot setup ---
-fig, ax = plt.subplots(figsize=(8, 8))
+fig, ax = plt.subplots(figsize=(10, 10))
 plt.subplots_adjust(left=0.1, bottom=0.35)
 
 im = ax.imshow(density, extent=(-1, 1, -1, 1), cmap='inferno')
