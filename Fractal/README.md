@@ -53,7 +53,7 @@ In the classic 1D Weierstrass function, the condition $a b \geq 1$ with b restri
 
 For this 2D extension, the same condition influences roughness but does **not** guarantee a clear fractal transition. The 2D function combines oscillations in both dimensions, which tends to smooth features and makes fractality more subtle and gradual.
 
-While the 2D Weierstrass function exhibits fractal-like complexity, its fractal nature is less visually striking than the 1D case and depends on additional factors beyond $a$ and $b$.
+While the 2D Weierstrass function exhibits fractal-like complexity, its fractal nature is less visually striking than the 1D case.
 
 ---
 
