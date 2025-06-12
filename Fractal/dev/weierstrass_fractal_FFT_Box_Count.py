@@ -4,6 +4,8 @@ from matplotlib.widgets import Slider, RadioButtons, Button
 from numba import njit
 
 # --- Numba-accelerated 2D Weierstrass function using precomputed terms ---
+
+
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     W = np.zeros_like(X)
@@ -12,6 +14,8 @@ def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     return W
 
 # --- Density approximation via histogram ---
+
+
 def compute_density_approx(values, bins=500):
     hist, bin_edges = np.histogram(values, bins=bins, density=True)
     bin_indices = np.digitize(values, bin_edges) - 1
@@ -19,6 +23,8 @@ def compute_density_approx(values, bins=500):
     return hist[bin_indices]
 
 # --- FFT computation ---
+
+
 def compute_fft(Z):
     fft_Z = np.fft.fft2(Z)
     fft_shifted = np.fft.fftshift(fft_Z)
@@ -26,6 +32,8 @@ def compute_fft(Z):
     return np.log10(magnitude + 1e-10)
 
 # --- Box-counting dimension calculation ---
+
+
 @njit
 def box_counting_dimension(Z, epsilons):
     size = Z.shape[0]
@@ -79,6 +87,7 @@ def box_counting_dimension(Z, epsilons):
 
     slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x * sum_x)
     return -slope
+
 
 # --- Parameters ---
 size = 500
@@ -160,6 +169,8 @@ current_dimension = None
 current_plot = None  # Track current plot object
 
 # --- Update function ---
+
+
 def update_plot(val):
     global current_Z_norm, current_dimension, current_plot
     a = slider_a.val
@@ -206,7 +217,8 @@ def update_plot(val):
         cmap = 'inferno'
         clim = (0, np.max(data) + 1e-9 if np.max(data) == 0 else np.max(data))
         label = 'Density'
-        current_plot = ax.pcolormesh(x_edges, y_edges, data, cmap=cmap, shading='auto')
+        current_plot = ax.pcolormesh(
+            x_edges, y_edges, data, cmap=cmap, shading='auto')
         ax.set_xlim(-1, 1)
         ax.set_ylim(-1, 1)
         ax.set_xlabel('X')
@@ -236,6 +248,8 @@ def update_plot(val):
     fig.canvas.draw_idle()
 
 # --- Button callback ---
+
+
 def calculate_dimension(event):
     global current_Z_norm, current_dimension
     if current_Z_norm is None:
@@ -259,6 +273,7 @@ def calculate_dimension(event):
     title.set_text(
         f"{title_text} | Box-Counting Dim: {current_dimension:.3f} (based on raw values)")
     fig.canvas.draw_idle()
+
 
 # --- Bind events ---
 slider_a.on_changed(update_plot)
