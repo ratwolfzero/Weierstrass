@@ -146,7 +146,7 @@ def compute_fft(Z):
 1. **Two distinct "frequency" concepts:**
    * **Parameter b**: Controls term frequencies in *function definition*
    * **FFT analysis**: Measures spatial frequencies in *visual output*
-   * These are related but separate conceptt
+   * These are related but separate concepts
 
 2. **Density vs FFT:**
    * Density shows **value occurrence frequency**
