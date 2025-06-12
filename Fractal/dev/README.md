@@ -107,43 +107,63 @@ def compute_fft(Z):
 
 ---
 
-## 📊 Parameter Effects
-
-| Parameter | Role                      | Visual Impact                                           | Dimension Impact             |
-| --------- | ------------------------- | ------------------------------------------------------- | ---------------------------- |
-| `a`       | Controls term amplitude   | ↑ `a` = rougher terrain, sharper contrast              | ↑ Dimension                 |
-| `b`       | Controls frequency growth | ↑ `b` = finer fractal detail, complex patterns         | ↑ Dimension                 |
-| `a·b`     | Fractal indicator         | ≥1 = clear fractal behavior, <1 = smoother appearance  | Dimension defined when ≥1   |
-
----
-
-## 💡 Interpretation Guide
+## 📊 Interpretation Guide
 
 ### Raw Values Mode
 
-* **Blue regions**: Negative values
-* **Red regions**: Positive values
-* **White regions**: Near-zero values
+* **Blue regions**: Negative function values
+* **Red regions**: Positive function values
+* **White regions**: Values near zero
+* *Shows actual output of the mathematical function*
 
 ### Density Mode
 
-* **Bright areas**: Common values
+* **Bright areas**: Frequently occurring values
 * **Dark areas**: Rare values
-* Shows value distribution regardless of position
+* *Reveals probability distribution of values, independent of location*
 
-### FFT Mode
+### FFT (Frequency Analysis) Mode
 
-* **Center**: Low-frequency components
-* **Edges**: High-frequency components
-* **Symmetry**: Real-valued input symmetry
-* **Radial patterns**: Characteristic of fractal surfaces
+* **Center area**: Large-scale patterns (low spatial frequencies)
+* **Edge area**: Fine details and texture (high spatial frequencies)
+* **Symmetry**: Result of real-valued input (mathematical property)
+* **Radial patterns**: Indicator of scale-invariant structure
+* *Analyzes pattern repetition rates in the visual output*
 
 ### Box-Counting Dimension
 
-* **2.0-2.3**: Relatively smooth surface
+* **2.0-2.3**: Mostly smooth surface
 * **2.3-2.7**: Moderate fractal complexity
-* **>2.7**: Highly complex fractal surface
-* **Note**: Only valid when a·b ≥ 1
+* **>2.7**: Strong fractal characteristics
+* *Note 1: Calculation based on raw function values*
+* *Note 2: Meaningful only when a·b ≥ 1*
+
+---
+
+## 🔑 Key Clarifications
+
+1. **Two distinct "frequency" concepts:**
+   * **Parameter b**: Controls term frequencies in *function definition*
+   * **FFT analysis**: Measures spatial frequencies in *visual output*
+   * These are related but separate conceptt
+
+2. **Density vs FFT:**
+   * Density shows **value occurrence frequency**
+   * FFT shows **pattern repetition frequency**
+
+3. **Practical interpretation:**
+   * Higher parameter `b` → More fine details → More FFT energy at edges
+   * Higher parameter `a` → Sharper contrasts → Wider value distribution in density view
+
+---
+
+## 🧩 How Parameters Affect Visualizations
+
+| Parameter Change | Raw View          | Density View       | FFT View               | Dimension   |
+|------------------|-------------------|--------------------|------------------------|-------------|
+| **a ↑**          | Sharper contrasts | Wider distribution | More high-frequency energy | ↑           |
+| **b ↑**          | Finer details     | More complex peaks | Energy shifts outward   | ↑           |
+| **a·b ≥ 1**      | Fractal patterns  | Heavy tails        | Power-law spectrum      | Valid result|
 
 ---
 
