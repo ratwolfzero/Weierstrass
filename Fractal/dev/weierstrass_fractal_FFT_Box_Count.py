@@ -17,7 +17,13 @@ def compute_density_approx(values, bins=500):
     bin_indices = np.digitize(values, bin_edges) - 1
     bin_indices = np.clip(bin_indices, 0, len(hist) - 1)
     return hist[bin_indices]
-    
+
+# --- FFT computation ---
+def compute_fft(Z):
+    fft_Z = np.fft.fft2(Z)
+    fft_shifted = np.fft.fftshift(fft_Z)
+    magnitude = np.abs(fft_shifted)
+    return np.log10(magnitude + 1e-10)
 
 # --- Box-counting dimension calculation ---
 @njit
@@ -73,12 +79,11 @@ def box_counting_dimension(Z, epsilons):
     
     slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x * sum_x)
     return -slope
-    
 
 # --- Parameters ---
-size = 600
-N = 500
-bins = 500 
+size = 300
+N = 20
+bins = 500
 odd_b_values = np.arange(3, 21, 2)
 
 x = np.linspace(-1, 1, size)
@@ -87,6 +92,11 @@ X, Y = np.meshgrid(x, y)
 
 init_a = 0.22
 init_b = 5
+
+# Frequency coordinates (radians/sample)
+freq_x = np.fft.fftshift(np.fft.fftfreq(size, d=2/size)) * 2 * np.pi
+freq_y = np.fft.fftshift(np.fft.fftfreq(size, d=2/size)) * 2 * np.pi
+extent_freq = [freq_x[0], freq_x[-1], freq_y[0], freq_y[-1]]
 
 # --- Plot setup ---
 fig, ax = plt.subplots(figsize=(10, 10))
@@ -117,8 +127,8 @@ fig.text(ax_b_pos[0], label_b_y, 'Frequency Growth (b)', verticalalignment='bott
          horizontalalignment='left', fontsize=10, weight='bold')
 
 # --- Radio Buttons for View Mode ---
-ax_radio = plt.axes([0.3, 0.12, 0.4, 0.05])
-radio_buttons = RadioButtons(ax_radio, ['Raw Values', 'Show Density'], active=1)
+ax_radio = plt.axes([0.1, 0.12, 0.8, 0.05])
+radio_buttons = RadioButtons(ax_radio, ['Raw Values', 'Show Density', 'Show FFT'], active=1)
 ax_radio.set_frame_on(False)
 ax_radio.set_facecolor('none')
 
@@ -137,12 +147,13 @@ fig.text(0.8, 0.29, 'Constraint ab ≥ 1', fontsize=8)
 ax_button = plt.axes([0.1, 0.05, 0.3, 0.05])
 button = Button(ax_button, 'Calculate Box-Counting Dimension', color='lightgoldenrodyellow')
 
-# --- Global variable to store current Z_norm ---
+# --- Global variables ---
 current_Z_norm = None
+current_dimension = None
 
 # --- Update function ---
 def update_plot(val):
-    global current_Z_norm
+    global current_Z_norm, current_dimension
     a = slider_a.val
     b = slider_b.val
     ab = a * b
@@ -162,6 +173,9 @@ def update_plot(val):
     Z = compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs)
     Z_norm = Z / np.max(np.abs(Z))
     current_Z_norm = Z_norm  # Store for button callback
+    
+    # Reset dimension when parameters change
+    current_dimension = None
 
     if view_mode == 'Raw Values':
         data = Z_norm
@@ -169,13 +183,32 @@ def update_plot(val):
         clim = (-1, 1)
         label = 'Normalized Value'
         current_title = f'2D Weierstrass Function (a={a:.2f}, b={int(b)})'
-    else:
+        im.set_extent((-1, 1, -1, 1))
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+    elif view_mode == 'Show Density':
         data = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
         cmap = 'inferno'
         clim = (0, np.max(data) + 1e-9 if np.max(data) == 0 else np.max(data))
         label = 'Density'
         current_title = f'Weierstrass Density (a={a:.2f}, b={int(b)})'
-
+        im.set_extent((-1, 1, -1, 1))
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+    else:  # Show FFT
+        data = compute_fft(Z)
+        cmap = 'inferno'
+        clim = (np.min(data), np.max(data))
+        label = 'Log-Magnitude'
+        current_title = f'Weierstrass FFT (a={a:.2f}, b={int(b)})'
+        im.set_extent(extent_freq)
+        ax.set_xlabel('Frequency (radians/sample)')
+        ax.set_ylabel('Frequency (radians/sample)')
+    
+    # Add dimension info if available
+    if current_dimension is not None:
+        current_title += f" | Box-Counting Dim: {current_dimension:.3f} (based on raw values)"
+    
     im.set_data(data)
     im.set_clim(*clim)
     im.set_cmap(cmap)
@@ -185,7 +218,7 @@ def update_plot(val):
 
 # --- Button callback ---
 def calculate_dimension(event):
-    global current_Z_norm
+    global current_Z_norm, current_dimension
     if current_Z_norm is None:
         return
     
@@ -194,15 +227,16 @@ def calculate_dimension(event):
     ab = a * b
     
     if ab < 1:
-        title.set_text("Box-counting requires ab ≥ 1 (fractal condition not met)")
+        title_text = title.get_text().split('|')[0].strip()
+        title.set_text(f"{title_text} | Box-counting requires ab ≥ 1 (fractal condition not met)")
         fig.canvas.draw_idle()
         return
     
     epsilons = np.linspace(0.02, 0.2, 10)
-    dimension = box_counting_dimension(current_Z_norm, epsilons)
+    current_dimension = box_counting_dimension(current_Z_norm, epsilons)
     
-    current_title = title.get_text()
-    title.set_text(f"{current_title}\nBox-Counting Dimension: {dimension:.3f}")
+    title_text = title.get_text().split('|')[0].strip()
+    title.set_text(f"{title_text} | Box-Counting Dim: {current_dimension:.3f} (based on raw values)")
     fig.canvas.draw_idle()
 
 # --- Bind events ---
@@ -215,3 +249,5 @@ button.on_clicked(calculate_dimension)
 update_plot(None)
 
 plt.show()
+
+
