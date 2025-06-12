@@ -4,6 +4,8 @@ from matplotlib.widgets import Slider, RadioButtons, Button
 from numba import njit
 
 # --- Numba-accelerated 2D Weierstrass function using precomputed terms ---
+
+
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     W = np.zeros_like(X)
@@ -12,6 +14,8 @@ def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     return W
 
 # --- Density approximation via histogram ---
+
+
 def compute_density_approx(values, bins=500):
     hist, bin_edges = np.histogram(values, bins=bins, density=True)
     bin_indices = np.digitize(values, bin_edges) - 1
@@ -19,6 +23,8 @@ def compute_density_approx(values, bins=500):
     return hist[bin_indices]
 
 # --- FFT computation ---
+
+
 def compute_fft(Z):
     fft_Z = np.fft.fft2(Z)
     fft_shifted = np.fft.fftshift(fft_Z)
@@ -26,46 +32,48 @@ def compute_fft(Z):
     return np.log10(magnitude + 1e-10)
 
 # --- Box-counting dimension calculation ---
+
+
 @njit
 def box_counting_dimension(Z, epsilons):
     size = Z.shape[0]
     counts = np.zeros(len(epsilons))
-    
+
     # Normalize Z to [0,1] range
     z_min = np.min(Z)
     z_max = np.max(Z)
     z_range = z_max - z_min + 1e-9
     Z_norm = (Z - z_min) / z_range
-    
+
     for i in range(len(epsilons)):
         eps = epsilons[i]
-        
+
         # Calculate box sizes (same relative size in all dimensions)
         box_size_xy = max(1, int(np.ceil(eps * size)))
         box_size_z = eps  # Same relative size in Z dimension
-        
+
         # Number of boxes in each dimension
         grid_x = (size + box_size_xy - 1) // box_size_xy
         grid_y = (size + box_size_xy - 1) // box_size_xy
         grid_z = max(1, int(np.ceil(1.0 / box_size_z)))
-        
+
         occupied = np.zeros((grid_x, grid_y, grid_z), dtype=np.bool_)
-        
+
         for x in range(size):
             for y in range(size):
                 # Spatial boxes
                 bx = x // box_size_xy
                 by = y // box_size_xy
-                
+
                 # Height box
-                bz = int(Z_norm[x,y] / box_size_z)
+                bz = int(Z_norm[x, y] / box_size_z)
                 bz = min(bz, grid_z - 1)  # Ensure within bounds
-                
+
                 if not occupied[bx, by, bz]:
                     occupied[bx, by, bz] = True
-        
+
         counts[i] = np.sum(occupied)
-    
+
     # Manual linear regression
     sum_x = sum_y = sum_xy = sum_x2 = 0.0
     n = len(epsilons)
@@ -76,9 +84,10 @@ def box_counting_dimension(Z, epsilons):
         sum_y += log_count
         sum_xy += log_eps * log_count
         sum_x2 += log_eps * log_eps
-    
+
     slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x * sum_x)
     return -slope
+
 
 # --- Parameters ---
 size = 300
@@ -114,7 +123,8 @@ ax_a = plt.axes(ax_a_pos)
 slider_a = Slider(ax_a, '', 0.01, 0.99, valinit=init_a, valstep=0.01)
 
 ax_b = plt.axes(ax_b_pos)
-slider_b = Slider(ax_b, '', odd_b_values[0], odd_b_values[-1], valinit=init_b, valstep=2)
+slider_b = Slider(
+    ax_b, '', odd_b_values[0], odd_b_values[-1], valinit=init_b, valstep=2)
 
 # --- Custom Labels Above Sliders ---
 label_a_y = ax_a_pos[1] + ax_a_pos[3] + 0.01
@@ -128,7 +138,8 @@ fig.text(ax_b_pos[0], label_b_y, 'Frequency Growth (b)', verticalalignment='bott
 
 # --- Radio Buttons for View Mode ---
 ax_radio = plt.axes([0.1, 0.12, 0.8, 0.05])
-radio_buttons = RadioButtons(ax_radio, ['Raw Values', 'Show Density', 'Show FFT'], active=1)
+radio_buttons = RadioButtons(
+    ax_radio, ['Raw Values', 'Show Density', 'Show FFT'], active=1)
 ax_radio.set_frame_on(False)
 ax_radio.set_facecolor('none')
 
@@ -145,13 +156,16 @@ fig.text(0.8, 0.29, 'Constraint ab ≥ 1', fontsize=8)
 
 # --- Box-Counting Button ---
 ax_button = plt.axes([0.1, 0.05, 0.3, 0.05])
-button = Button(ax_button, 'Calculate Box-Counting Dimension', color='lightgoldenrodyellow')
+button = Button(ax_button, 'Calculate Box-Counting Dimension',
+                color='lightgoldenrodyellow')
 
 # --- Global variables ---
 current_Z_norm = None
 current_dimension = None
 
 # --- Update function ---
+
+
 def update_plot(val):
     global current_Z_norm, current_dimension
     a = slider_a.val
@@ -173,7 +187,7 @@ def update_plot(val):
     Z = compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs)
     Z_norm = Z / np.max(np.abs(Z))
     current_Z_norm = Z_norm  # Store for button callback
-    
+
     # Reset dimension when parameters change
     current_dimension = None
 
@@ -204,11 +218,11 @@ def update_plot(val):
         im.set_extent(extent_freq)
         ax.set_xlabel('Frequency (radians/sample)')
         ax.set_ylabel('Frequency (radians/sample)')
-    
+
     # Add dimension info if available
     if current_dimension is not None:
         current_title += f" | Box-Counting Dim: {current_dimension:.3f} (based on raw values)"
-    
+
     im.set_data(data)
     im.set_clim(*clim)
     im.set_cmap(cmap)
@@ -217,27 +231,32 @@ def update_plot(val):
     fig.canvas.draw_idle()
 
 # --- Button callback ---
+
+
 def calculate_dimension(event):
     global current_Z_norm, current_dimension
     if current_Z_norm is None:
         return
-    
+
     a = slider_a.val
     b = slider_b.val
     ab = a * b
-    
+
     if ab < 1:
         title_text = title.get_text().split('|')[0].strip()
-        title.set_text(f"{title_text} | Box-counting requires ab ≥ 1 (fractal condition not met)")
+        title.set_text(
+            f"{title_text} | Box-counting requires ab ≥ 1 (fractal condition not met)")
         fig.canvas.draw_idle()
         return
-    
+
     epsilons = np.linspace(0.02, 0.2, 10)
     current_dimension = box_counting_dimension(current_Z_norm, epsilons)
-    
+
     title_text = title.get_text().split('|')[0].strip()
-    title.set_text(f"{title_text} | Box-Counting Dim: {current_dimension:.3f} (based on raw values)")
+    title.set_text(
+        f"{title_text} | Box-Counting Dim: {current_dimension:.3f} (based on raw values)")
     fig.canvas.draw_idle()
+
 
 # --- Bind events ---
 slider_a.on_changed(update_plot)
@@ -249,5 +268,3 @@ button.on_clicked(calculate_dimension)
 update_plot(None)
 
 plt.show()
-
-
