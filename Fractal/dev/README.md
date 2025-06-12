@@ -132,11 +132,12 @@ def compute_fft(Z):
 
 ### Box-Counting Dimension
 
-* **2.0-2.3**: Mostly smooth surface
-* **2.3-2.7**: Moderate fractal complexity
-* **>2.7**: Strong fractal characteristics
+* **2.0-2.2**: Relatively smooth surface
+* **2.2-2.5**: Moderate fractal complexity
+* **>2.5**: Strong fractal characteristics
 * *Note 1: Calculation based on raw function values*
 * *Note 2: Meaningful only when a·b ≥ 1*
+* *Note 3: Values depend on resolution and epsilon range*
 
 ---
 
@@ -161,20 +162,9 @@ def compute_fft(Z):
 
 | Parameter Change | Raw View          | Density View       | FFT View               | Dimension   |
 |------------------|-------------------|--------------------|------------------------|-------------|
-| **a ↑**          | Sharper contrasts | Wider distribution | More high-frequency energy | ↑           |
-| **b ↑**          | Finer details     | More complex peaks | Energy shifts outward   | ↑           |
+| **a ↑**          | Sharper contrasts | Wider distribution | More high-frequency energy | ↑ (0.1-0.3) |
+| **b ↑**          | Finer details     | More complex peaks | Energy shifts outward   | ↑ (0.1-0.4) |
 | **a·b ≥ 1**      | Fractal patterns  | Heavy tails        | Power-law spectrum      | Valid result|
-
----
-
-## 🧪 Example Configurations
-
-| a   | b   | Dimension | Characteristics                     |
-| --- | --- | --------- | ----------------------------------- |
-| 0.3 | 5   | ~2.2      | Gentle rolling hills                |
-| 0.5 | 7   | ~2.4      | Moderate roughness                  |
-| 0.7 | 9   | ~2.6      | Mountainous terrain                 |
-| 0.9 | 13  | ~2.8+     | Extreme jaggedness, fine detail     |
 
 ---
 
