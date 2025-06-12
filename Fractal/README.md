@@ -61,10 +61,9 @@ While the 2D Weierstrass function exhibits fractal-like complexity, its fractal 
 
 The 1D Weierstrass function produces jagged lines—interesting, but limited. The 2D version produces stunning fractal surfaces, useful for:
 
-* Terrain generation
-* Procedural textures
-* Studying chaotic or self-similar systems
-* Aesthetic/organic mathematical art
+* Exploring patterns and complexity in two dimensions
+* Generating rough surfaces, like terrain or noise maps
+* Visualizing how simple rules can lead to intricate forms
 
 ---
 
@@ -74,8 +73,8 @@ The 1D Weierstrass function produces jagged lines—interesting, but limited. Th
 
 * **Color intensity = density of values**
 
-  * **Darker** = more frequently occurring values
-  * **Brighter** = rarer, more extreme values
+  * Darker areas: Values that occur less frequently
+  * Brighter areas: Values that appear more often  
 
 ### Parameter Effects
 
