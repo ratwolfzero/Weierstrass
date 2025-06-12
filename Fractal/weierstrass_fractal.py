@@ -78,7 +78,7 @@ indicator_ax.set_frame_on(True)
 indicator_ax.set_facecolor('white')
 
 # Optional legend text
-fig.text(0.8, 0.22, 'Constraint ab ≥ 1', fontsize=8)
+fig.text(0.8, 0.22, 'Visual Heuristic:\na·b ≥ 1 → more jagged', fontsize=8)
 
 # --- Update function ---
 def update_plot(val):
