@@ -230,7 +230,7 @@ def update_plot(val):
         # Revert to original scaling method
         clim = (np.min(data), np.max(data))
         label = 'Log-Magnitude'
-        current_plot = ax.imshow(data, cmap=cmap, extent=extent_freq)
+        current_plot = ax.imshow(data, cmap='viridis', extent=extent_freq)
         ax.set_xlim(extent_freq[0], extent_freq[1])
         ax.set_ylim(extent_freq[2], extent_freq[3])
         ax.set_xlabel('Frequency (radians/sample)')
