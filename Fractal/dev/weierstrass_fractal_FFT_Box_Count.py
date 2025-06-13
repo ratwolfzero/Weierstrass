@@ -83,7 +83,7 @@ def box_counting_dimension(Z, epsilons):
 
 # --- Parameters ---
 size = 500
-N = 50
+N = 30
 bins = 500
 odd_b_values = np.arange(3, 21, 2)
 
@@ -152,7 +152,7 @@ fig.text(0.8, 0.29, 'Constraint ab ≥ 1', fontsize=8)
 
 # --- Box-Counting Button ---
 ax_button = plt.axes([0.1, 0.05, 0.3, 0.05])
-button = Button(ax_button, 'Display Box-Counting (Fractal) Dimension',
+button = Button(ax_button, 'Calculate Box-Counting Dimension',
                 color='lightgoldenrodyellow')
 
 # --- Dimension Display ---
@@ -169,30 +169,44 @@ current_Z_norm = None
 current_dimension = None
 current_plot = None  # Track current plot object
 dimension_calculated = False  # Track if dimension has been calculated
+last_a = init_a  # Track last a value
+last_b = init_b  # Track last b value
 
 # --- Update function ---
 def update_plot(val):
-    global current_Z_norm, current_dimension, current_plot, dimension_calculated
+    global current_Z_norm, current_dimension, current_plot, dimension_calculated, last_a, last_b
     a = slider_a.val
     b = slider_b.val
     ab = a * b
     view_mode = radio_buttons.value_selected
-
-    # Reset dimension calculation status when parameters change
-    if dimension_calculated:
+    
+    # Check if parameters changed
+    params_changed = (a != last_a) or (b != last_b)
+    if params_changed:
+        # Reset calculation state when parameters change
         dimension_calculated = False
+        last_a = a
+        last_b = b
         button.color = 'lightgoldenrodyellow'
         button.hovercolor = 'lightgoldenrodyellow'
-        dim_text.set_text('Fractal Dimension: --')
+        if ab >= 1:
+            dim_text.set_text('Fractal Dimension: --')
+        else:
+            dim_text.set_text('ab < 1: Not fractal')
 
     # Update validity indicator
     indicator_text.set_text(f"a·b = {ab:.2f}")
     if ab >= 1:
         indicator_ax.set_facecolor('lightgreen')
-        button.set_active(True)
+        # Enable button if calculation hasn't been done
+        if not dimension_calculated:
+            button.color = 'lightgoldenrodyellow'
+            button.hovercolor = 'lightgoldenrodyellow'
     else:
         indicator_ax.set_facecolor('lightcoral')
-        button.set_active(False)
+        # Disable button when constraint not met
+        button.color = 'lightgray'
+        button.hovercolor = 'lightgray'
 
     # Precompute terms
     a_powers = np.array([a ** n for n in range(N)], dtype=np.float64)
