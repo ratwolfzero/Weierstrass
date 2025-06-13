@@ -216,7 +216,7 @@ def update_plot(val):
         data = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
         cmap = 'inferno'
         clim = (0, np.max(data) + 1e-9 if np.max(data) == 0 else np.max(data))
-        label = 'Density'
+        label = 'Density (probability density)'
         current_plot = ax.pcolormesh(
             x_edges, y_edges, data, cmap=cmap, shading='auto')
         ax.set_xlim(-1, 1)
@@ -235,7 +235,7 @@ def update_plot(val):
         ax.set_ylim(extent_freq[2], extent_freq[3])
         ax.set_xlabel('Frequency (radians/sample)')
         ax.set_ylabel('Frequency (radians/sample)')
-        current_title = f'Relative Spatial Frequency (rad/sample over [-1,1]) (a={a:.2f}, b={int(b)})'
+        current_title = f'Spatial Frequency Domain (radians/sample) (a={a:.2f}, b={int(b)})'
 
     # Add dimension info if available
     if current_dimension is not None:
