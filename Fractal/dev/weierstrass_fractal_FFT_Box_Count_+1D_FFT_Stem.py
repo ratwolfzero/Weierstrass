@@ -197,9 +197,16 @@ ax_dim.set_yticks([])
 ax_dim.set_frame_on(True)
 ax_dim.set_facecolor('lightblue')
 
+# --- Enlarge 1D Plots Button ---
+ax_enlarge = plt.axes([0.62, 0.05, 0.3, 0.05])
+enlarge_button = Button(ax_enlarge, 'Enlarge 1D Plots', color='lightgreen')
+enlarge_button.hovercolor = 'palegreen'
+
 # --- Global variables ---
 current_Z_norm = None
 current_1d_data = None
+current_1d_fft_freqs = None
+current_1d_fft_mag = None
 current_dimension = None
 current_plot = None
 dimension_calculated = False
@@ -209,7 +216,7 @@ fft_stem = None  # To store stem plot artists
 
 # --- Update function ---
 def update_plot(val):
-    global current_Z_norm, current_1d_data, current_dimension, current_plot, dimension_calculated, last_a, last_b, fft_stem
+    global current_Z_norm, current_1d_data, current_1d_fft_freqs, current_1d_fft_mag, current_dimension, current_plot, dimension_calculated, last_a, last_b, fft_stem
     a = slider_a.val
     b = slider_b.val
     ab = a * b
@@ -265,6 +272,10 @@ def update_plot(val):
     pos_freqs = freqs[:len(freqs)//2]
     pos_fft = fft_mag[:len(fft_mag)//2]
     
+    # Store for enlarge button
+    current_1d_fft_freqs = pos_freqs
+    current_1d_fft_mag = pos_fft
+    
     # Update 1D plot
     line_1d.set_data(y_vals, W_1d_norm)
     ax1.relim()
@@ -296,9 +307,12 @@ def update_plot(val):
         plt.setp(fft_stem[1], linewidth=0.7)  # Stem lines
         plt.setp(fft_stem[2], linewidth=0.7)  # Baseline
         
-        # Set axis limits
-        ax2.set_xlim(0, np.max(pos_freqs))
-        ax2.set_ylim(np.min(pos_fft[pos_fft > 0]) * 0.9, np.max(pos_fft) * 1.1)
+        # Set axis limits - FIXED: Use smallest positive frequency for log scale
+        if len(pos_freqs) > 0:
+            min_freq = np.min(pos_freqs[pos_freqs > 0])  # Smallest positive frequency
+            max_freq = np.max(pos_freqs)
+            ax2.set_xlim(min_freq * 0.9, max_freq * 1.1)
+            ax2.set_ylim(np.min(pos_fft[pos_fft > 0]) * 0.9, np.max(pos_fft) * 1.1)
     
     # Clear previous 2D plot if it exists
     if current_plot:
@@ -376,11 +390,73 @@ def calculate_dimension(event):
     button.color = 'lightgray'
     button.hovercolor = 'lightgray'
 
+# --- Enlarge 1D Plots Button Callback ---
+def enlarge_1d_plots(event):
+    if current_1d_data is None or current_1d_fft_freqs is None or current_1d_fft_mag is None:
+        return
+        
+    # Create a new figure for the enlarged 1D plots
+    fig1d, (ax1d, axfft) = plt.subplots(2, 1, figsize=(12, 10))
+    
+    # Get current parameters
+    a = slider_a.val
+    b = slider_b.val
+    
+    # Plot 1D Weierstrass function
+    ax1d.plot(y, current_1d_data, 'b-', linewidth=1.5)
+    ax1d.set_title(f'1D Weierstrass Function (x=0, a={a:.2f}, b={int(b)})', fontsize=14)
+    ax1d.set_xlabel('y', fontsize=12)
+    ax1d.set_ylabel('W(y)', fontsize=12)
+    ax1d.grid(True)
+    ax1d.tick_params(axis='both', which='major', labelsize=10)
+    
+    # Plot FFT with stem plot
+    markerline, stemlines, baseline = axfft.stem(
+        current_1d_fft_freqs, 
+        current_1d_fft_mag, 
+        linefmt='r-', 
+        markerfmt='ro', 
+        basefmt='k-'
+    )
+    
+    # Style adjustments
+    plt.setp(markerline, markersize=4, markerfacecolor='r', markeredgecolor='r')
+    plt.setp(stemlines, linewidth=1.0)
+    plt.setp(baseline, linewidth=1.0)
+    
+    # Set scales and labels
+    axfft.set_xscale('log')
+    axfft.set_yscale('log')
+    axfft.set_title('FFT of 1D Weierstrass Function (Stem Plot)', fontsize=14)
+    axfft.set_xlabel('Frequency (cycles/sample)', fontsize=12)
+    axfft.set_ylabel('Magnitude (log scale)', fontsize=12)
+    axfft.grid(True, which='both', linestyle='--', alpha=0.7)
+    axfft.tick_params(axis='both', which='major', labelsize=10)
+    
+    # Set axis limits - FIXED: Use smallest positive frequency for log scale
+    if len(current_1d_fft_freqs) > 0:
+        min_freq = np.min(current_1d_fft_freqs[current_1d_fft_freqs > 0])
+        max_freq = np.max(current_1d_fft_freqs)
+        axfft.set_xlim(min_freq * 0.9, max_freq * 1.1)
+        
+        min_mag = np.min(current_1d_fft_mag[current_1d_fft_mag > 0])
+        max_mag = np.max(current_1d_fft_mag)
+        axfft.set_ylim(min_mag * 0.9, max_mag * 1.1)
+    
+    # Add parameter info to the figure
+    fig1d.suptitle(f'Weierstrass Function Analysis (a={a:.2f}, b={int(b)})', fontsize=16)
+    
+    # Adjust layout
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.93)
+    plt.show()
+
 # --- Bind events ---
 slider_a.on_changed(update_plot)
 slider_b.on_changed(update_plot)
 radio_buttons.on_clicked(update_plot)
 button.on_clicked(calculate_dimension)
+enlarge_button.on_clicked(enlarge_1d_plots)
 
 # Initial plot
 update_plot(None)
