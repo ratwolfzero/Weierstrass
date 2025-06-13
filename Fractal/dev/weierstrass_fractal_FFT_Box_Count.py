@@ -4,6 +4,8 @@ from matplotlib.widgets import Slider, RadioButtons, Button
 from numba import njit
 
 # --- Numba-accelerated 2D Weierstrass function using precomputed terms ---
+
+
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     W = np.zeros_like(X)
@@ -12,6 +14,8 @@ def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     return W
 
 # --- Density approximation via histogram ---
+
+
 def compute_density_approx(values, bins=500):
     hist, bin_edges = np.histogram(values, bins=bins, density=True)
     bin_indices = np.digitize(values, bin_edges) - 1
@@ -19,6 +23,8 @@ def compute_density_approx(values, bins=500):
     return hist[bin_indices]
 
 # --- FFT computation ---
+
+
 def compute_fft(Z):
     fft_Z = np.fft.fft2(Z)
     fft_shifted = np.fft.fftshift(fft_Z)
@@ -26,6 +32,8 @@ def compute_fft(Z):
     return np.log10(magnitude + 1e-10)
 
 # --- Box-counting dimension calculation ---
+
+
 @njit
 def box_counting_dimension(Z, epsilons):
     size = Z.shape[0]
@@ -157,8 +165,8 @@ button = Button(ax_button, 'Calculate Box-Counting Dimension',
 
 # --- Dimension Display ---
 ax_dim = plt.axes([0.42, 0.05, 0.18, 0.05])
-dim_text = ax_dim.text(0.5, 0.5, 'Fractal Dimension: --', fontsize=10, 
-                      ha='center', va='center', transform=ax_dim.transAxes)
+dim_text = ax_dim.text(0.5, 0.5, 'Fractal Dimension: --', fontsize=10,
+                       ha='center', va='center', transform=ax_dim.transAxes)
 ax_dim.set_xticks([])
 ax_dim.set_yticks([])
 ax_dim.set_frame_on(True)
@@ -173,13 +181,15 @@ last_a = init_a  # Track last a value
 last_b = init_b  # Track last b value
 
 # --- Update function ---
+
+
 def update_plot(val):
     global current_Z_norm, current_dimension, current_plot, dimension_calculated, last_a, last_b
     a = slider_a.val
     b = slider_b.val
     ab = a * b
     view_mode = radio_buttons.value_selected
-    
+
     # Check if parameters changed
     params_changed = (a != last_a) or (b != last_b)
     if params_changed:
@@ -267,6 +277,8 @@ def update_plot(val):
     fig.canvas.draw_idle()
 
 # --- Button callback ---
+
+
 def calculate_dimension(event):
     global current_Z_norm, current_dimension, dimension_calculated
     if current_Z_norm is None:
@@ -282,13 +294,13 @@ def calculate_dimension(event):
 
     # Switch to raw values view for dimension visualization
     radio_buttons.set_active(0)
-    
+
     epsilons = np.linspace(0.02, 0.2, 10)
     current_dimension = box_counting_dimension(current_Z_norm, epsilons)
-    
+
     # Update dimension display
     dim_text.set_text(f'Fractal Dimension: {current_dimension:.3f}')
-    
+
     # Disable button and mark as calculated
     dimension_calculated = True
     button.color = 'lightgray'
