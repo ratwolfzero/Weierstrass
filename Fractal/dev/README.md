@@ -1,6 +1,6 @@
 # Weierstrass Function Visualization Toolkit
 
-![Weierstrass Fractal](fractal_2.png)
+![Weierstrass Fractal](overview.png)
 
 ## 📌 Overview
 
