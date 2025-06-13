@@ -281,8 +281,8 @@ def update_plot(val):
 
 def calculate_dimension(event):
     global current_Z_norm, current_dimension, dimension_calculated
-    if current_Z_norm is None:
-        return
+    if current_Z_norm is None or dimension_calculated:
+        return  # Don't do anything if already calculated or no data
 
     a = slider_a.val
     b = slider_b.val
@@ -294,13 +294,13 @@ def calculate_dimension(event):
 
     # Switch to raw values view for dimension visualization
     radio_buttons.set_active(0)
-
+    
     epsilons = np.linspace(0.02, 0.2, 10)
     current_dimension = box_counting_dimension(current_Z_norm, epsilons)
-
+    
     # Update dimension display
     dim_text.set_text(f'Fractal Dimension: {current_dimension:.3f}')
-
+    
     # Disable button and mark as calculated
     dimension_calculated = True
     button.color = 'lightgray'
