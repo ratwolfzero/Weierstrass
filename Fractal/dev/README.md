@@ -100,8 +100,6 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 #### 2. FFT of 1D Weierstrass Function (Stem Plot)
 
-![1D FFT Stem Plot (Example image needed)](1d_fft_stem_plot.png)
-
 * **X-axis**: **Frequency (cycles/sample)**
   * This axis represents the spatial frequencies present in the 1D function. "Cycles/sample" indicates how many complete cycles of a wave occur within the span of one discrete data point (sample) in the `y` dimension.
   * For a digitally sampled signal, the frequency is often normalized to the sampling rate. A value of 0.5 cycles/sample is the Nyquist frequency, representing the highest frequency that can be uniquely resolved.
