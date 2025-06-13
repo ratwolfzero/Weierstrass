@@ -278,7 +278,6 @@ def update_plot(val):
 
 # --- Button callback ---
 
-
 def calculate_dimension(event):
     global current_Z_norm, current_dimension, dimension_calculated
     if current_Z_norm is None or dimension_calculated:
