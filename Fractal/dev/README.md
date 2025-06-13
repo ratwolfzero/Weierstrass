@@ -74,6 +74,8 @@ Where:
 
 ### 4. Box-Counting Dimension
 
+![Fractal Dimension View](fractal_dimension.png)
+
 * Calculates fractal dimension using box-counting method
 * Requires `a·b ≥ 1` (fractal condition)
 * Displayed in plot title when calculated
