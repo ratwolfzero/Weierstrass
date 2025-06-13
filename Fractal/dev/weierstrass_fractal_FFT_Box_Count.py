@@ -211,7 +211,7 @@ def update_plot(val):
         ax.set_ylim(-1, 1)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
-        current_title = f'2D Weierstrass Function (a={a:.2f}, b={int(b)})'
+        current_title = f'Normalized 2D Weierstrass Function Map (a={a:.2f}, b={int(b)})'
     elif view_mode == 'Show Density':
         data = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
         cmap = 'inferno'
@@ -223,7 +223,7 @@ def update_plot(val):
         ax.set_ylim(-1, 1)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
-        current_title = f'Weierstrass Density (a={a:.2f}, b={int(b)})'
+        current_title = f'Density Estimate of Weierstrass Values (a={a:.2f}, b={int(b)})'
     else:  # Show FFT
         data = compute_fft(Z)
         cmap = 'inferno'
@@ -235,7 +235,7 @@ def update_plot(val):
         ax.set_ylim(extent_freq[2], extent_freq[3])
         ax.set_xlabel('Frequency (radians/sample)')
         ax.set_ylabel('Frequency (radians/sample)')
-        current_title = f'Weierstrass FFT (a={a:.2f}, b={int(b)})'
+        current_title = f'Relative Spatial Frequency (rad/sample over [-1,1]) (a={a:.2f}, b={int(b)})'
 
     # Add dimension info if available
     if current_dimension is not None:
