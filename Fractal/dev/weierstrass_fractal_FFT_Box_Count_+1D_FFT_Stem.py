@@ -137,6 +137,7 @@ ax2 = plt.subplot(gs[1, 1])
 ax2.set_title('FFT of 1D Weierstrass (Stem Plot)')
 ax2.set_xlabel('Frequency (cycles/sample)')
 ax2.set_ylabel('Magnitude (log scale)')
+ax2.set_xscale('log')
 ax2.set_yscale('log')
 ax2.grid(True)
 
