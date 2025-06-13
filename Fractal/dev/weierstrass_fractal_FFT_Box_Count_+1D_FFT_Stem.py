@@ -173,7 +173,7 @@ ax_radio.set_frame_on(False)
 ax_radio.set_facecolor('none')
 
 # --- Validity Indicator Box ---
-indicator_ax = plt.axes([0.8, 0.25, 0.1, 0.03])
+indicator_ax = plt.axes([0.8, 0.20, 0.1, 0.03])
 indicator_text = indicator_ax.text(0.5, 0.5, '', fontsize=10, ha='center', va='center',
                                    transform=indicator_ax.transAxes)
 indicator_ax.set_xticks([])
@@ -181,7 +181,7 @@ indicator_ax.set_yticks([])
 indicator_ax.set_frame_on(True)
 indicator_ax.set_facecolor('white')
 
-fig.text(0.8, 0.29, 'Constraint ab ≥ 1', fontsize=8)
+fig.text(0.8, 0.25, 'Constraint ab ≥ 1', fontsize=8)
 
 # --- Box-Counting Button ---
 ax_button = plt.axes([0.1, 0.05, 0.3, 0.05])
