@@ -4,8 +4,6 @@ from matplotlib.widgets import Slider, RadioButtons, Button
 from numba import njit
 
 # --- Numba-accelerated 2D Weierstrass function using precomputed terms ---
-
-
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     W = np.zeros_like(X)
@@ -14,8 +12,6 @@ def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     return W
 
 # --- Density approximation via histogram ---
-
-
 def compute_density_approx(values, bins=500):
     hist, bin_edges = np.histogram(values, bins=bins, density=True)
     bin_indices = np.digitize(values, bin_edges) - 1
@@ -23,8 +19,6 @@ def compute_density_approx(values, bins=500):
     return hist[bin_indices]
 
 # --- FFT computation ---
-
-
 def compute_fft(Z):
     fft_Z = np.fft.fft2(Z)
     fft_shifted = np.fft.fftshift(fft_Z)
@@ -32,8 +26,6 @@ def compute_fft(Z):
     return np.log10(magnitude + 1e-10)
 
 # --- Box-counting dimension calculation ---
-
-
 @njit
 def box_counting_dimension(Z, epsilons):
     size = Z.shape[0]
@@ -169,8 +161,6 @@ current_dimension = None
 current_plot = None  # Track current plot object
 
 # --- Update function ---
-
-
 def update_plot(val):
     global current_Z_norm, current_dimension, current_plot
     a = slider_a.val
@@ -209,37 +199,40 @@ def update_plot(val):
         current_plot = ax.imshow(data, cmap=cmap, extent=(-1, 1, -1, 1))
         ax.set_xlim(-1, 1)
         ax.set_ylim(-1, 1)
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        current_title = f'Normalized 2D Weierstrass Function Map (a={a:.2f}, b={int(b)})'
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+        ax.set_aspect('equal')  # Maintain aspect ratio
+        current_title = f'Normalized 2D Weierstrass Function (a={a:.2f}, b={int(b)})'
     elif view_mode == 'Show Density':
         data = compute_density_approx(Z.flatten(), bins).reshape(Z.shape)
         cmap = 'inferno'
         clim = (0, np.max(data) + 1e-9 if np.max(data) == 0 else np.max(data))
-        label = 'Density (probability density)'
+        label = 'Probability Density'
         current_plot = ax.pcolormesh(
             x_edges, y_edges, data, cmap=cmap, shading='auto')
         ax.set_xlim(-1, 1)
         ax.set_ylim(-1, 1)
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        current_title = f'Density Estimate of Weierstrass Values (a={a:.2f}, b={int(b)})'
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+        ax.set_aspect('equal')  # Maintain aspect ratio
+        current_title = f'Value Probability Density (a={a:.2f}, b={int(b)})'
     else:  # Show FFT
         data = compute_fft(Z)
         cmap = 'inferno'
         # Revert to original scaling method
         clim = (np.min(data), np.max(data))
-        label = 'Log-Magnitude'
+        label = 'Log-Magnitude (dB)'
         current_plot = ax.imshow(data, cmap='viridis', extent=extent_freq)
         ax.set_xlim(extent_freq[0], extent_freq[1])
         ax.set_ylim(extent_freq[2], extent_freq[3])
-        ax.set_xlabel('Frequency (radians/sample)')
-        ax.set_ylabel('Frequency (radians/sample)')
-        current_title = f'Spatial Frequency Domain (radians/sample) (a={a:.2f}, b={int(b)})'
+        ax.set_xlabel('Angular Frequency ω_x (rad/sample)')
+        ax.set_ylabel('Angular Frequency ω_y (rad/sample)')
+        ax.set_aspect('equal')  # Maintain aspect ratio
+        current_title = f'Frequency Spectrum (a={a:.2f}, b={int(b)})'
 
     # Add dimension info if available
     if current_dimension is not None:
-        current_title += f" | Box-Counting Dim: {current_dimension:.3f} (based on raw values)"
+        current_title += f" | Fractal Dimension: {current_dimension:.3f} (box-counting method)"
 
     current_plot.set_clim(*clim)
     cbar.update_normal(current_plot)  # Update colorbar to new plot
@@ -248,8 +241,6 @@ def update_plot(val):
     fig.canvas.draw_idle()
 
 # --- Button callback ---
-
-
 def calculate_dimension(event):
     global current_Z_norm, current_dimension
     if current_Z_norm is None:
@@ -271,7 +262,7 @@ def calculate_dimension(event):
 
     title_text = title.get_text().split('|')[0].strip()
     title.set_text(
-        f"{title_text} | Box-Counting Dim: {current_dimension:.3f} (based on raw values)")
+        f"{title_text} | Fractal Dimension: {current_dimension:.3f} (box-counting method)")
     fig.canvas.draw_idle()
 
 

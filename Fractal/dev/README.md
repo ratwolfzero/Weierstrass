@@ -46,19 +46,36 @@ Where:
 
 ### 1. Raw Function Values
 
-Visualizes the normalized output of the Weierstrass function using a coolwarm colormap. Shows the characteristic fractal patterns of the surface.
+![Raw View](raw_view.png)
+
+* **X/Y Axes**: Spatial coordinates in [-1, 1] range
+* **Color**: Normalized function value (blue = negative, red = positive)
+* **Title**: "Normalized 2D Weierstrass Function"
+* Shows actual output of the mathematical function
 
 ### 2. Density Approximation
 
-Uses histogram analysis to show how frequently different values appear in the output. Highlights the value distribution rather than spatial patterns.
+![Density View](density_view.png)
+
+* **X/Y Axes**: Spatial coordinates in [-1, 1] range
+* **Color**: Probability density of values
+* **Title**: "Value Probability Density"
+* Reveals value distribution independent of location
 
 ### 3. FFT Spectrum
 
-Applies Fast Fourier Transform to reveal the frequency components of the surface. The logarithmic magnitude spectrum shows dominant frequencies and their spatial orientations.
+![FFT View](fft_view.png)
+
+* **X/Y Axes**: Angular frequency (rad/sample)
+* **Color**: Log-magnitude (dB scale)
+* **Title**: "Frequency Spectrum"
+* Shows dominant spatial frequencies and orientations
 
 ### 4. Box-Counting Dimension
 
-Calculates the fractal dimension using the box-counting method based on raw function values. Provides a quantitative measure of surface complexity.
+* Calculates fractal dimension using box-counting method
+* Requires `a·b ≥ 1` (fractal condition)
+* Displayed in plot title when calculated
 
 ---
 
@@ -107,37 +124,15 @@ def compute_fft(Z):
 
 ---
 
-## 📊 Interpretation Guide
+## 📊 Visualization Legend
 
-### Raw Values Mode
-
-* **Blue regions**: Negative function values
-* **Red regions**: Positive function values
-* **White regions**: Values near zero
-* *Shows actual output of the mathematical function*
-
-### Density Mode
-
-* **Bright areas**: Frequently occurring values
-* **Dark areas**: Rare values
-* *Reveals probability distribution of values, independent of location*
-
-### FFT (Frequency Analysis) Mode
-
-* **Center area**: Large-scale patterns (low spatial frequencies)
-* **Edge area**: Fine details and texture (high spatial frequencies)
-* **Symmetry**: Result of real-valued input (mathematical property)
-* **Radial patterns**: Indicator of scale-invariant structure
-* *Analyzes pattern repetition rates in the visual output*
-
-### Box-Counting Dimension
-
-* **2.0-2.2**: Relatively smooth surface
-* **2.2-2.5**: Moderate fractal complexity
-* **>2.5**: Strong fractal characteristics
-* *Note 1: Calculation based on raw function values*
-* *Note 2: Meaningful only when a·b ≥ 1*
-* *Note 3: Values depend on resolution and epsilon range*
+| Element          | Raw View        | Density View      | FFT View               |
+|------------------|-----------------|-------------------|------------------------|
+| **X-axis**       | X Coordinate    | X Coordinate      | ω_x (rad/sample)       |
+| **Y-axis**       | Y Coordinate    | Y Coordinate      | ω_y (rad/sample)       |
+| **Color**        | Function value  | Probability       | Log-magnitude (dB)     |
+| **Range**        | [-1, 1]         | [-1, 1]           | [-π, π] rad/sample    |
+| **Aspect Ratio** | 1:1             | 1:1               | 1:1                    |
 
 ---
 
@@ -153,12 +148,13 @@ def compute_fft(Z):
    * FFT shows **pattern repetition frequency**
 
 3. **Practical interpretation:**
-   * Higher parameter `b` → More fine details → More FFT energy at edges
-   * Higher parameter `a` → Sharper contrasts → Wider value distribution in density view
+   * Higher `b` → More fine details → More FFT energy at periphery
+   * Higher `a` → Sharper contrasts → Wider value distribution
+   * `a·b ≥ 1` → Fractal behavior → Valid dimension calculation
 
 ---
 
-## 🧩 How Parameters Affect Visualizations
+## 🧩 Parameter Effects
 
 | Parameter Change | Raw View          | Density View       | FFT View               | Dimension   |
 |------------------|-------------------|--------------------|------------------------|-------------|
@@ -179,14 +175,13 @@ pip install numpy matplotlib numba
 * Run the script:
 
 ```bash
-python weierstrass_visualizer.py
+python weierstrass_fractal_FFT_Box_Count.py
 ```
 
 * Interact with controls:
-
-* Adjust `a` and `b` sliders
-* Toggle visualization modes
-* Click "Calculate Box-Counting Dimension" for fractal analysis
+  * Adjust `a` and `b` sliders
+  * Toggle visualization modes
+  * Click "Calculate Box-Counting Dimension" for fractal analysis
 
 ---
 
