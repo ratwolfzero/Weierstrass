@@ -160,7 +160,7 @@ fig.text(0.8, 0.29, 'Constraint ab ≥ 1', fontsize=8)
 
 # --- Box-Counting Button ---
 ax_button = plt.axes([0.1, 0.05, 0.3, 0.05])
-button = Button(ax_button, 'Calculate Box-Counting Dimension',
+button = Button(ax_button, 'Display Box-Counting (Fractal) Dimension',
                 color='lightgoldenrodyellow')
 
 # --- Dimension Display ---
