@@ -31,6 +31,7 @@ This interactive Python tool visualizes the **2D Weierstrass function**—a fasc
 The 2D Weierstrass function is defined as:
 
 $$
+\Huge
 W(x, y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n x) \cdot \cos(\pi b^n y)
 $$
 
