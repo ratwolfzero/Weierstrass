@@ -1,4 +1,4 @@
-# Weierstrass Function Visualization Toolkit
+# 2D-Weierstrass Function Visualization Toolkit
 
 ![Weierstrass Fractal](overview.png)
 
