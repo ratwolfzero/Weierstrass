@@ -5,6 +5,8 @@ from numba import njit
 import matplotlib.gridspec as gridspec
 
 # --- Numba-accelerated 1D Weierstrass function ---
+
+
 @njit
 def compute_weierstrass_1d(y, a_powers, b_freqs):
     total = np.zeros_like(y)
@@ -13,6 +15,8 @@ def compute_weierstrass_1d(y, a_powers, b_freqs):
     return total
 
 # --- Numba-accelerated 2D Weierstrass function using precomputed terms ---
+
+
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     W = np.zeros_like(X)
@@ -21,6 +25,8 @@ def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
     return W
 
 # --- Density approximation via histogram ---
+
+
 def compute_density_approx(values, bins=500):
     hist, bin_edges = np.histogram(values, bins=bins, density=True)
     bin_indices = np.digitize(values, bin_edges) - 1
@@ -28,6 +34,8 @@ def compute_density_approx(values, bins=500):
     return hist[bin_indices]
 
 # --- FFT computation ---
+
+
 def compute_fft(Z):
     fft_Z = np.fft.fft2(Z)
     fft_shifted = np.fft.fftshift(fft_Z)
@@ -35,6 +43,8 @@ def compute_fft(Z):
     return np.log10(magnitude + 1e-10)
 
 # --- Box-counting dimension calculation ---
+
+
 @njit
 def box_counting_dimension(Z, epsilons):
     size = Z.shape[0]
@@ -215,6 +225,8 @@ last_b = init_b
 fft_stem = None  # To store stem plot artists
 
 # --- Update function ---
+
+
 def update_plot(val):
     global current_Z_norm, current_1d_data, current_1d_fft_freqs, current_1d_fft_mag, current_dimension, current_plot, dimension_calculated, last_a, last_b, fft_stem
     a = slider_a.val
@@ -255,32 +267,32 @@ def update_plot(val):
     Z = compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs)
     Z_norm = Z / np.max(np.abs(Z))
     current_Z_norm = Z_norm
-    
+
     # Compute 1D slice at x=0 (center of grid)
     center_idx = size // 2
     y_vals = y
     W_1d = compute_weierstrass_1d(y_vals, a_powers, b_freqs)
     W_1d_norm = W_1d / np.max(np.abs(W_1d))
     current_1d_data = W_1d_norm
-    
+
     # Compute FFT of 1D function
     fft_vals = np.fft.fft(W_1d_norm)
     fft_mag = np.abs(fft_vals)
     freqs = np.fft.fftfreq(len(W_1d_norm), d=2/size)
-    
+
     # Only show positive frequencies
     pos_freqs = freqs[:len(freqs)//2]
     pos_fft = fft_mag[:len(fft_mag)//2]
-    
+
     # Store for enlarge button
     current_1d_fft_freqs = pos_freqs
     current_1d_fft_mag = pos_fft
-    
+
     # Update 1D plot
     line_1d.set_data(y_vals, W_1d_norm)
     ax1.relim()
     ax1.autoscale_view()
-    
+
     # Update FFT plot with stem plot
     # Clear previous stem plot if it exists
     if fft_stem is not None:
@@ -290,30 +302,33 @@ def update_plot(val):
                 artist.remove()
             except:
                 pass
-    
+
     # Create new stem plot
     if len(pos_freqs) > 0:
         fft_stem = ax2.stem(
-            pos_freqs, 
-            pos_fft, 
-            linefmt='r-', 
-            markerfmt='ro', 
+            pos_freqs,
+            pos_fft,
+            linefmt='r-',
+            markerfmt='ro',
             basefmt='k-'
         )
-        
+
         # Style adjustments for better visibility
         # Access the stem components correctly
-        plt.setp(fft_stem[0], markersize=3, markerfacecolor='r', markeredgecolor='r')  # Markers
+        plt.setp(fft_stem[0], markersize=3,
+                 markerfacecolor='r', markeredgecolor='r')  # Markers
         plt.setp(fft_stem[1], linewidth=0.7)  # Stem lines
         plt.setp(fft_stem[2], linewidth=0.7)  # Baseline
-        
+
         # Set axis limits - FIXED: Use smallest positive frequency for log scale
         if len(pos_freqs) > 0:
-            min_freq = np.min(pos_freqs[pos_freqs > 0])  # Smallest positive frequency
+            # Smallest positive frequency
+            min_freq = np.min(pos_freqs[pos_freqs > 0])
             max_freq = np.max(pos_freqs)
             ax2.set_xlim(min_freq * 0.9, max_freq * 1.1)
-            ax2.set_ylim(np.min(pos_fft[pos_fft > 0]) * 0.9, np.max(pos_fft) * 1.1)
-    
+            ax2.set_ylim(np.min(pos_fft[pos_fft > 0])
+                         * 0.9, np.max(pos_fft) * 1.1)
+
     # Clear previous 2D plot if it exists
     if current_plot:
         current_plot.remove()
@@ -365,6 +380,8 @@ def update_plot(val):
     fig.canvas.draw_idle()
 
 # --- Button callback ---
+
+
 def calculate_dimension(event):
     global current_Z_norm, current_dimension, dimension_calculated
     if current_Z_norm is None or dimension_calculated:
@@ -380,50 +397,54 @@ def calculate_dimension(event):
 
     # Switch to raw values view for dimension visualization
     radio_buttons.set_active(0)
-    
+
     epsilons = np.linspace(0.02, 0.2, 10)
     current_dimension = box_counting_dimension(current_Z_norm, epsilons)
-    
+
     dim_text.set_text(f'Fractal Dimension: {current_dimension:.3f}')
-    
+
     dimension_calculated = True
     button.color = 'lightgray'
     button.hovercolor = 'lightgray'
 
 # --- Enlarge 1D Plots Button Callback ---
+
+
 def enlarge_1d_plots(event):
     if current_1d_data is None or current_1d_fft_freqs is None or current_1d_fft_mag is None:
         return
-        
+
     # Create a new figure for the enlarged 1D plots
     fig1d, (ax1d, axfft) = plt.subplots(2, 1, figsize=(12, 10))
-    
+
     # Get current parameters
     a = slider_a.val
     b = slider_b.val
-    
+
     # Plot 1D Weierstrass function
     ax1d.plot(y, current_1d_data, 'b-', linewidth=1.5)
-    ax1d.set_title(f'1D Weierstrass Function (x=0, a={a:.2f}, b={int(b)})', fontsize=14)
+    ax1d.set_title(
+        f'1D Weierstrass Function (x=0, a={a:.2f}, b={int(b)})', fontsize=14)
     ax1d.set_xlabel('y', fontsize=12)
     ax1d.set_ylabel('W(y)', fontsize=12)
     ax1d.grid(True)
     ax1d.tick_params(axis='both', which='major', labelsize=10)
-    
+
     # Plot FFT with stem plot
     markerline, stemlines, baseline = axfft.stem(
-        current_1d_fft_freqs, 
-        current_1d_fft_mag, 
-        linefmt='r-', 
-        markerfmt='ro', 
+        current_1d_fft_freqs,
+        current_1d_fft_mag,
+        linefmt='r-',
+        markerfmt='ro',
         basefmt='k-'
     )
-    
+
     # Style adjustments
-    plt.setp(markerline, markersize=4, markerfacecolor='r', markeredgecolor='r')
+    plt.setp(markerline, markersize=4,
+             markerfacecolor='r', markeredgecolor='r')
     plt.setp(stemlines, linewidth=1.0)
     plt.setp(baseline, linewidth=1.0)
-    
+
     # Set scales and labels
     axfft.set_xscale('log')
     axfft.set_yscale('log')
@@ -432,24 +453,26 @@ def enlarge_1d_plots(event):
     axfft.set_ylabel('Magnitude (log scale)', fontsize=12)
     axfft.grid(True, which='both', linestyle='--', alpha=0.7)
     axfft.tick_params(axis='both', which='major', labelsize=10)
-    
+
     # Set axis limits - FIXED: Use smallest positive frequency for log scale
     if len(current_1d_fft_freqs) > 0:
         min_freq = np.min(current_1d_fft_freqs[current_1d_fft_freqs > 0])
         max_freq = np.max(current_1d_fft_freqs)
         axfft.set_xlim(min_freq * 0.9, max_freq * 1.1)
-        
+
         min_mag = np.min(current_1d_fft_mag[current_1d_fft_mag > 0])
         max_mag = np.max(current_1d_fft_mag)
         axfft.set_ylim(min_mag * 0.9, max_mag * 1.1)
-    
+
     # Add parameter info to the figure
-    fig1d.suptitle(f'Weierstrass Function Analysis (a={a:.2f}, b={int(b)})', fontsize=16)
-    
+    fig1d.suptitle(
+        f'Weierstrass Function Analysis (a={a:.2f}, b={int(b)})', fontsize=16)
+
     # Adjust layout
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
     plt.show()
+
 
 # --- Bind events ---
 slider_a.on_changed(update_plot)
