@@ -152,28 +152,47 @@ fig.text(0.8, 0.29, 'Constraint ab ≥ 1', fontsize=8)
 
 # --- Box-Counting Button ---
 ax_button = plt.axes([0.1, 0.05, 0.3, 0.05])
-button = Button(ax_button, 'Calculate Box-Counting Dimension',
+button = Button(ax_button, 'Display Box-Counting (Fractal) Dimension',
                 color='lightgoldenrodyellow')
+
+# --- Dimension Display ---
+ax_dim = plt.axes([0.42, 0.05, 0.18, 0.05])
+dim_text = ax_dim.text(0.5, 0.5, 'Fractal Dimension: --', fontsize=10, 
+                      ha='center', va='center', transform=ax_dim.transAxes)
+ax_dim.set_xticks([])
+ax_dim.set_yticks([])
+ax_dim.set_frame_on(True)
+ax_dim.set_facecolor('lightblue')
 
 # --- Global variables ---
 current_Z_norm = None
 current_dimension = None
 current_plot = None  # Track current plot object
+dimension_calculated = False  # Track if dimension has been calculated
 
 # --- Update function ---
 def update_plot(val):
-    global current_Z_norm, current_dimension, current_plot
+    global current_Z_norm, current_dimension, current_plot, dimension_calculated
     a = slider_a.val
     b = slider_b.val
     ab = a * b
     view_mode = radio_buttons.value_selected
 
+    # Reset dimension calculation status when parameters change
+    if dimension_calculated:
+        dimension_calculated = False
+        button.color = 'lightgoldenrodyellow'
+        button.hovercolor = 'lightgoldenrodyellow'
+        dim_text.set_text('Fractal Dimension: --')
+
     # Update validity indicator
     indicator_text.set_text(f"a·b = {ab:.2f}")
     if ab >= 1:
         indicator_ax.set_facecolor('lightgreen')
+        button.set_active(True)
     else:
         indicator_ax.set_facecolor('lightcoral')
+        button.set_active(False)
 
     # Precompute terms
     a_powers = np.array([a ** n for n in range(N)], dtype=np.float64)
@@ -182,9 +201,6 @@ def update_plot(val):
     Z = compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs)
     Z_norm = Z / np.max(np.abs(Z))
     current_Z_norm = Z_norm  # Store for button callback
-
-    # Reset dimension when parameters change
-    current_dimension = None
 
     # Clear previous plot if it exists
     if current_plot:
@@ -230,10 +246,6 @@ def update_plot(val):
         ax.set_aspect('equal')  # Maintain aspect ratio
         current_title = f'Frequency Spectrum (a={a:.2f}, b={int(b)})'
 
-    # Add dimension info if available
-    if current_dimension is not None:
-        current_title += f" | Fractal Dimension: {current_dimension:.3f} (box-counting method)"
-
     current_plot.set_clim(*clim)
     cbar.update_normal(current_plot)  # Update colorbar to new plot
     cbar.set_label(label)
@@ -242,7 +254,7 @@ def update_plot(val):
 
 # --- Button callback ---
 def calculate_dimension(event):
-    global current_Z_norm, current_dimension
+    global current_Z_norm, current_dimension, dimension_calculated
     if current_Z_norm is None:
         return
 
@@ -251,19 +263,22 @@ def calculate_dimension(event):
     ab = a * b
 
     if ab < 1:
-        title_text = title.get_text().split('|')[0].strip()
-        title.set_text(
-            f"{title_text} | Box-counting requires ab ≥ 1 (fractal condition not met)")
-        fig.canvas.draw_idle()
+        dim_text.set_text('ab < 1: Not fractal')
         return
 
+    # Switch to raw values view for dimension visualization
+    radio_buttons.set_active(0)
+    
     epsilons = np.linspace(0.02, 0.2, 10)
     current_dimension = box_counting_dimension(current_Z_norm, epsilons)
-
-    title_text = title.get_text().split('|')[0].strip()
-    title.set_text(
-        f"{title_text} | Fractal Dimension: {current_dimension:.3f} (box-counting method)")
-    fig.canvas.draw_idle()
+    
+    # Update dimension display
+    dim_text.set_text(f'Fractal Dimension: {current_dimension:.3f}')
+    
+    # Disable button and mark as calculated
+    dimension_calculated = True
+    button.color = 'lightgray'
+    button.hovercolor = 'lightgray'
 
 
 # --- Bind events ---
