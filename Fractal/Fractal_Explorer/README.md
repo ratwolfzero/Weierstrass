@@ -39,7 +39,7 @@ Where:
 
 * $a \in (0,1)$ controls **amplitude decay**
 * $b \in \{3, 5, 7, \dots\}$ (odd integers) controls **frequency growth**
-* $N = 20$ is the number of terms used for approximation
+* $N = 30$ is the number of terms used for approximation
 
 The 1D slice, typically taken at $x=0$, simplifies to:
 

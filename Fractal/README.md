@@ -25,6 +25,7 @@ This project visualizes the **2D Weierstrass function**—a fascinating extensio
 The 2D Weierstrass function is defined as:
 
 $$
+\Huge
 W(x, y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n x) \cdot \cos(\pi b^n y)
 $$
 
@@ -32,7 +33,7 @@ Where:
 
 * $a \in (0,1)$ controls **amplitude decay**
 * $b \in \{3, 5, 7, \dots\}$ (odd integers) controls **frequency growth**
-* $N = 20$ is the number of terms used for finite approximation
+* $N = 30$ is the number of terms used for finite approximation
 
 ---
 
