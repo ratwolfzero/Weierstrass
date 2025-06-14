@@ -225,6 +225,11 @@ def compute_fft(Z): # For 2D FFT
    * Our finite approximation (N=30) is smooth and FFT-compatible  
    * Fractal characteristics emerge visibly when a·b ≥ 1  
 
+5. **Mathematical ↔ FFT Frequency Relationship**:
+   * The cosine terms in the Weierstrass definition use *angular frequencies*: $\omega_n = \pi b^n$ rad/unit
+   * The 1D FFT shows these as *cyclic frequencies*: $f_n = \omega_n / (2\pi) = b^n / 2$ cycles/unit
+   * Example: For b=5, the first stem appears at $5^0/2 = 0.5$ cycles/unit
+
 ---
 
 ## 🧩 Parameter Effects
