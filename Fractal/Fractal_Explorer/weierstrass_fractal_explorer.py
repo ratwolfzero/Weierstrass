@@ -125,16 +125,16 @@ class WeierstrassVisualizer:
         self.y_edges = np.linspace(-1, 1, self.size+1)
 
         # Initialize FFT frequency coordinates
-        # Compute frequencies in cycles/sample
-        freq_cycles_x = np.fft.fftshift(np.fft.fftfreq(self.size, d=2/self.size))
-        freq_cycles_y = np.fft.fftshift(np.fft.fftfreq(self.size, d=2/self.size))
-    
+        dx = 2.0 / (self.size - 1)  # Actual spatial step
+        freq_cycles_x = np.fft.fftshift(np.fft.fftfreq(self.size, d=dx))
+        freq_cycles_y = np.fft.fftshift(np.fft.fftfreq(self.size, d=dx))
+
         # Convert to angular frequency (rad/sample) = 2π × cycles/sample
         self.freq_x = freq_cycles_x * 2 * np.pi
         self.freq_y = freq_cycles_y * 2 * np.pi
-    
+
         self.extent_freq = [self.freq_x[0],
-                        self.freq_x[-1], self.freq_y[0], self.freq_y[-1]]
+                self.freq_x[-1], self.freq_y[0], self.freq_y[-1]]
 
     def _setup_gui(self) -> None:
         """Set up the graphical user interface components."""
@@ -325,9 +325,10 @@ class WeierstrassVisualizer:
         self.current_1d_data = W_1d_norm
 
         # Compute FFT of 1D function
+        d_spatial = 2.0 / (self.size - 1)  # Actual spatial step
         fft_vals = np.fft.fft(W_1d_norm)
         fft_mag = np.abs(fft_vals)
-        freqs = np.fft.fftfreq(len(W_1d_norm), d=2/self.size)
+        freqs = np.fft.fftfreq(len(W_1d_norm), d=d_spatial)  # cycles/sample
 
         # Only show positive frequencies
         pos_freqs = freqs[:len(freqs)//2]
