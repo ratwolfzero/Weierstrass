@@ -241,7 +241,7 @@ python weierstrass_fractal_explorer.py
 
 ## 📚 References
 
-1. Weierstrass, K. (1872). On continuous functions of a real argument that do not have a well-defined differential quotient.
+1. Weierstrass, K. (1872). On continuous functions of a real argument that do not have a well-defined differential quotient.  
 K. Weierstrass, *Mathematische Werke*, Vol 2, 1872. [Archive.org](https://archive.org/details/mathematischewer02weieuoft/page/n101)
 2. Falconer, K. (2013). Fractal Geometry: Mathematical Foundations and Applications.
 3. Mandelbrot, B. B. (1982). The Fractal Geometry of Nature.
