@@ -252,11 +252,7 @@ def compute_fft(Z): # For 2D FFT
      * Higher harmonics ($b^n$) get exponentially closer in linear frequency
      * The $a^n$ amplitude decay preserves visible structure
      * The highest unaliased harmonic appears as a distinct peak
-   * **Example**: For b=7, a=0.8:
-     * Dominant stems at 0.5, 3.5 cycles/sample
-     * Cluster of stems near 24.5 cycles/sample
-     * Final distinct stem at ≈49 cycles/sample (Nyquist-limited)
-
+  
 ---
 
 ## 🧩 Parameter Effects
