@@ -238,11 +238,24 @@ def compute_fft(Z): # For 2D FFT
 6. **High-Frequency FFT Density**:
    * The logarithmic frequency scale causes stems to appear increasingly dense toward the Nyquist frequency
    * This occurs because:
-     - FFT bins are linearly spaced in frequency
-     - Logarithmic scaling compresses higher frequencies
-     - Higher harmonics ($b^n$ terms) cluster geometrically
+     * FFT bins are linearly spaced in frequency
+     * Logarithmic scaling compresses higher frequencies
+     * Higher harmonics ($b^n$ terms) cluster geometrically
    * **No information loss**: All frequency components are still accurately represented
    * **Visual tip**: Focus on the clear separation of lower harmonics for parameter analysis
+
+7. **High-Frequency Spectral Pattern**:
+   * As frequencies approach Nyquist (0.5 cycles/sample), you'll observe:
+     * Several closely-spaced stems with decreasing amplitudes
+     * One final prominent stem near the high-frequency end
+   * This occurs because:
+     * Higher harmonics ($b^n$) get exponentially closer in linear frequency
+     * The $a^n$ amplitude decay preserves visible structure
+     * The highest unaliased harmonic appears as a distinct peak
+   * **Example**: For b=7, a=0.8:
+     * Dominant stems at 0.5, 3.5 cycles/sample
+     * Cluster of stems near 24.5 cycles/sample
+     * Final distinct stem at ≈49 cycles/sample (Nyquist-limited)
 
 ---
 
