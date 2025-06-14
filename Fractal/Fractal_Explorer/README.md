@@ -41,6 +41,15 @@ Where:
 * $b \in \{3, 5, 7, \dots\}$ (odd integers) controls **frequency growth**
 * $N = 30$ is the number of terms used for approximation
 
+> **Note on Finite Approximation**:  
+> While the infinite Weierstrass function is nowhere differentiable, our visualization uses a **finite approximation** (N=30 terms). This truncated version:
+>
+> * Is smooth (infinitely differentiable)
+> * Forms a trigonometric polynomial
+> * Permits standard FFT analysis
+>
+> The FFT visualizations show exact spectral composition of this approximation, which captures the *emergent fractal properties* of the true function when a·b ≥ 1.
+
 The 1D slice, typically taken at $x=0$, simplifies to:
 
 $$
@@ -83,7 +92,9 @@ These modes apply to the full 2D function surface.
 * **X/Y Axes**: Angular frequency (rad/sample)
 * **Color**: Log-magnitude (dB scale)
 * **Title**: "Frequency Spectrum"
-* Shows dominant spatial frequencies and orientations present in the 2D surface. For the Weierstrass function, you'll observe energy concentrated along axes and diagonals, reflecting its separable cosine components.
+* Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
+  * Discrete frequency components at ω = (kπ, mπ)
+  * Emergent power-law scaling when a·b ≥ 1
 
 ### 1D Visualization
 
@@ -110,7 +121,7 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 * **Interpretation**:
   * You will observe **distinct stems (peaks)** at frequencies corresponding to $\pi, b\pi, b^2\pi, \ldots, b^{N-1}\pi$ (transformed into cycles/sample units by the FFT). These are the fundamental frequencies and their harmonics that build the Weierstrass function.
   * The **heights of these stems will progressively decrease** as frequency increases. This directly reflects the $a^n$ term in the Weierstrass definition, where higher frequencies have smaller amplitudes, contributing to the function's fine, self-similar details.
-  * The presence of these clearly defined, geometrically spaced peaks, with amplitudes that diminish exponentially, is a hallmark of the Weierstrass function's construction and its multi-frequency nature.
+  * **Mathematical Note**: The clean spectral lines reflect our *finite smooth approximation*. Each stem corresponds exactly to a term in the sum $W_N(y) = \sum_{n=0}^{29} a^n \cos(\pi b^n y)$.
 
 ### Fractal Dimension Calculation
 
@@ -131,8 +142,10 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 ```python
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
+    # Computes FINITE approximation (N=30) 
+    # This smooth trigonometric polynomial is FFT-suitable
     W = np.zeros_like(X)
-    for n in range(len(a_powers)):
+    for n in range(len(a_powers)):  # n=0 to 29
         W += a_powers[n] * np.cos(b_freqs[n] * X) * np.cos(b_freqs[n] * Y)
     return W
 
@@ -206,6 +219,11 @@ def compute_fft(Z): # For 2D FFT
     * Higher `b` → More fine details in the function → More energy at higher frequencies in the FFT.
     * Higher `a` → Sharper contrasts and more pronounced oscillations → Wider value distribution and potentially more high-frequency energy.
     * `a·b ≥ 1` → Fractal behavior is typically expected (for the 1D function, this is the condition for non-differentiability and fractal dimension > 1) → Valid fractal dimension calculation.
+
+4. **Finite vs Infinite**:  
+   * The classical Weierstrass function requires distributional Fourier analysis  
+   * Our finite approximation (N=30) is smooth and FFT-compatible  
+   * Fractal characteristics emerge visibly when a·b ≥ 1  
 
 ---
 
