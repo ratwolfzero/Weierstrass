@@ -196,6 +196,7 @@ def compute_fft(Z): # For 2D FFT
     * **Parameter `b`**: Controls the scaling of frequencies in the *mathematical definition* of the Weierstrass function itself (e.g., $\pi, b\pi, b^2\pi$).
     * **FFT analysis**: Measures the spatial frequencies present in the *visual output* of the rendered function.
     * These are intrinsically related but represent different stages of understanding: one is a *design parameter*, the other is a *measured property* of the result.
+    * **Unit Conversion**: Angular frequency (rad/sample) = 2π × cycles/sample
 
 2. **Density vs FFT:**
     * **Density** (2D) shows the **frequency of occurrence of function values** (e.g., how often does the function output a value of 0.5 vs. 0.1?).

@@ -112,7 +112,7 @@ class WeierstrassVisualizer:
 
         slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x * sum_x)
         return -slope
-
+       
     def _setup_coordinates(self) -> None:
         """Initialize coordinate grids and FFT frequency coordinates."""
         # Initialize coordinate grids
@@ -125,12 +125,16 @@ class WeierstrassVisualizer:
         self.y_edges = np.linspace(-1, 1, self.size+1)
 
         # Initialize FFT frequency coordinates
-        self.freq_x = np.fft.fftshift(np.fft.fftfreq(
-            self.size, d=2/self.size)) * 2 * np.pi
-        self.freq_y = np.fft.fftshift(np.fft.fftfreq(
-            self.size, d=2/self.size)) * 2 * np.pi
+        # Compute frequencies in cycles/sample
+        freq_cycles_x = np.fft.fftshift(np.fft.fftfreq(self.size, d=2/self.size))
+        freq_cycles_y = np.fft.fftshift(np.fft.fftfreq(self.size, d=2/self.size))
+    
+        # Convert to angular frequency (rad/sample) = 2π × cycles/sample
+        self.freq_x = freq_cycles_x * 2 * np.pi
+        self.freq_y = freq_cycles_y * 2 * np.pi
+    
         self.extent_freq = [self.freq_x[0],
-                            self.freq_x[-1], self.freq_y[0], self.freq_y[-1]]
+                        self.freq_x[-1], self.freq_y[0], self.freq_y[-1]]
 
     def _setup_gui(self) -> None:
         """Set up the graphical user interface components."""
@@ -328,6 +332,9 @@ class WeierstrassVisualizer:
         # Only show positive frequencies
         pos_freqs = freqs[:len(freqs)//2]
         pos_fft = fft_mag[:len(fft_mag)//2]
+
+        # Note: Angular frequency (rad/sample) = 2π × cycles/sample
+        # For 2D FFT we use angular frequency, for 1D FFT we keep cycles/sample
 
         # Store for enlarge button
         self.current_1d_fft_freqs = pos_freqs
