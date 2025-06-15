@@ -22,7 +22,7 @@ This interactive Python tool visualizes the **2D Weierstrass function**—a fasc
   * Fast Fourier Transform (FFT) spectrum (2D and 1D)
 * **Box-counting dimension** calculation for fractal analysis
 * **Real-time updates** via Numba-accelerated computation
-* **Visual heuristic** indicating when fractal behavior emerges (a·b ≥ 1)
+* **Constraint Indicator** indicating when fractal behavior emerges (a·b ≥ 1)
 
 ---
 
@@ -42,7 +42,7 @@ Where:
 * $N = 30$ is the number of terms used for approximation
 
 > **Note on Finite Approximation**:  
-> While the infinite Weierstrass function is nowhere differentiable, our visualization uses a **finite approximation** (N=30 terms). This truncated version:
+> While the infinite Weierstrass function is nowhere differentiable, our visualization uses a **finite approximation** (N=40 terms). This truncated version:
 >
 > * Is smooth (infinitely differentiable)
 > * Forms a trigonometric polynomial
@@ -230,8 +230,8 @@ def compute_fft(Z): # For 2D FFT
    * Theoretical frequencies: $f_n = \frac{b^n}{2}$ cycles/normalized unit
    * FFT shows exact harmonics of finite approximation
    * Example (b=5):
-     * Theoretical: 0.5, 2.5, 12.5 cycles/normalized unit
-     * Observed: ≈ 0.499, 2.49, 12.48 cycles/normalized unit
+     * Theoretical: 0.5, 2.5, 12.5, 62.5 cycles/normalized unit
+     * Observed: ≈ 0.499, 2.49, 12.48, 62.38 cycles/normalized unit
 
 6. **High-Frequency FFT Density**:
    * On logarithmic scale, stems cluster near Nyquist (0.5 cycles/norm unit)
