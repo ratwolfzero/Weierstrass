@@ -54,7 +54,10 @@ Where:
 >
 > The FFT visualizations show exact spectral composition of this approximation, which captures the *emergent fractal properties* of the true function when a·b ≥ 1.
 
-The 1D slice, typically taken at $x=0$, simplifies to:
+**Relationship to Classic 1D Weierstrass Function**:  
+> While this visualization focuses on the 2D extension, the 1D slice at $x=0$ exactly recovers the original 1D Weierstrass function. This provides direct comparison between the 2D surface and its 1D counterpart that started fractal analysis.
+
+The 1D slice at $x=0$ simplifies to:
 
 $$
 \Huge
