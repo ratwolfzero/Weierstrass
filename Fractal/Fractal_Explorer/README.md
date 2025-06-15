@@ -71,7 +71,7 @@ These modes apply to the full 2D function surface.
 
 ![Raw View](raw_view.png)
 
-* **X/Y Axes**: Spatial coordinates in [-1, 1] range
+* **X/Y Axes**: Spatial coordinates in [-1, 1] range (normalized units)
 * **Color**: Normalized function value (blue = negative, red = positive)
 * **Title**: "Normalized 2D Weierstrass Function"
 * Shows actual output of the mathematical function
@@ -80,7 +80,7 @@ These modes apply to the full 2D function surface.
 
 ![Density View](density_view.png)
 
-* **X/Y Axes**: Spatial coordinates in [-1, 1] range
+* **X/Y Axes**: Spatial coordinates in [-1, 1] range (normalized units)
 * **Color**: Probability density of values
 * **Title**: "Value Probability Density"
 * Reveals value distribution independent of location
@@ -89,9 +89,9 @@ These modes apply to the full 2D function surface.
 
 ![FFT View](fft_view.png)
 
-* **X/Y Axes**: Angular frequency (rad/sample)
+* **X/Y Axes**: Angular frequency (rad/normalized unit)
 * **Color**: Log-magnitude (dB scale)
-* **Title**: "Frequency Spectrum"
+* **Title**: "2D Frequency Spectrum"
 * Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
   * Discrete frequency components at ω = (kπ, mπ)
   * Emergent power-law scaling when a·b ≥ 1
@@ -102,26 +102,26 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 #### 1. 1D Weierstrass Function (x=0)
 
-![1D Weierstrass Function (Example image needed)](1d_weierstrass_view.png)
+![1D Weierstrass Function](1d_weierstrass_view.png)
 
-* **X-axis**: Spatial coordinate `y`
+* **X-axis**: Spatial coordinate `y` (normalized unit)
 * **Y-axis**: Normalized function value `W(0, y)`
 * **Title**: "1D Weierstrass Function (x=0)"
-* Displays a cross-section of the 2D surface, revealing the intricate, non-differentiable oscillations characteristic of the function. This plot directly shows the summation of cosine waves at various frequencies.
+* Displays a cross-section of the 2D surface, revealing the intricate, non-differentiable oscillations characteristic of the function.
 
 #### 2. FFT of 1D Weierstrass Function (Stem Plot)
 
-* **X-axis**: **Frequency (cycles/sample)**
-  * This axis represents the spatial frequencies present in the 1D function. "Cycles/sample" indicates how many complete cycles of a wave occur within the span of one discrete data point (sample) in the `y` dimension.
-  * For a digitally sampled signal, the frequency is often normalized to the sampling rate. A value of 0.5 cycles/sample is the Nyquist frequency, representing the highest frequency that can be uniquely resolved.
+* **X-axis**: **Normalized Frequency (cycles/normalized unit)**
+  * Represents spatial frequencies in the 1D function
+  * "Cycles/normalized unit" indicates wave cycles per spatial unit in the [-1,1] domain
 * **Y-axis**: **Magnitude (log scale)**
-  * This shows the **amplitude** or **strength** of each frequency component. A logarithmic scale is used to better visualize the wide range of magnitudes.
+  * Shows **amplitude** of each frequency component
 * **Plot Type**: **Stem Plot**
-  * A stem plot is ideal here because the FFT of the Weierstrass function yields **discrete, distinct frequency components**. Each "stem" corresponds to one of the cosine terms in the sum $a^n \cdot \cos(\pi b^n y)$.
+  * Ideal for discrete frequency components in our finite approximation
 * **Interpretation**:
-  * You will observe **distinct stems (peaks)** at frequencies corresponding to $\pi, b\pi, b^2\pi, \ldots, b^{N-1}\pi$ (transformed into cycles/sample units by the FFT). These are the fundamental frequencies and their harmonics that build the Weierstrass function.
-  * The **heights of these stems will progressively decrease** as frequency increases. This directly reflects the $a^n$ term in the Weierstrass definition, where higher frequencies have smaller amplitudes, contributing to the function's fine, self-similar details.
-  * **Mathematical Note**: The clean spectral lines reflect our *finite smooth approximation*. Each stem corresponds exactly to a term in the sum $W_N(y) = \sum_{n=0}^{29} a^n \cos(\pi b^n y)$.
+  * **Distinct stems** at frequencies: $\frac{b^n}{2}$ cycles/normalized unit
+  * **Height decreases** with frequency due to $a^n$ amplitude decay
+  * **Mathematical Note**: Each stem corresponds to a term in $W_N(y) = \sum_{n=0}^{29} a^n \cos(\pi b^n y)$
 
 ### Fractal Dimension Calculation
 
@@ -129,9 +129,9 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 ![Fractal Dimension View](fractal_dimension.png)
 
-* Calculates fractal dimension using box-counting method on the 2D surface.
-* Requires `a·b ≥ 1` (fractal condition for the 1D Weierstrass function; this condition is extended heuristically to 2D in this visualization).
-* Displayed in a dedicated box when calculated, turning green if the condition is met and calculation is possible.
+* Calculates fractal dimension using box-counting method
+* Requires `a·b ≥ 1` (fractal condition)
+* Displayed when calculated, with color-coded validity indicator
 
 ---
 
@@ -157,9 +157,9 @@ def compute_weierstrass_1d(y, a_powers, b_freqs):
     return total
 ```
 
-* Uses Numba JIT compilation for 100x speedup.
-* `compute_weierstrass_1d` is used for the 1D plot and its FFT.
-* Precomputes power series for efficiency.
+* Uses Numba JIT compilation for 100x speedup
+* Precomputes power series for efficiency
+* Spatial coordinates in normalized units [-1,1]
 
 ### Box-Counting Algorithm
 
@@ -172,8 +172,8 @@ def box_counting_dimension(Z, epsilons):
     # Calculate dimension via log-log regression
 ```
 
-* Operates in normalized value space.
-* Uses linear regression on log-scale data.
+* Operates in normalized value space
+* Uses linear regression on log-scale data
 
 ### FFT Analysis
 
@@ -184,111 +184,110 @@ def compute_fft(Z): # For 2D FFT
     return np.log10(np.abs(fft_shifted) + 1e-10)
 ```
 
-* `np.fft.fft2` computes the 2D Fourier transform.
-* `np.fft.fft` computes the 1D Fourier transform (used for the 1D FFT plot).
-* Shifts zero-frequency to center (for 2D) or provides appropriate frequency bins (for 1D).
-* Applies logarithmic scaling for better visualization of magnitude.
+* `np.fft.fft2` computes 2D Fourier transform
+* Frequency units:
+  * 2D: Angular frequency (rad/normalized unit)
+  * 1D: Cyclic frequency (cycles/normalized unit)
+* Logarithmic scaling for magnitude visualization
 
 ---
 
 ## 📊 Visualization Legend
 
-| Element          | Raw View (2D)   | Density View (2D) | FFT View (2D)          | 1D Plot (x=0)   | 1D FFT (Stem)   |
-|------------------|-----------------|-------------------|------------------------|-----------------|-----------------|
-| **X-axis** | X Coordinate    | X Coordinate      | ω_x (rad/sample)       | Y Coordinate    | Freq (cycles/sample)|
-| **Y-axis** | Y Coordinate    | Y Coordinate      | ω_y (rad/sample)       | W(0,y) Value    | Magnitude (log) |
-| **Color/Lines** | Function value  | Probability       | Log-magnitude (dB)     | Blue line       | Red stems       |
-| **Range (X/Y)** | [-1, 1]         | [-1, 1]           | [-π, π] rad/sample    | [-1, 1]         | [0, max Freq]   |
-| **Aspect Ratio** | 1:1             | 1:1               | 1:1                    | N/A             | N/A             |
+| Element          | Raw View (2D)        | Density View (2D)    | FFT View (2D)               | 1D Plot (x=0)        | 1D FFT (Stem)             |
+|------------------|----------------------|----------------------|-----------------------------|----------------------|---------------------------|
+| **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | y (norm unit)        | Freq (cycles/norm unit)   |
+| **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
+| **Color/Lines** | Function value      | Probability density  | Log-magnitude (dB)          | Blue line            | Red stems                 |
+| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, max Freq]             |
+| **Aspect Ratio** | 1:1                 | 1:1                  | 1:1                         | N/A                  | N/A                       |
 
 ---
 
 ## 🔑 Key Clarifications
 
-1. **Two distinct "frequency" concepts:**
-    * **Parameter `b`**: Controls the scaling of frequencies in the *mathematical definition* of the Weierstrass function itself (e.g., $\pi, b\pi, b^2\pi$).
-    * **FFT analysis**: Measures the spatial frequencies present in the *visual output* of the rendered function.
-    * These are intrinsically related but represent different stages of understanding: one is a *design parameter*, the other is a *measured property* of the result.
-    * **Unit Conversion**: Angular frequency (rad/sample) = 2π × cycles/sample
+1. **Two distinct "frequency" concepts**:
+    * **Parameter `b`**: Controls frequency scaling in mathematical definition
+    * **FFT analysis**: Measures spatial frequencies in output
+    * **Unit Relationship**:
+      $$1 \text{ rad/norm unit} = \frac{1}{2\pi} \text{ cycles/norm unit}$$
 
-2. **Density vs FFT:**
-    * **Density** (2D) shows the **frequency of occurrence of function values** (e.g., how often does the function output a value of 0.5 vs. 0.1?).
-    * **FFT** (2D and 1D) shows the **frequency of spatial patterns or oscillations** (e.g., how often does a specific pattern of peaks and valleys repeat across the surface or along the 1D line?).
+2. **Density vs FFT**:
+    * **Density**: Frequency of value occurrences (statistical)
+    * **FFT**: Frequency of spatial patterns (spectral)
 
-3. **Practical interpretation:**
-    * Higher `b` → More fine details in the function → More energy at higher frequencies in the FFT.
-    * Higher `a` → Sharper contrasts and more pronounced oscillations → Wider value distribution and potentially more high-frequency energy.
-    * `a·b ≥ 1` → Fractal behavior is typically expected (for the 1D function, this is the condition for non-differentiability and fractal dimension > 1) → Valid fractal dimension calculation.
+3. **Practical interpretation**:
+    * Higher `b` → More fine details → Higher frequency energy
+    * Higher `a` → Sharper contrasts → Wider value distribution
+    * `a·b ≥ 1` → Fractal behavior expected
 
 4. **Finite vs Infinite**:  
-   * The classical Weierstrass function requires distributional Fourier analysis  
-   * Our finite approximation (N=30) is smooth and FFT-compatible  
-   * Fractal characteristics emerge visibly when a·b ≥ 1  
+   * Classical function: Requires distributional Fourier analysis  
+   * Our approximation: Finite trigonometric polynomial (FFT-compatible)  
+   * Emergent fractal properties when a·b ≥ 1  
 
-5. **Mathematical ↔ FFT Frequency Relationship**:
-   * The cosine terms in the Weierstrass definition use *angular frequencies*: $\omega_n = \pi b^n$ rad/unit
-   * The 1D FFT shows these as *cyclic frequencies*: $f_n = \omega_n / (2\pi) = b^n / 2$ cycles/unit
-   * **Empirical Observation**: Due to finite sampling and windowing effects:
-     * First harmonic appears very close to theoretical (≈ 0.5 cycles/unit)
-     * Higher harmonics show small downward shifts (typically < 1%)
+5. **Mathematical ↔ FFT Relationship**:
+   * Theoretical frequencies: $f_n = \frac{b^n}{2}$ cycles/normalized unit
+   * FFT shows exact harmonics of finite approximation
    * Example (b=5):
-     * Theoretical: 0.5, 2.5, 12.5 cycles/unit
-     * Observed: ≈ 0.499, 2.49, 12.48 cycles/unit
+     * Theoretical: 0.5, 2.5, 12.5 cycles/normalized unit
+     * Observed: ≈ 0.499, 2.49, 12.48 cycles/normalized unit
 
 6. **High-Frequency FFT Density**:
-   * The logarithmic frequency scale causes stems to appear increasingly dense toward the Nyquist frequency
-   * This occurs because:
-     * FFT bins are linearly spaced in frequency
-     * Logarithmic scaling compresses higher frequencies
-     * Higher harmonics ($b^n$ terms) cluster geometrically
-   * **No information loss**: All frequency components are still accurately represented
-   * **Visual tip**: Focus on the clear separation of lower harmonics for parameter analysis
+   * On logarithmic scale, stems cluster near Nyquist (0.5 cycles/norm unit)
+   * Due to:
+     * Linear FFT bin spacing
+     * Geometric harmonic progression ($b^n$)
+     * Logarithmic axis compression
+   * **Visual tip**: Lower harmonics show clear separation
 
 7. **High-Frequency Spectral Pattern**:
-   * As frequencies approach Nyquist (0.5 cycles/sample), you'll observe:
-     * Several closely-spaced stems with decreasing amplitudes
-     * One final prominent stem near the high-frequency end
-   * This occurs because:
-     * Higher harmonics ($b^n$) get exponentially closer in linear frequency
-     * The $a^n$ amplitude decay preserves visible structure
-     * The highest unaliased harmonic appears as a distinct peak
-  
+   * Near Nyquist (0.5 cycles/norm unit):
+     * Cluster of closely-spaced stems
+     * Final distinct peak at highest unaliased harmonic
+   * Caused by:
+     * Exponential frequency compression ($b^n$)
+     * Amplitude decay ($a^n$) preserving structure
+     * Discrete nature of harmonics
+
 ---
 
 ## 🧩 Parameter Effects
 
 | Parameter Change | Raw View          | Density View       | FFT View (2D)          | 1D Plot           | 1D FFT (Stem)     | Dimension   |
 |------------------|-------------------|--------------------|------------------------|-------------------|-------------------|-------------|
-| **a ↑** | Sharper contrasts | Wider distribution | More high-frequency energy | Larger amplitudes | Higher stems overall | ↑ (0.1-0.3) |
-| **b ↑** | Finer details     | More complex peaks | Energy shifts outward   | More oscillations | Stems shift to higher frequencies | ↑ (0.1-0.4) |
-| **a·b ≥ 1** | Fractal patterns  | Heavy tails        | Power-law spectrum      | Highly jagged     | Clear, distinct peaks | Valid result|
+| **a ↑** | Sharper contrasts | Wider distribution | More HF energy         | Larger amplitudes | Higher stems      | ↑ (0.1-0.3) |
+| **b ↑** | Finer details     | More complex peaks | Energy shifts outward  | More oscillations | Stems shift right | ↑ (0.1-0.4) |
+| **a·b ≥ 1** | Fractal patterns  | Heavy tails        | Power-law spectrum     | Highly jagged     | Clear peaks       | Valid result|
 
 ---
 
 ## ▶️ Getting Started
 
-* Install requirements:
+Install requirements:
 
 ```bash
 pip install numpy matplotlib numba
 ```
 
-* Run the script:
+Run the script:
 
 ```bash
 python weierstrass_fractal_explorer.py
 ```
 
-* Interact with controls:
-  * Adjust `a` and `b` sliders.
-  * Toggle visualization modes to explore different aspects (Raw, Density, FFT).
-  * Click "Display Box-Counting (Fractal) Dimension" to compute the fractal dimension when `a·b ≥ 1`.
+Interact with controls:
+
+* Adjust `a` (0.01-0.99) and `b` (odd integers 3-19)
+* Toggle visualization modes (Raw/Density/FFT)
+* Compute fractal dimension when a·b ≥ 1
+* Enlarge 1D plots for detailed inspection
 
 ---
 
 ## 📚 References
 
 1. Weierstrass, K. (1872). On continuous functions of a real argument that do not have a well-defined differential quotient.  
-K. Weierstrass, *Mathematische Werke*, Vol 2, 1872. [Archive.org](https://archive.org/details/mathematischewer02weieuoft/page/n101)
-2. Falconer, K. (2013). Fractal Geometry: Mathematical Foundations and Applications.
-3. Mandelbrot, B. B. (1982). The Fractal Geometry of Nature.
+   *Mathematische Werke*, Vol 2. [Archive.org](https://archive.org/details/mathematischewer02weieuoft)
+2. Falconer, K. (2013). *Fractal Geometry: Mathematical Foundations and Applications*
+3. Mandelbrot, B. B. (1982). *The Fractal Geometry of Nature*
