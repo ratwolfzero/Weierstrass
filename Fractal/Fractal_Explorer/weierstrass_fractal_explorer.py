@@ -552,5 +552,9 @@ class WeierstrassVisualizer:
 
 # Create and show the visualization
 if __name__ == "__main__":
-    visualizer = WeierstrassVisualizer()
+    new_size = 500  # Define your desired size
+    new_N = 40     # Define your desired N
+
+    # Set bins equal to new_size, or to another desired value
+    visualizer = WeierstrassVisualizer(size=new_size, N=new_N, bins=new_size) 
     plt.show()
