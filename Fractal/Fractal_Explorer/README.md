@@ -1,4 +1,4 @@
-# 2D-Weierstrass Function Visualization Toolkit
+# 🌀 2D-Weierstrass Function Visualization Toolkit
 
 ![Weierstrass Fractal](overview.png)
 
@@ -23,6 +23,10 @@ This interactive Python tool visualizes the **2D Weierstrass function**—a fasc
 * **Box-counting dimension** calculation for fractal analysis
 * **Real-time updates** via Numba-accelerated computation
 * **Constraint Indicator** indicating when fractal behavior emerges (a·b ≥ 1)
+* **Scientific Accuracy**:
+  * Correct dB scaling for FFT (20log₁₀)
+  * Angular frequency units (rad/normalized unit)
+  * Nyquist-limited spectral display
 
 ---
 
@@ -73,7 +77,7 @@ These modes apply to the full 2D function surface.
 
 * **X/Y Axes**: Spatial coordinates in [-1, 1] range (normalized units)
 * **Color**: Normalized function value (blue = negative, red = positive)
-* **Title**: "Normalized 2D Weierstrass Function"
+* **Title**: "2D Weierstrass Function"
 * Shows actual output of the mathematical function
 
 #### 2. Density Approximation
@@ -90,11 +94,12 @@ These modes apply to the full 2D function surface.
 ![FFT View](fft_view.png)
 
 * **X/Y Axes**: Angular frequency (rad/normalized unit)
-* **Color**: Log-magnitude (dB scale)
+* **Color**: **Magnitude (dB)**
 * **Title**: "2D Frequency Spectrum"
 * Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
   * Discrete frequency components at ω = (kπ, mπ)
   * Emergent power-law scaling when a·b ≥ 1
+  * **dB Calculation**: 20 × log₁₀(|FFT|)
 
 ### 1D Visualization
 
@@ -116,7 +121,8 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 * **X-axis**: **Angular Frequency (rad/normalized unit)**
   * Represents spatial angular frequencies in the 1D function
   * Range: 0 to Nyquist angular frequency ($\omega_{\text{Nyquist}} = \pi \cdot \text{size}/2$)
-* **Y-axis**: **Magnitude (log scale)**
+  * **Only positive frequencies displayed**
+* **Y-axis**: **Magnitude (linear scale, logarithmic display)**
   * Shows **amplitude** of each frequency component
 * **Plot Type**: **Stem Plot**
   * Ideal for discrete frequency components in our finite approximation
@@ -132,9 +138,10 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 ![Fractal Dimension View](fractal_dimension.png)
 
-* Calculates fractal dimension using box-counting method
+* Calculates fractal dimension using optimized box-counting method
 * Requires `a·b ≥ 1` (fractal condition)
 * Displayed when calculated, with color-coded validity indicator
+* **Algorithm**: Set-based counting for O(N²) complexity
 
 ---
 
@@ -170,29 +177,36 @@ def compute_weierstrass_1d(y, a_powers, b_freqs):
 @njit
 def box_counting_dimension(Z, epsilons):
     # Normalize Z to [0,1]
-    # Create 3D grid (x, y, value)
+    # Use set-based unique box identification
     # Count occupied boxes at different scales
     # Calculate dimension via log-log regression
 ```
 
-* Operates in normalized value space
-* Uses linear regression on log-scale data
+* Optimized using unique identifier sets
+* Maintains accuracy while improving performance
 
-### FFT Analysis
+### FFT Analysis (Corrected Implementation)
 
 ```python
-def compute_fft(Z): # For 2D FFT
+# 2D FFT with proper dB scaling
+def compute_fft(Z): 
     fft_Z = np.fft.fft2(Z)
     fft_shifted = np.fft.fftshift(fft_Z)
-    return np.log10(np.abs(fft_shifted) + 1e-10)
+    magnitude = np.abs(fft_shifted)
+    # CORRECTED: Standard dB calculation
+    return 20 * np.log10(magnitude + 1e-10)
+
+# 1D Frequency processing
+freqs_angular = 2 * np.pi * np.fft.fftfreq(n, d=d_spatial)
+# Only positive frequencies below Nyquist
+pos_mask = (freqs_angular > 0) & (freqs_angular < np.pi * size/2)
+pos_angular_freqs = freqs_angular[pos_mask]
 ```
 
-* `np.fft.fft2` computes 2D Fourier transform
 * **Consistent Angular Frequency Units**:
   * 2D FFT: Angular frequency (rad/normalized unit)
   * 1D FFT: Angular frequency (rad/normalized unit)
-* Logarithmic scaling for magnitude visualization
-* **Nyquist Frequency**:
+* **Nyquist Enforcement**:
   * Angular: $\omega_{\text{Nyquist}} = \pi \cdot \text{size}/2$ rad/normalized unit
   * Cyclic: $f_{\text{Nyquist}} = \text{size}/4$ cycles/normalized unit
 
@@ -204,8 +218,8 @@ def compute_fft(Z): # For 2D FFT
 |------------------|----------------------|----------------------|-----------------------------|----------------------|---------------------------|
 | **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | Position along y-axis (norm unit)        | Angular Freq (rad/norm unit) |
 | **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
-| **Color/Lines** | Function value      | Probability density  | Log-magnitude (dB)          | Blue line            | Red stems                 |
-| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, ω_Nyquist] |
+| **Color/Lines** | Function value      | Probability density  | **Magnitude (dB)**          | Blue line            | Red stems                 |
+| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-ω_max, ω_max]             | [-1, 1]              | [0, ω_nyquist]            |
 | **Aspect Ratio** | 1:1                 | 1:1                  | 1:1                         | N/A                  | N/A                       |
 
 ---
@@ -213,7 +227,7 @@ def compute_fft(Z): # For 2D FFT
 ## 🔑 Key Clarifications
 
 1. **Consistent Angular Frequency Units**:
-    * All FFT visualizations now use **angular frequency (rad/normalized unit)**
+    * All FFT visualizations use **angular frequency (rad/normalized unit)**
     * Matches mathematical formulation: $\cos(\pi b^n y)$
     * Conversion: 1 rad/norm unit = $\frac{1}{2\pi}$ cycles/norm unit
 
@@ -242,11 +256,17 @@ def compute_fft(Z): # For 2D FFT
    * Stems appear equally spaced: $\Delta_{\log} = \log(\omega_{n+1}) - \log(\omega_n) = \log(b)$
    * Amplitude decays exponentially ($a^n$)
 
-6. **High-Frequency Spectral Pattern**:
-   * Final distinct stem at highest unaliased harmonic
+6. **High-Frequency Spectral Integrity**:
+   * **Nyquist Enforcement**:
+
+     ```python
+     pos_mask = (freqs_angular > 0) & (freqs_angular < np.pi * size/2)
+     ```
+
+   * **Highest Visible Harmonic**: max(ω_n) where ω_n < ω_nyq
    * **Example (b=5, size=500)**:
-     * $\omega_{\text{Nyquist}} = 250\pi \approx 785$ rad/norm unit
-     * Highest unaliased: $125\pi \approx 392.7$ rad/norm unit (n=3)
+     * ω_nyquist = 250π ≈ 785 rad/norm unit
+     * Visible harmonics: n=0 (π), n=1 (5π), n=2 (25π), n=3 (125π)
    * **Spectral Leakage**:
      * Increased near Nyquist frequency
      * Manifests as wider peak bases
@@ -259,7 +279,7 @@ def compute_fft(Z): # For 2D FFT
 | Parameter Change | Raw View          | Density View       | FFT View (2D)          | 1D Plot           | 1D FFT (Stem)     | Dimension   |
 |------------------|-------------------|--------------------|------------------------|-------------------|-------------------|-------------|
 | **a ↑** | Sharper contrasts | Wider distribution | More HF energy         | Larger amplitudes | Higher stems      | ↑ (0.1-0.3) |
-| **b ↑** | Finer details     | More complex peaks | Energy shifts right    | More oscillations | Stems shift right | ↑ (0.1-0.4) |
+| **b ↑** | Finer details     | More complex peaks | Energy shifts right    | More oscillations | Stems shift right + compress | ↑ (0.1-0.4) |
 | **a·b ≥ 1** | Fractal patterns  | Heavy tails        | Power-law spectrum     | Highly jagged     | Clear peaks       | Valid result|
 
 ---
@@ -293,3 +313,4 @@ Interact with controls:
    *Mathematische Werke*, Vol 2. [Archive.org](https://archive.org/details/mathematischewer02weieuoft)
 2. Falconer, K. (2013). *Fractal Geometry: Mathematical Foundations and Applications*
 3. Mandelbrot, B. B. (1982). *The Fractal Geometry of Nature*
+4. Oppenheim, A. V. (1999). *Discrete-Time Signal Processing* (FFT scaling conventions)

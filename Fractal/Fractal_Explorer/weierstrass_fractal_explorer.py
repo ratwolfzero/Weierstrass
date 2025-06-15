@@ -73,16 +73,17 @@ class WeierstrassVisualizer:
 
     @staticmethod
     def compute_fft(Z):
-        """Compute 2D FFT magnitude in logarithmic scale."""
+        """Compute 2D FFT magnitude in logarithmic scale (dB)."""
         fft_Z = np.fft.fft2(Z)
         fft_shifted = np.fft.fftshift(fft_Z)
         magnitude = np.abs(fft_shifted)
-        return np.log10(magnitude + 1e-10)
+        # CORRECTED: Use proper dB calculation (20*log10)
+        return 20 * np.log10(magnitude + 1e-10)
 
     @staticmethod
     @njit
     def box_counting_dimension(Z, epsilons):
-        """Calculate box-counting dimension using multiple scales."""
+        """Calculate box-counting dimension using multiple scales (optimized)."""
         size = Z.shape[0]
         counts = np.zeros(len(epsilons))
         
@@ -101,19 +102,25 @@ class WeierstrassVisualizer:
             grid_y = (size + box_size_xy - 1) // box_size_xy
             grid_z = max(1, int(np.ceil(1.0 / box_size_z)))
             
-            occupied = np.zeros((grid_x, grid_y, grid_z), dtype=np.bool_)
+            # Create a flat set for occupied boxes
+            flat_indices = set()
             
             for x in range(size):
                 for y in range(size):
+                    # Spatial box indices
                     bx = x // box_size_xy
                     by = y // box_size_xy
-                    bz = int(Z_norm[x, y] / box_size_z)
+                    
+                    # Value box index
+                    z_val = Z_norm[x, y]
+                    bz = int(z_val / box_size_z)
                     bz = min(bz, grid_z - 1)
                     
-                    if not occupied[bx, by, bz]:
-                        occupied[bx, by, bz] = True
-                        
-            counts[i] = np.sum(occupied)
+                    # Create unique box identifier
+                    box_id = bx + by * grid_x + bz * (grid_x * grid_y)
+                    flat_indices.add(box_id)
+            
+            counts[i] = len(flat_indices)
         
         # Linear regression in log-log space
         log_eps = np.log(epsilons)
@@ -298,9 +305,10 @@ class WeierstrassVisualizer:
         freqs_cycles = np.fft.fftfreq(len(W_1d_norm), d=d_spatial)  # cycles/unit
         freqs_angular = freqs_cycles * 2 * np.pi  # rad/unit
         
-        # Only show positive frequencies
-        pos_angular_freqs = freqs_angular[:len(freqs_angular)//2]  # rad/unit
-        pos_fft = fft_mag[:len(fft_mag)//2]
+        # CORRECTED: Use mask for positive frequencies
+        pos_mask = freqs_angular > 0
+        pos_angular_freqs = freqs_angular[pos_mask]
+        pos_fft = fft_mag[pos_mask]
         
         # Store for enlarge button
         self.current_1d_fft_freqs = pos_angular_freqs
@@ -359,7 +367,8 @@ class WeierstrassVisualizer:
             data = Z_norm
             cmap = 'coolwarm'
             clim = (-1, 1)
-            label = 'Normalized Value'
+            # CORRECTED: Remove redundant "normalized"
+            label = 'Value'
             self.current_plot = self.ax0.imshow(
                 data, cmap=cmap, extent=(-1, 1, -1, 1))
             self.ax0.set_xlim(-1, 1)
@@ -367,7 +376,7 @@ class WeierstrassVisualizer:
             self.ax0.set_xlabel('X Coordinate (normalized unit)')
             self.ax0.set_ylabel('Y Coordinate (normalized unit)')
             self.ax0.set_aspect('equal')
-            current_title = f'Normalized 2D Weierstrass Function (a={a:.2f}, b={int(b)})'
+            current_title = f'2D Weierstrass Function (a={a:.2f}, b={int(b)})'
         elif view_mode == 'Show Density':
             data = self.compute_density_approx(
                 Z_norm.flatten(), self.bins).reshape(Z_norm.shape)
@@ -386,7 +395,8 @@ class WeierstrassVisualizer:
             data = self.compute_fft(Z_norm)
             cmap = 'inferno'
             clim = (np.min(data), np.max(data))
-            label = 'Log-Magnitude (dB)'
+            # CORRECTED: Standard dB labeling
+            label = 'Magnitude (dB)'
             self.current_plot = self.ax0.imshow(
                 data, cmap='viridis', extent=self.extent_freq)
             self.ax0.set_xlim(self.extent_freq[0], self.extent_freq[1])
@@ -474,7 +484,7 @@ class WeierstrassVisualizer:
         axfft.set_yscale('log')
         axfft.set_title(
             'FFT of 1D Weierstrass Function', fontsize=14)
-        axfft.set_xlabel('Angular Frequency (rad/normalized unit)', fontsize=12)  # Correct unit
+        axfft.set_xlabel('Angular Frequency (rad/normalized unit)', fontsize=12)
         axfft.set_ylabel('Magnitude (log scale)', fontsize=12)
         axfft.grid(True, which='both', linestyle='--', alpha=0.7)
         axfft.tick_params(axis='both', which='major', labelsize=10)
@@ -495,6 +505,7 @@ class WeierstrassVisualizer:
         plt.tight_layout()
         plt.subplots_adjust(top=0.93)
         plt.show()
+        plt.close(fig1d)  # Memory management
 
 
 # Create and show the visualization
