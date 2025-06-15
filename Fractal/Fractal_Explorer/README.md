@@ -275,6 +275,18 @@ pos_angular_freqs = freqs_angular[pos_mask]
      * Manifests as wider peak bases
      * Caused by finite sampling + exponential frequency growth
 
+7. **Fractal Dimension Note**:
+   The computed box-counting dimension is typically *lower* than the theoretical value (3 + log(a)/log(b)) due to:
+   - **Finite N (40 terms)**: Missing high-frequency details
+   - **Resolution limit (500×500 grid)**: Unable to resolve microscopic structures
+   - **Box-size range (ε=0.02-0.20)**: Limited scaling range
+
+   **Example**: For a=0.5, b=7:
+   - Theoretical: 2.644
+   - Computed: ≈2.398
+
+   *The measured dimension characterizes our finite approximation, not the infinite mathematical ideal.*
+
 ---
 
 ## 🧩 Parameter Effects

@@ -441,8 +441,16 @@ class WeierstrassVisualizer:
         epsilons = np.linspace(0.02, 0.2, 10)
         self.current_dimension = self.box_counting_dimension(
             self.current_Z_norm, epsilons)
+        
+        # CORRECTED theoretical dimension for 2D surface
+        theoretical_dim = 3 + np.log(a)/np.log(b)
+    
+        # Ensure dimension is physically plausible (2 ≤ D ≤ 3)
+        theoretical_dim = max(2, min(3, theoretical_dim))
+    
         self.dim_text.set_text(
-            f'Fractal Dimension: {self.current_dimension:.3f}')
+        f'Fractal Dim: {self.current_dimension:.3f} (Theory: {theoretical_dim:.3f})')
+
         self.dimension_calculated = True
         self.button.color = 'lightgray'
         self.button.hovercolor = 'lightgray'
