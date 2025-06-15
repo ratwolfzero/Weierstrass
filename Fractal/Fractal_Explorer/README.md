@@ -39,7 +39,7 @@ Where:
 
 * $a \in (0,1)$ controls **amplitude decay**
 * $b \in \{3, 5, 7, \dots\}$ (odd integers) controls **frequency growth**
-* $N = 30$ is the number of terms used for approximation
+* $N = 40$ is the number of terms used for approximation
 
 > **Note on Finite Approximation**:  
 > While the infinite Weierstrass function is nowhere differentiable, our visualization uses a **finite approximation** (N=40 terms). This truncated version:
@@ -113,7 +113,7 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 * **X-axis**: **Normalized Frequency (cycles/normalized unit)**
   * Represents spatial frequencies in the 1D function
-  * "Cycles/normalized unit" indicates wave cycles per spatial unit in the [-1,1] domain
+  * Range: 0 to Nyquist frequency ($f_{\text{Nyquist}} = \frac{\text{size}}{4}$)
 * **Y-axis**: **Magnitude (log scale)**
   * Shows **amplitude** of each frequency component
 * **Plot Type**: **Stem Plot**
@@ -121,7 +121,8 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 * **Interpretation**:
   * **Distinct stems** at frequencies: $\frac{b^n}{2}$ cycles/normalized unit
   * **Height decreases** with frequency due to $a^n$ amplitude decay
-  * **Mathematical Note**: Each stem corresponds to a term in $W_N(y) = \sum_{n=0}^{29} a^n \cos(\pi b^n y)$
+  * **Highest stem**: Last unaliased harmonic below Nyquist
+  * **Mathematical Note**: Each stem corresponds to a term in $W_N(y) = \sum_{n=0}^{39} a^n \cos(\pi b^n y)$
 
 ### Fractal Dimension Calculation
 
@@ -142,10 +143,10 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 ```python
 @njit
 def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
-    # Computes FINITE approximation (N=30) 
+    # Computes FINITE approximation (N=40) 
     # This smooth trigonometric polynomial is FFT-suitable
     W = np.zeros_like(X)
-    for n in range(len(a_powers)):  # n=0 to 29
+    for n in range(len(a_powers)):  # n=0 to 39
         W += a_powers[n] * np.cos(b_freqs[n] * X) * np.cos(b_freqs[n] * Y)
     return W
 
@@ -189,6 +190,7 @@ def compute_fft(Z): # For 2D FFT
   * 2D: Angular frequency (rad/normalized unit)
   * 1D: Cyclic frequency (cycles/normalized unit)
 * Logarithmic scaling for magnitude visualization
+* Nyquist frequency: $f_{\text{Nyquist}} = \frac{\text{size}}{4}$ cycles/normalized unit
 
 ---
 
@@ -199,7 +201,7 @@ def compute_fft(Z): # For 2D FFT
 | **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | y (norm unit)        | Freq (cycles/norm unit)   |
 | **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
 | **Color/Lines** | Function value      | Probability density  | Log-magnitude (dB)          | Blue line            | Red stems                 |
-| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, max Freq]             |
+| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, f<sub>Nyquist</sub>] |
 | **Aspect Ratio** | 1:1                 | 1:1                  | 1:1                         | N/A                  | N/A                       |
 
 ---
@@ -229,26 +231,31 @@ def compute_fft(Z): # For 2D FFT
 5. **Mathematical ↔ FFT Relationship**:
    * Theoretical frequencies: $f_n = \frac{b^n}{2}$ cycles/normalized unit
    * FFT shows exact harmonics of finite approximation
-   * Example (b=5):
-     * Theoretical: 0.5, 2.5, 12.5, 62.5 cycles/normalized unit
-     * Observed: ≈ 0.499, 2.49, 12.48, 62.38 cycles/normalized unit
+   * **Example (b=5, size=500)**:
+     * Theoretical harmonics:
+       * n=0: 0.5 cycles/norm unit
+       * n=1: 2.5 cycles/norm unit
+       * n=2: 12.5 cycles/norm unit
+       * n=3: 62.5 cycles/norm unit
+       * n=4: 312.5 cycles/norm unit
+     * Observed stems: ≈ 0.5, 2.5, 12.5, 62.5 cycles/norm unit
+     * Nyquist limit: 125 cycles/norm unit (312.5 > 125 → aliased)
 
-6. **High-Frequency FFT Density**:
-   * On logarithmic scale, stems cluster near Nyquist (0.5 cycles/norm unit)
-   * Due to:
-     * Linear FFT bin spacing
-     * Geometric harmonic progression ($b^n$)
-     * Logarithmic axis compression
-   * **Visual tip**: Lower harmonics show clear separation
+6. **Logarithmic Scale Effect**:
+   * Stems appear equally spaced due to geometric progression
+   * Visual relationship: $\Delta_{\log} = \log(f_{n+1}) - \log(f_n) = \log(b)$
+   * Amplitude decays exponentially ($a^n$)
 
 7. **High-Frequency Spectral Pattern**:
-   * Near Nyquist (0.5 cycles/norm unit):
-     * Cluster of closely-spaced stems
-     * Final distinct peak at highest unaliased harmonic
-   * Caused by:
-     * Exponential frequency compression ($b^n$)
-     * Amplitude decay ($a^n$) preserving structure
-     * Discrete nature of harmonics
+   * Final distinct stem at highest unaliased harmonic
+   * **Example (b=5, size=500)**:
+     * $f_{\text{Nyquist}} = 125$ cycles/norm unit
+     * Highest unaliased: 62.5 cycles/norm unit (n=3)
+     * Next harmonic (312.5) exceeds Nyquist → aliases
+   * Pattern characteristics:
+     * Stems at geometric intervals: 0.5 → 2.5 → 12.5 → 62.5
+     * Amplitude decreases exponentially
+     * Last distinct peak before aliasing occurs
 
 ---
 
