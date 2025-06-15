@@ -38,6 +38,13 @@ class WeierstrassVisualizer:
     @staticmethod
     @njit
     def compute_weierstrass_1d(y, a_powers, b_freqs):
+        """Compute the 1D Weierstrass function along the y-axis.
+        
+        Args:
+            y: Spatial coordinates in normalized units
+            a_powers: Precomputed a^n terms
+            b_freqs: Precomputed πb^n angular frequencies (rad/normalized unit)
+        """
         total = np.zeros_like(y)
         for n in range(len(a_powers)):
             total += a_powers[n] * np.cos(b_freqs[n] * y)
@@ -46,6 +53,13 @@ class WeierstrassVisualizer:
     @staticmethod
     @njit
     def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
+        """Compute the 2D Weierstrass function.
+        
+        Args:
+            X, Y: Spatial coordinates in normalized units
+            a_powers: Precomputed a^n terms
+            b_freqs: Precomputed πb^n angular frequencies (rad/normalized unit)
+        """
         W = np.zeros_like(X)
         for n in range(len(a_powers)):
             W += a_powers[n] * np.cos(b_freqs[n] * X) * np.cos(b_freqs[n] * Y)
@@ -53,6 +67,7 @@ class WeierstrassVisualizer:
 
     @staticmethod
     def compute_density_approx(values, bins=500):
+        """Compute density approximation for the density view."""
         hist, bin_edges = np.histogram(values, bins=bins, density=True)
         bin_indices = np.digitize(values, bin_edges) - 1
         bin_indices = np.clip(bin_indices, 0, len(hist) - 1)
@@ -60,6 +75,7 @@ class WeierstrassVisualizer:
 
     @staticmethod
     def compute_fft(Z):
+        """Compute 2D FFT magnitude in logarithmic scale."""
         fft_Z = np.fft.fft2(Z)
         fft_shifted = np.fft.fftshift(fft_Z)
         magnitude = np.abs(fft_shifted)
@@ -68,6 +84,12 @@ class WeierstrassVisualizer:
     @staticmethod
     @njit
     def box_counting_dimension(Z, epsilons):
+        """Calculate box-counting dimension using multiple scales.
+        
+        Args:
+            Z: 2D array of function values
+            epsilons: List of scales to use for box counting
+        """
         size = Z.shape[0]
         counts = np.zeros(len(epsilons))
 
@@ -115,7 +137,7 @@ class WeierstrassVisualizer:
        
     def _setup_coordinates(self) -> None:
         """Initialize coordinate grids and FFT frequency coordinates."""
-        # Initialize coordinate grids
+        # Initialize spatial coordinate grids (normalized units)
         self.x = np.linspace(-1, 1, self.size)
         self.y = np.linspace(-1, 1, self.size)
         self.X, self.Y = np.meshgrid(self.x, self.y)
@@ -129,7 +151,7 @@ class WeierstrassVisualizer:
         freq_cycles_x = np.fft.fftshift(np.fft.fftfreq(self.size, d=dx))
         freq_cycles_y = np.fft.fftshift(np.fft.fftfreq(self.size, d=dx))
 
-        # Convert to angular frequency (rad/normalized unit)
+        # Convert to angular frequency: rad/normalized unit = 2π × cycles/normalized unit
         self.freq_x = freq_cycles_x * 2 * np.pi
         self.freq_y = freq_cycles_y * 2 * np.pi
 
@@ -185,14 +207,14 @@ class WeierstrassVisualizer:
         self.ax1 = plt.subplot(gs[0, 1])
         self.line_1d, = self.ax1.plot(self.y, np.zeros_like(self.y), 'b-')
         self.ax1.set_title('1D Weierstrass Function (x=0)')
-        self.ax1.set_xlabel('y')
+        self.ax1.set_xlabel('y (normalized unit)')
         self.ax1.set_ylabel('W(y)')
         self.ax1.grid(True)
 
-        # FFT plot
+        # FFT plot (1D)
         self.ax2 = plt.subplot(gs[1, 1])
-        self.ax2.set_title('FFT of 1D Weierstrass (Stem Plot)')
-        self.ax2.set_xlabel('Frequency (cycles/sample)')
+        self.ax2.set_title('FFT of 1D Weierstrass Function')
+        self.ax2.set_xlabel('Normalized Frequency (cycles/normalized unit)')
         self.ax2.set_ylabel('Magnitude (log scale)')
         self.ax2.set_xscale('log')
         self.ax2.set_yscale('log')
@@ -325,17 +347,14 @@ class WeierstrassVisualizer:
         self.current_1d_data = W_1d_norm
 
         # Compute FFT of 1D function
-        d_spatial = 2.0 / (self.size - 1)  # Actual spatial step
+        d_spatial = 2.0 / (self.size - 1)  # Spatial step in normalized units
         fft_vals = np.fft.fft(W_1d_norm)
         fft_mag = np.abs(fft_vals)
-        freqs = np.fft.fftfreq(len(W_1d_norm), d=d_spatial)  # cycles/sample
+        freqs = np.fft.fftfreq(len(W_1d_norm), d=d_spatial)  # cycles/normalized unit
 
         # Only show positive frequencies
         pos_freqs = freqs[:len(freqs)//2]
         pos_fft = fft_mag[:len(fft_mag)//2]
-
-        # Note: Angular frequency (rad/sample) = 2π × cycles/sample
-        # For 2D FFT we use angular frequency, for 1D FFT we keep cycles/sample
 
         # Store for enlarge button
         self.current_1d_fft_freqs = pos_freqs
@@ -351,7 +370,7 @@ class WeierstrassVisualizer:
         Args:
             Z_norm: Normalized 2D Weierstrass function
             W_1d_norm: Normalized 1D Weierstrass function
-            pos_freqs: Positive frequencies for FFT
+            pos_freqs: Positive frequencies for FFT (cycles/normalized unit)
             pos_fft: FFT magnitudes
             view_mode: Current view mode ('Raw Values', 'Show Density', 'Show FFT')
             a: Amplitude decay parameter
@@ -416,8 +435,8 @@ class WeierstrassVisualizer:
                 data, cmap=cmap, extent=(-1, 1, -1, 1))
             self.ax0.set_xlim(-1, 1)
             self.ax0.set_ylim(-1, 1)
-            self.ax0.set_xlabel('X Coordinate')
-            self.ax0.set_ylabel('Y Coordinate')
+            self.ax0.set_xlabel('X Coordinate (normalized unit)')
+            self.ax0.set_ylabel('Y Coordinate (normalized unit)')
             self.ax0.set_aspect('equal')
             current_title = f'Normalized 2D Weierstrass Function (a={a:.2f}, b={int(b)})'
         elif view_mode == 'Show Density':
@@ -431,8 +450,8 @@ class WeierstrassVisualizer:
                 self.x_edges, self.y_edges, data, cmap=cmap, shading='auto')
             self.ax0.set_xlim(-1, 1)
             self.ax0.set_ylim(-1, 1)
-            self.ax0.set_xlabel('X Coordinate')
-            self.ax0.set_ylabel('Y Coordinate')
+            self.ax0.set_xlabel('X Coordinate (normalized unit)')
+            self.ax0.set_ylabel('Y Coordinate (normalized unit)')
             self.ax0.set_aspect('equal')
             current_title = f'Value Probability Density (a={a:.2f}, b={int(b)})'
         else:  # Show FFT
@@ -444,10 +463,11 @@ class WeierstrassVisualizer:
                 data, cmap='viridis', extent=self.extent_freq)
             self.ax0.set_xlim(self.extent_freq[0], self.extent_freq[1])
             self.ax0.set_ylim(self.extent_freq[2], self.extent_freq[3])
-            self.ax0.set_xlabel('Angular Frequency ω_x (rad/sample)')
-            self.ax0.set_ylabel('Angular Frequency ω_y (rad/sample)')
+            # Use angular frequency labels for 2D FFT
+            self.ax0.set_xlabel('Angular Frequency ω_x (rad/normalized unit)')
+            self.ax0.set_ylabel('Angular Frequency ω_y (rad/normalized unit)')
             self.ax0.set_aspect('equal')
-            current_title = f'Frequency Spectrum (a={a:.2f}, b={int(b)})'
+            current_title = f'2D Frequency Spectrum (a={a:.2f}, b={int(b)})'
 
         self.current_plot.set_clim(*clim)
         self.cbar.update_normal(self.current_plot)
@@ -472,6 +492,7 @@ class WeierstrassVisualizer:
         self.fig.canvas.draw_idle()
 
     def calculate_dimension(self, event):
+        """Calculate and display the fractal dimension using box-counting method."""
         if self.current_Z_norm is None or self.dimension_calculated:
             return
 
@@ -494,6 +515,7 @@ class WeierstrassVisualizer:
         self.button.hovercolor = 'lightgray'
 
     def enlarge_1d_plots(self, event):
+        """Create enlarged view of 1D plots in a separate figure."""
         if self.current_1d_data is None or self.current_1d_fft_freqs is None or self.current_1d_fft_mag is None:
             return
 
@@ -505,7 +527,7 @@ class WeierstrassVisualizer:
         ax1d.plot(self.y, self.current_1d_data, 'b-', linewidth=1.5)
         ax1d.set_title(
             f'1D Weierstrass Function (x=0, a={a:.2f}, b={int(b)})', fontsize=14)
-        ax1d.set_xlabel('y', fontsize=12)
+        ax1d.set_xlabel('y (normalized unit)', fontsize=12)
         ax1d.set_ylabel('W(y)', fontsize=12)
         ax1d.grid(True)
         ax1d.tick_params(axis='both', which='major', labelsize=10)
@@ -526,8 +548,9 @@ class WeierstrassVisualizer:
         axfft.set_xscale('log')
         axfft.set_yscale('log')
         axfft.set_title(
-            'FFT of 1D Weierstrass Function (Stem Plot)', fontsize=14)
-        axfft.set_xlabel('Frequency (cycles/sample)', fontsize=12)
+            'FFT of 1D Weierstrass Function', fontsize=14)
+        # Use cyclic frequency label for 1D FFT
+        axfft.set_xlabel('Normalized Frequency (cycles/normalized unit)', fontsize=12)
         axfft.set_ylabel('Magnitude (log scale)', fontsize=12)
         axfft.grid(True, which='both', linestyle='--', alpha=0.7)
         axfft.tick_params(axis='both', which='major', labelsize=10)
