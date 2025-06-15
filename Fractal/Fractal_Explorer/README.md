@@ -111,15 +111,15 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 #### 2. FFT of 1D Weierstrass Function (Stem Plot)
 
-* **X-axis**: **Normalized Frequency (cycles/normalized unit)**
-  * Represents spatial frequencies in the 1D function
-  * Range: 0 to Nyquist frequency ($f_{\text{Nyquist}} = \frac{\text{size}}{4}$)
+* **X-axis**: **Angular Frequency (rad/normalized unit)**
+  * Represents spatial angular frequencies in the 1D function
+  * Range: 0 to Nyquist angular frequency ($\omega_{\text{Nyquist}} = \pi \cdot \text{size}/2$)
 * **Y-axis**: **Magnitude (log scale)**
   * Shows **amplitude** of each frequency component
 * **Plot Type**: **Stem Plot**
   * Ideal for discrete frequency components in our finite approximation
 * **Interpretation**:
-  * **Distinct stems** at frequencies: $\frac{b^n}{2}$ cycles/normalized unit
+  * **Distinct stems** at angular frequencies: $\omega_n = \pi b^n$ rad/normalized unit
   * **Height decreases** with frequency due to $a^n$ amplitude decay
   * **Highest stem**: Last unaliased harmonic below Nyquist
   * **Mathematical Note**: Each stem corresponds to a term in $W_N(y) = \sum_{n=0}^{39} a^n \cos(\pi b^n y)$
@@ -186,11 +186,13 @@ def compute_fft(Z): # For 2D FFT
 ```
 
 * `np.fft.fft2` computes 2D Fourier transform
-* Frequency units:
-  * 2D: Angular frequency (rad/normalized unit)
-  * 1D: Cyclic frequency (cycles/normalized unit)
+* **Consistent Angular Frequency Units**:
+  * 2D FFT: Angular frequency (rad/normalized unit)
+  * 1D FFT: Angular frequency (rad/normalized unit)
 * Logarithmic scaling for magnitude visualization
-* Nyquist frequency: $f_{\text{Nyquist}} = \frac{\text{size}}{4}$ cycles/normalized unit
+* **Nyquist Frequency**:
+  * Angular: $\omega_{\text{Nyquist}} = \pi \cdot \text{size}/2$ rad/normalized unit
+  * Cyclic: $f_{\text{Nyquist}} = \text{size}/4$ cycles/normalized unit
 
 ---
 
@@ -198,68 +200,55 @@ def compute_fft(Z): # For 2D FFT
 
 | Element          | Raw View (2D)        | Density View (2D)    | FFT View (2D)               | 1D Plot (x=0)        | 1D FFT (Stem)             |
 |------------------|----------------------|----------------------|-----------------------------|----------------------|---------------------------|
-| **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | y (norm unit)        | Freq (cycles/norm unit)   |
+| **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | y (norm unit)        | Angular Freq (rad/norm unit) |
 | **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
 | **Color/Lines** | Function value      | Probability density  | Log-magnitude (dB)          | Blue line            | Red stems                 |
-| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, f_Nyquist] |
+| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, ω_Nyquist] |
 | **Aspect Ratio** | 1:1                 | 1:1                  | 1:1                         | N/A                  | N/A                       |
 
 ---
 
 ## 🔑 Key Clarifications
 
-1. **Two distinct "frequency" concepts**:
-    * **Parameter `b`**: Controls frequency scaling in mathematical definition
-    * **FFT analysis**: Measures spatial frequencies in output
-    * **Unit Relationship**:
-      $$1 \text{ rad/norm unit} = \frac{1}{2\pi} \text{ cycles/norm unit}$$
+1. **Consistent Angular Frequency Units**:
+    * All FFT visualizations now use **angular frequency (rad/normalized unit)**
+    * Matches mathematical formulation: $\cos(\pi b^n y)$
+    * Conversion: 1 rad/norm unit = $\frac{1}{2\pi}$ cycles/norm unit
 
-2. **Density vs FFT**:
-    * **Density**: Frequency of value occurrences (statistical)
-    * **FFT**: Frequency of spatial patterns (spectral)
+2. **Physical Interpretation**:
+    * Parameter `b`: Controls angular frequency scaling ($\omega_n = \pi b^n$)
+    * FFT peaks appear exactly at $\pi b^n$ rad/normalized unit
 
-3. **Practical interpretation**:
-    * Higher `b` → More fine details → Higher frequency energy
-    * Higher `a` → Sharper contrasts → Wider value distribution
-    * `a·b ≥ 1` → Fractal behavior expected
-
-4. **Finite vs Infinite**:  
+3. **Finite vs Infinite**:  
    * Classical function: Requires distributional Fourier analysis  
    * Our approximation: Finite trigonometric polynomial (FFT-compatible)  
    * Emergent fractal properties when a·b ≥ 1  
 
-5. **Mathematical ↔ FFT Relationship**:
-   * Theoretical frequencies: $f_n = \frac{b^n}{2}$ cycles/normalized unit
+4. **Mathematical ↔ FFT Relationship**:
+   * Theoretical angular frequencies: $\omega_n = \pi b^n$ rad/normalized unit
    * FFT shows exact harmonics of finite approximation
    * **Example (b=5, size=500)**:
-     * Theoretical harmonics:
-       * n=0: 0.5 cycles/norm unit
-       * n=1: 2.5 cycles/norm unit
-       * n=2: 12.5 cycles/norm unit
-       * n=3: 62.5 cycles/norm unit
-       * n=4: 312.5 cycles/norm unit
-     * Observed stems: ≈ 0.5, 2.5, 12.5, 62.5 cycles/norm unit
-     * Nyquist limit: 125 cycles/norm unit (312.5 > 125 → aliased)
+     * Theoretical angular frequencies:
+       * n=0: $\pi \cdot 5^0 = \pi \approx 3.14$ rad/norm unit
+       * n=1: $\pi \cdot 5^1 = 5\pi \approx 15.7$ rad/norm unit
+       * n=2: $\pi \cdot 5^2 = 25\pi \approx 78.5$ rad/norm unit
+       * n=3: $\pi \cdot 5^3 = 125\pi \approx 392.7$ rad/norm unit
+     * Observed stems: ≈ 3.14, 15.7, 78.5 rad/norm unit
+     * Nyquist angular limit: $\pi \cdot 500/2 = 250\pi \approx 785$ rad/norm unit
 
-6. **Logarithmic Scale Effect**:
-   * Stems appear equally spaced due to geometric progression
-   * Visual relationship: $\Delta_{\log} = \log(f_{n+1}) - \log(f_n) = \log(b)$
+5. **Logarithmic Scale Effect**:
+   * Stems appear equally spaced: $\Delta_{\log} = \log(\omega_{n+1}) - \log(\omega_n) = \log(b)$
    * Amplitude decays exponentially ($a^n$)
 
-7. **High-Frequency Spectral Pattern**:
+6. **High-Frequency Spectral Pattern**:
    * Final distinct stem at highest unaliased harmonic
    * **Example (b=5, size=500)**:
-     * $f_{\text{Nyquist}} = 125$ cycles/norm unit
-     * Highest unaliased: 62.5 cycles/norm unit
-   * **Spectral Leakage Observations**:
-     * Increased leakage near Nyquist frequency
-     * Leakage manifests as wider peak bases and side lobes
-     * Leakage amplitude increases with higher `b` values
-     * Cause: Finite sampling window + exponential frequency growth
-   * Pattern characteristics:
-     * Stems at geometric intervals: 0.5 → 2.5 → 12.5 → 62.5
-     * Amplitude decreases exponentially ($a^n$)
-     * Last distinct peak before aliasing occurs
+     * $\omega_{\text{Nyquist}} = 250\pi \approx 785$ rad/norm unit
+     * Highest unaliased: $125\pi \approx 392.7$ rad/norm unit (n=3)
+   * **Spectral Leakage**:
+     * Increased near Nyquist frequency
+     * Manifests as wider peak bases
+     * Caused by finite sampling + exponential frequency growth
 
 ---
 
@@ -268,7 +257,7 @@ def compute_fft(Z): # For 2D FFT
 | Parameter Change | Raw View          | Density View       | FFT View (2D)          | 1D Plot           | 1D FFT (Stem)     | Dimension   |
 |------------------|-------------------|--------------------|------------------------|-------------------|-------------------|-------------|
 | **a ↑** | Sharper contrasts | Wider distribution | More HF energy         | Larger amplitudes | Higher stems      | ↑ (0.1-0.3) |
-| **b ↑** | Finer details     | More complex peaks | Energy shifts outward  | More oscillations | Stems shift right | ↑ (0.1-0.4) |
+| **b ↑** | Finer details     | More complex peaks | Energy shifts right    | More oscillations | Stems shift right | ↑ (0.1-0.4) |
 | **a·b ≥ 1** | Fractal patterns  | Heavy tails        | Power-law spectrum     | Highly jagged     | Clear peaks       | Valid result|
 
 ---
