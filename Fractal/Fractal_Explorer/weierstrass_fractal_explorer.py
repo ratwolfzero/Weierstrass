@@ -69,9 +69,10 @@ class WeierstrassVisualizer:
     def compute_density_approx(values, bins=500):
         """Compute density approximation for the density view."""
         hist, bin_edges = np.histogram(values, bins=bins, density=True)
-        bin_indices = np.digitize(values, bin_edges) - 1
+        bin_indices = np.searchsorted(bin_edges, values, side='right') - 1
         bin_indices = np.clip(bin_indices, 0, len(hist) - 1)
         return hist[bin_indices]
+
 
     @staticmethod
     def compute_fft(Z):
