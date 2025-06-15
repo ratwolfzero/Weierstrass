@@ -125,11 +125,11 @@ class WeierstrassVisualizer:
         self.y_edges = np.linspace(-1, 1, self.size+1)
 
         # Initialize FFT frequency coordinates
-        dx = 2.0 / (self.size - 1)  # Actual spatial step
+        dx = 2.0 / (self.size - 1)  # Spatial step in normalized units
         freq_cycles_x = np.fft.fftshift(np.fft.fftfreq(self.size, d=dx))
         freq_cycles_y = np.fft.fftshift(np.fft.fftfreq(self.size, d=dx))
 
-        # Convert to angular frequency (rad/sample) = 2π × cycles/sample
+        # Convert to angular frequency (rad/normalized unit)
         self.freq_x = freq_cycles_x * 2 * np.pi
         self.freq_y = freq_cycles_y * 2 * np.pi
 
