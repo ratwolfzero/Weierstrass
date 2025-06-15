@@ -250,11 +250,15 @@ def compute_fft(Z): # For 2D FFT
    * Final distinct stem at highest unaliased harmonic
    * **Example (b=5, size=500)**:
      * $f_{\text{Nyquist}} = 125$ cycles/norm unit
-     * Highest unaliased: 62.5 cycles/norm unit (n=3)
-     * Next harmonic (312.5) exceeds Nyquist → aliases
+     * Highest unaliased: 62.5 cycles/norm unit
+   * **Spectral Leakage Observations**:
+     * Increased leakage near Nyquist frequency
+     * Leakage manifests as wider peak bases and side lobes
+     * Leakage amplitude increases with higher `b` values
+     * Cause: Finite sampling window + exponential frequency growth
    * Pattern characteristics:
      * Stems at geometric intervals: 0.5 → 2.5 → 12.5 → 62.5
-     * Amplitude decreases exponentially
+     * Amplitude decreases exponentially ($a^n$)
      * Last distinct peak before aliasing occurs
 
 ---
