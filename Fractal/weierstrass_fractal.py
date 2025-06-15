@@ -45,7 +45,7 @@ im_raw = ax.imshow(
     cmap='coolwarm', 
     vmin=-1, 
     vmax=1,
-    origin='lower'  # Match Version 1's orientation
+    origin='lower'  
 )
 im_density = ax.pcolormesh(
     x_edges, 
@@ -61,7 +61,7 @@ title = ax.set_title('', fontsize=12)
 ax.set_xlabel('X Coordinate', fontsize=10)
 ax.set_ylabel('Y Coordinate', fontsize=10)
 ax.set_aspect('equal')
-ax.grid(True, linestyle='--', alpha=0.3)  # Add subtle grid like Version 1
+#ax.grid(True, linestyle='--', alpha=0.3)  #
 
 # --- Sliders ---
 ax_a_pos = [0.1, 0.18, 0.65, 0.03]
@@ -109,7 +109,7 @@ fig.text(0.8, 0.22, 'Constraint: ab ≥ 1', fontsize=8)
 # --- Update function ---
 def update_plot(val):
     a = slider_a.val
-    b = int(slider_b.val)  # Ensure integer as in Version 1
+    b = int(slider_b.val) 
     ab = a * b
     view_mode = radio_buttons.value_selected
 
