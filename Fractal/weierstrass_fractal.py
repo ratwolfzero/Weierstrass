@@ -20,7 +20,7 @@ def compute_density_approx(values, bins=500):
 
 # --- Parameters ---
 size = 500
-N = 30
+N = 40
 bins = 500
 odd_b_values = np.arange(3, 21, 2)
 
