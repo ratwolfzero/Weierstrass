@@ -104,10 +104,12 @@ This section focuses on a 1D slice of the Weierstrass function (specifically, $x
 
 ![1D Weierstrass Function](1d_weierstrass_view.png)
 
-* **X-axis**: Spatial coordinate `y` (normalized unit)
+* **X-axis**: **Position along y-axis (normalized unit)**  
+  * Represents spatial position along the line x=0
+  * Range: [-1, 1] (same as 2D visualization)
 * **Y-axis**: Normalized function value `W(0, y)`
 * **Title**: "1D Weierstrass Function (x=0)"
-* Displays a cross-section of the 2D surface, revealing the intricate, non-differentiable oscillations characteristic of the function.
+* Shows a cross-section of the 2D surface at x=0, revealing characteristic oscillations
 
 #### 2. FFT of 1D Weierstrass Function (Stem Plot)
 
@@ -200,7 +202,7 @@ def compute_fft(Z): # For 2D FFT
 
 | Element          | Raw View (2D)        | Density View (2D)    | FFT View (2D)               | 1D Plot (x=0)        | 1D FFT (Stem)             |
 |------------------|----------------------|----------------------|-----------------------------|----------------------|---------------------------|
-| **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | y (norm unit)        | Angular Freq (rad/norm unit) |
+| **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | Position along y-axis (norm unit)        | Angular Freq (rad/norm unit) |
 | **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
 | **Color/Lines** | Function value      | Probability density  | Log-magnitude (dB)          | Blue line            | Red stems                 |
 | **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, ω_Nyquist] |
