@@ -7,7 +7,7 @@ import matplotlib.gridspec as gridspec
 class WeierstrassVisualizer:
     """Interactive visualization of the Weierstrass function with various views and analysis tools."""
     
-    def __init__(self, size: int = 500, N: int = 30, bins: int = 500) -> None:
+    def __init__(self, size: int = 500, N: int = 40, bins: int = 500) -> None:
         self.size = size
         self.N = N
         self.bins = bins
