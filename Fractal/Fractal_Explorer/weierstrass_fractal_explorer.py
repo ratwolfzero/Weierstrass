@@ -166,7 +166,7 @@ class WeierstrassVisualizer:
         self.ax1 = plt.subplot(gs[0, 1])
         self.line_1d, = self.ax1.plot(self.y, np.zeros_like(self.y), 'b-')
         self.ax1.set_title('1D Weierstrass Function (x=0)')
-        self.ax1.set_xlabel('y (normalized unit)')
+        self.ax1.set_xlabel('Position along y-axis (normalized unit)')
         self.ax1.set_ylabel('W(y)')
         self.ax1.grid(True)
         
@@ -452,7 +452,7 @@ class WeierstrassVisualizer:
         ax1d.plot(self.y, self.current_1d_data, 'b-', linewidth=1.5)
         ax1d.set_title(
             f'1D Weierstrass Function (x=0, a={a:.2f}, b={int(b)})', fontsize=14)
-        ax1d.set_xlabel('y (normalized unit)', fontsize=12)
+        ax1d.set_xlabel('Position along y-axis (normalized unit))', fontsize=12)
         ax1d.set_ylabel('W(y)', fontsize=12)
         ax1d.grid(True)
         ax1d.tick_params(axis='both', which='major', labelsize=10)
