@@ -201,7 +201,7 @@ def compute_fft(Z): # For 2D FFT
 | **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | y (norm unit)        | Freq (cycles/norm unit)   |
 | **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
 | **Color/Lines** | Function value      | Probability density  | Log-magnitude (dB)          | Blue line            | Red stems                 |
-| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, f<sub>Nyquist</sub>] |
+| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-π, π] rad/norm unit       | [-1, 1]              | [0, f_Nyquist] |
 | **Aspect Ratio** | 1:1                 | 1:1                  | 1:1                         | N/A                  | N/A                       |
 
 ---
