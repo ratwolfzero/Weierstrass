@@ -57,7 +57,6 @@ im_density = ax.pcolormesh(
     cmap='inferno', 
     shading='auto'
 )
-im_density.set_visible(False)  # Start with density view hidden
 
 cbar = plt.colorbar(im_raw, ax=ax)
 title = ax.set_title('', fontsize=12)
