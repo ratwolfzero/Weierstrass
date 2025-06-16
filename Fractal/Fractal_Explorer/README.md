@@ -100,7 +100,14 @@ These modes apply to the full 2D function surface.
 * **Color**: **Magnitude (dB)**
 * **Title**: "2D Frequency Spectrum"
 * Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
-  * Discrete frequency components at ω = (kπ, mπ)
+  * **Discrete frequency pairs** at:
+
+    ```math
+    (\omega_x, \omega_y) = (\pm \pi b^n, \pm \pi b^n) \quad \text{for} \quad n = 0,1,2,\dots,N-1
+    ```
+
+    with magnitude proportional to $a^n$
+  * **Four-fold symmetry** due to cosine product terms
   * Emergent power-law scaling when a·b ≥ 1
   * **dB Calculation**: 20 × log₁₀(|FFT|)
 
@@ -188,7 +195,7 @@ def box_counting_dimension(Z, epsilons):
 * Optimized using unique identifier sets
 * Maintains accuracy while improving performance
 
-### FFT Analysis (Corrected Implementation)
+### FFT Analysis
 
 ```python
 # 2D FFT with proper dB scaling
@@ -247,9 +254,9 @@ pos_angular_freqs = freqs_angular[pos_mask]
    * Theoretical angular frequencies: $\omega_n = \pi b^n$ rad/normalized unit
    * FFT shows discrete approximations of these frequencies
    * **Key Considerations**:
-     - FFT frequency resolution: $\Delta \omega = \pi$ rad/normalized unit
-     - Maximum possible frequency error: $\pm \pi/2$ rad/normalized unit
-     - Relative error ($|\delta\omega|/\omega_n$) decreases for higher frequencies
+     * FFT frequency resolution: $\Delta \omega = \pi$ rad/normalized unit
+     * Maximum possible frequency error: $\pm \pi/2$ rad/normalized unit
+     * Relative error ($|\delta\omega|/\omega_n$) decreases for higher frequencies
    * **Example (b=5, size=500)**:
      * Theoretical angular frequencies:
        * n=0: $\pi \cdot 5^0 = \pi$ rad/norm unit
@@ -280,13 +287,13 @@ pos_angular_freqs = freqs_angular[pos_mask]
 
 7. **Fractal Dimension Note**:
    The computed box-counting dimension is typically *lower* than the theoretical value (3 + log(a)/log(b)) due to:
-   - **Finite N (40 terms)**: Missing high-frequency details
-   - **Resolution limit (500×500 grid)**: Unable to resolve microscopic structures
-   - **Box-size range (ε=0.02-0.20)**: Limited scaling range
+   * **Finite N (40 terms)**: Missing high-frequency details
+   * **Resolution limit (500×500 grid)**: Unable to resolve microscopic structures
+   * **Box-size range (ε=0.02-0.20)**: Limited scaling range
 
    **Example**: For a=0.5, b=7:
-   - Theoretical: 2.644
-   - Computed: ≈2.398
+   * Theoretical: 2.644
+   * Computed: ≈2.398
 
    *The measured dimension characterizes our finite approximation, not the infinite mathematical ideal.*
 
