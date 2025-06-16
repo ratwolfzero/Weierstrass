@@ -66,6 +66,12 @@ $$
 
 This highlights that the 1D function is a sum of cosine waves with geometrically increasing frequencies and exponentially decreasing amplitudes.
 
+It is continuous everywhere but nowhere differentiable, exhibiting pseudo-periodicity — local repeating patterns without a global fundamental period.
+
+When analyzing finite samples of this function using FFT, spectral leakage naturally arises due to the lack of exact periodicity. Frequency components spread into adjacent bins, preventing sharp harmonic peaks.
+
+This leakage is intrinsic and unavoidable, reflecting the fractal nature of the Weierstrass function. Rather than a limitation, it provides insight into the dense hierarchical frequency content embedded in the function’s fractal structure. Therefore, the focus is on capturing and interpreting the natural spectral characteristics, rather than imposing artificial periodicity assumptions.
+
 ---
 
 ## 🔍 Visualization Modes
