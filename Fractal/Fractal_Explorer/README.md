@@ -47,9 +47,10 @@ Where:
 
 > Note on Finite Approximation:
 > While the infinite Weierstrass function is a classical example of a function that is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation (N=40 terms). This truncated version:
-> Is a trigonometric polynomial, formed by a finite sum of continuous cosine waves.
-> Permits standard FFT analysis (unlike the infinite sum which would require more advanced Fourier analysis).
-> Still effectively captures the emergent fractal properties of the true function when a⋅b≥1, despite its finite nature.
+>
+> * Is a trigonometric polynomial, formed by a finite sum of continuous cosine waves.
+> * Permits standard FFT analysis (unlike the infinite sum which would require more advanced Fourier analysis).
+> * Still effectively captures the emergent fractal properties of the true function when a⋅b≥1, despite its finite nature.
 > The FFT visualizations therefore show the exact spectral composition of this approximation, providing insight into the function's > > hierarchical frequency content.
 
 **Relationship to Classic 1D Weierstrass Function**:  
