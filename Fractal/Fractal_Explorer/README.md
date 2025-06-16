@@ -72,6 +72,12 @@ When analyzing finite samples of this function using FFT, spectral leakage natur
 
 This leakage is intrinsic and unavoidable, reflecting the fractal nature of the Weierstrass function. Rather than a limitation, it provides insight into the dense hierarchical frequency content embedded in the function’s fractal structure. Therefore, the focus is on capturing and interpreting the natural spectral characteristics, rather than imposing artificial periodicity assumptions.
 
+> Note on spectral leakage and periodicity:  
+> The FFT inherently assumes periodicity of the sampled data. In classical signal processing, leakage is often mitigated by windowing or zero-padding to enforce approximate periodicity.
+> However, the Weierstrass function's fractal nature implies no exact fundamental period on the finite domain, so leakage is intrinsic and meaningful here.
+> We deliberately avoid windowing or scaling that would impose artificial periodicity, as it would obscure the fractal frequency hierarchy.
+> Instead, we interpret the leakage as a natural feature revealing the dense, hierarchical frequency content of the fractal function.
+
 ---
 
 ## 🔍 Visualization Modes
