@@ -330,7 +330,7 @@ Interact with controls:
 
 ## 📚 References
 
-1. Weierstrass, K. (1872). On continuous functions of a real argument that do not have a well-defined differential quotient.  
+1. Weierstrass, K. (1872). Über continuierliche Funktionen eines reellen Arguments, die für keinen Werth desselben einen bestimmten Differentialquotienten besitzen.  
    *Mathematische Werke*, Vol 2. [Archive.org](https://archive.org/details/mathematischewer02weieuoft)
 2. Falconer, K. (2013). *Fractal Geometry: Mathematical Foundations and Applications*
 3. Mandelbrot, B. B. (1982). *The Fractal Geometry of Nature*
