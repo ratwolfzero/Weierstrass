@@ -270,7 +270,7 @@ pos_angular_freqs = freqs_angular[pos_mask]
 6. **High-Frequency Spectral Integrity**:
    * **Nyquist Enforcement**:
 
-     $ \{ \omega \in \mathbb{R} \mid 0 < \omega < \pi \cdot \frac{\text{size}}{2} \} $
+     $\{ \omega \in \mathbb{R} \mid 0 < \omega < \pi \cdot \frac{\text{size}}{2} \}$
 
    * **Highest Visible Harmonic**: max(ω_n) where ω_n < ω_nyq
    * **Example (b=5, size=500)**:
