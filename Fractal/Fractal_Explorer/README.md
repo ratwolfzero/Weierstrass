@@ -102,9 +102,9 @@ These modes apply to the full 2D function surface.
 * Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
   * **Discrete frequency pairs** at:
 
-    ```math
+    $$
     (\omega_x, \omega_y) = (\pm \pi b^n, \pm \pi b^n) \quad \text{for} \quad n = 0,1,2,\dots,N-1
-    ```
+    $$
 
     with magnitude proportional to $a^n$
   * **Four-fold symmetry** due to cosine product terms
@@ -272,9 +272,7 @@ pos_angular_freqs = freqs_angular[pos_mask]
 6. **High-Frequency Spectral Integrity**:
    * **Nyquist Enforcement**:
 
-     ```python
-     pos_mask = (freqs_angular > 0) & (freqs_angular < np.pi * size/2)
-     ```
+     $\left\{ \omega \in \mathbb{R} \;\middle|\; 0 < \omega < \pi \cdot \frac{\text{size}}{2} \right\}$
 
    * **Highest Visible Harmonic**: max(ω_n) where ω_n < ω_nyq
    * **Example (b=5, size=500)**:
