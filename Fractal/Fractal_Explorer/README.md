@@ -45,14 +45,12 @@ Where:
 * $b \in \{3, 5, 7, \dots\}$ (odd integers) controls **frequency growth**
 * $N = 40$ is the number of terms used for approximation
 
-> **Note on Finite Approximation**:  
-> While the infinite Weierstrass function is nowhere differentiable, our visualization uses a **finite approximation** (N=40 terms). This truncated version:
->
-> * Is smooth (infinitely differentiable)
-> * Forms a trigonometric polynomial
-> * Permits standard FFT analysis
->
-> The FFT visualizations show exact spectral composition of this approximation, which captures the *emergent fractal properties* of the true function when a·b ≥ 1.
+> Note on Finite Approximation:
+> While the infinite Weierstrass function is a classical example of a function that is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation (N=40 terms). This truncated version:
+> Is a trigonometric polynomial, formed by a finite sum of continuous cosine waves.
+> Permits standard FFT analysis (unlike the infinite sum which would require more advanced Fourier analysis).
+> Still effectively captures the emergent fractal properties of the true function when a⋅b≥1, despite its finite nature.
+> The FFT visualizations therefore show the exact spectral composition of this approximation, providing insight into the function's > > hierarchical frequency content.
 
 **Relationship to Classic 1D Weierstrass Function**:  
 > While this visualization focuses on the 2D extension, the 1D slice at $x=0$ exactly recovers the original 1D Weierstrass function. This provides direct comparison between the 2D surface and its 1D counterpart that started fractal analysis.
