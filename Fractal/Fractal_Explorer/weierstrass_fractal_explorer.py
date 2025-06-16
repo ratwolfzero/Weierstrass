@@ -135,6 +135,7 @@ class WeierstrassVisualizer:
         slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x**2)
         return -slope
 
+    # Dummy call to ensure the function is pre-compiled by the JIT compiler before it's called by the interpreter.
     dummy_Z = np.random.rand(4, 4)
     dummy_eps = np.array([0.1, 0.2, 0.3])
     _ = box_counting_dimension(dummy_Z, dummy_eps)
