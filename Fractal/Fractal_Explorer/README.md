@@ -245,15 +245,18 @@ pos_angular_freqs = freqs_angular[pos_mask]
 
 4. **Mathematical ↔ FFT Relationship**:
    * Theoretical angular frequencies: $\omega_n = \pi b^n$ rad/normalized unit
-   * FFT shows exact harmonics of finite approximation
+   * FFT shows discrete approximations of these frequencies
+   * **Key Considerations**:
+     - FFT frequency resolution: $\Delta \omega = \pi$ rad/normalized unit
+     - Maximum possible frequency error: $\pm \pi/2$ rad/normalized unit
+     - Relative error ($|\delta\omega|/\omega_n$) decreases for higher frequencies
    * **Example (b=5, size=500)**:
      * Theoretical angular frequencies:
-       * n=0: $\pi \cdot 5^0 = \pi \approx 3.14$ rad/norm unit
-       * n=1: $\pi \cdot 5^1 = 5\pi \approx 15.7$ rad/norm unit
-       * n=2: $\pi \cdot 5^2 = 25\pi \approx 78.5$ rad/norm unit
-       * n=3: $\pi \cdot 5^3 = 125\pi \approx 392.7$ rad/norm unit
-     * Observed stems: ≈ 3.14, 15.7, 78.5 rad/norm unit
-     * Nyquist angular limit: $\pi \cdot 500/2 = 250\pi \approx 785$ rad/norm unit
+       * n=0: $\pi \cdot 5^0 = \pi$ rad/norm unit
+       * n=1: $5\pi$ rad/norm unit
+       * n=2: $25\pi$ rad/norm unit
+       * n=3: $125\pi$ rad/norm unit
+     * Nyquist angular limit: $250\pi$ rad/norm unit
 
 5. **Logarithmic Scale Effect**:
    * Stems appear equally spaced: $\Delta_{\log} = \log(\omega_{n+1}) - \log(\omega_n) = \log(b)$
