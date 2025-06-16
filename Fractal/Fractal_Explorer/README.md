@@ -102,9 +102,7 @@ These modes apply to the full 2D function surface.
 * Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
   * **Discrete frequency pairs** at:
 
-    $$
-    (\omega_x, \omega_y) = (\pm \pi b^n, \pm \pi b^n) \quad \text{for} \quad n = 0,1,2,\dots,N-1
-    $$
+    $(\omega_x, \omega_y) = (\pm \pi b^n, \pm \pi b^n) \quad \text{for} \quad n = 0,1,2,\dots,N-1$
 
     with magnitude proportional to $a^n$
   * **Four-fold symmetry** due to cosine product terms
