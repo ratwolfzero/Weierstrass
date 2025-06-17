@@ -35,59 +35,53 @@ This interactive Python tool visualizes the **2D Weierstrass function**—a fasc
 The 2D Weierstrass function is defined as:
 
 $$
-\Huge
 W(x, y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n x) \cdot \cos(\pi b^n y)
 $$
 
 Where:
 
-* \$a \in (0,1)\$ controls **amplitude decay**
-* \$b \in {3, 5, 7, \dots}\$ (odd integers) controls **frequency growth**
-* \$N = 40\$ is the number of terms used for approximation
+* \(a \in (0,1)\) controls **amplitude decay**.
+* \(b \in \{3, 5, 7, \dots\}\) (odd integers) controls **exponential frequency growth**.
+* \(N = 40\) is the number of terms used for approximation.
 
-> **Note on Finite Approximation**
-> While the infinite Weierstrass function is a classical example of a function that is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation (`N = 40` terms). This truncated version:
+> **Note on Finite Approximation**  
+> While the infinite Weierstrass function is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation (\(N = 40\) terms). This truncated version:  
 >
-> * Is a trigonometric polynomial, formed by a finite sum of continuous cosine waves.
-> * Permits standard FFT analysis (unlike the infinite sum which would require more advanced Fourier analysis).
-> * Still effectively captures the emergent fractal properties of the true function when \$a \cdot b \geq 1\$, despite its finite nature.
->
-> The FFT visualizations therefore show the exact spectral composition of this approximation, providing insight into the function's hierarchical frequency content.
+> * Is a trigonometric polynomial (finite sum of continuous cosines).  
+> * Permits standard FFT analysis (unlike the infinite sum).  
+> * Captures emergent fractal properties when \(a \cdot b \geq 1\).  
+>  
+> The FFT visualizations show the exact spectral composition of this approximation.
 
 ---
 
-**Relationship to Classic 1D Weierstrass Function**
-While this visualization focuses on the 2D extension, the 1D slice at \$x = 0\$ exactly recovers the original 1D Weierstrass function. This provides direct comparison between the 2D surface and its 1D counterpart that started fractal analysis.
-
-The 1D slice at \$x = 0\$ simplifies to:
+**Relationship to Classic 1D Weierstrass Function**  
+The 1D slice at \(x = 0\) recovers the original 1D Weierstrass function:  
 
 $$
-\Huge
-W(0, y) = \sum_{n=0}^{N} a^n \cdot \cos(0) \cdot \cos(\pi b^n y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n y)
+W(0, y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n y)
 $$
 
-> **Note on Why Slice at `x = 0`?**
-> To analyze the 2D Weierstrass function, we extract a 1D slice along the `y`-axis by setting `x = 0`. This choice ensures consistent comparison between the 2D and 1D representations:
+> **Note on Why Slice at `x = 0`?**  
+> We extract a vertical slice at \(x = 0\) for consistent 1D/2D comparison:  
 >
-> * `x = 0` gives a vertical slice: `f(0, y)`, matching the vertical axis of typical image layouts.
-> * The 1D function shows how the fractal varies along `y`, which corresponds to vertical variation in the 2D domain.
-> * The 1D FFT of `f(0, y)` gives insight into vertical frequency content, but it does **not** correspond directly to a vertical slice (`k_x = 0`) through the 2D FFT.
-> * This is because the 2D function contains frequency components in both \$x\$ and \$y\$, which combine (e.g., diagonally) and do not lie exclusively along the \$k\_x = 0\$ axis.
-> * Instead, the 1D FFT offers an independent spectral view of one-dimensional behavior, useful for comparison.
+> * Aligns with the vertical axis in 2D visualizations.  
+> * Shows fractal variation along \(y\).  
+> * The 1D FFT of \(W(0, y)\) gives the spectrum **only along \(y\) at \(x=0\)**.  
+> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** (\(k_x = \pm k_y\)) from \(\cos(\pi b^n x)\cos(\pi b^n y)\), with minimal energy at \(k_x = 0\).  
 
-This highlights that the 1D function is a sum of cosine waves with geometrically increasing frequencies and exponentially decreasing amplitudes.
+---
 
-It is continuous everywhere but nowhere differentiable, exhibiting **pseudo-periodicity** — local repeating patterns without a global fundamental period.
-
-When analyzing finite samples of this function using FFT, **spectral leakage** naturally arises due to the lack of exact periodicity. Frequency components spread into adjacent bins, preventing sharp harmonic peaks.
-
-This leakage is intrinsic and unavoidable, reflecting the fractal nature of the Weierstrass function. Rather than a limitation, it provides insight into the dense hierarchical frequency content embedded in the function’s fractal structure. Therefore, the focus is on capturing and interpreting the natural spectral characteristics, rather than imposing artificial periodicity assumptions.
-
-> **Note on spectral leakage and periodicity**
-> The FFT inherently assumes periodicity of the sampled data. In classical signal processing, leakage is often mitigated by windowing or zero-padding to enforce approximate periodicity.
-> However, the Weierstrass function's fractal nature implies no exact fundamental period on the finite domain, so leakage is intrinsic and meaningful here.
-> We deliberately avoid windowing or scaling that would impose artificial periodicity, as it would obscure the fractal frequency hierarchy.
-> Instead, we interpret the leakage as a natural feature revealing the dense, hierarchical frequency content of the fractal function.
+> **Note on Spectral Leakage**  
+> The Weierstrass function is continuous but nowhere differentiable, exhibiting **pseudo-periodicity** (local repeating patterns without global periodicity).  
+>
+> When sampled for FFT:  
+>
+> * **Spectral leakage** occurs intrinsically due to non-exact periodicity.  
+> * Leakage spreads frequency peaks (e.g., at \(b^n/2\)) into adjacent bins.  
+> * This reflects the fractal’s dense frequency hierarchy and is **not mitigated by windowing/zero-padding**, as artificial periodicity would obscure true fractal properties.  
+>  
+> Leakage is thus a feature (not a bug) revealing the function’s spectral structure.
 
 ---
 
