@@ -70,7 +70,7 @@ $$
 > * Aligns with the vertical axis in 2D visualizations.  
 > * Shows fractal variation along \(y\).  
 > * The 1D FFT of \(W(0, y)\) gives the spectrum **only along \(y\) at \(x=0\)**.  
-> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** $(k_x = \pm k_y)$ from $(\cos(\pi b^n x) \cos(\pi b^n y))$, with minimal energy at $(k_x = 0)$.  
+> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** $(k_x = \pm k_y)$ from $(\cos(\pi b^n x)\ \cos(\pi b^n y))$, with minimal energy at $(k_x = 0)$.  
 
 ---
 
