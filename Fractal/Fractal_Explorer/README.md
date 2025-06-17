@@ -55,7 +55,7 @@ Where:
 > The FFT visualizations therefore show the exact spectral composition of this approximation, providing insight into the function's > > hierarchical frequency content.
 
 **Relationship to Classic 1D Weierstrass Function**:  
-> While this visualization focuses on the 2D extension, the 1D slice at $x=0$ exactly recovers the original 1D Weierstrass function. This provides direct comparison between the 2D surface and its 1D counterpart that started fractal analysis.
+While this visualization focuses on the 2D extension, the 1D slice at $x=0$ exactly recovers the original 1D Weierstrass function. This provides direct comparison between the 2D surface and its 1D counterpart that started fractal analysis.
 
 The 1D slice at $x=0$ simplifies to:
 
