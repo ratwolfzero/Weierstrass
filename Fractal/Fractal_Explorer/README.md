@@ -87,88 +87,73 @@ $$
 
 ---
 
-## 🔍 Visualization Modes
+## 🔍 Visualization Perspectives
 
-### 2D Visualizations
+### 🖼️ 2D Surface Analysis
 
-These modes apply to the full 2D function surface.
+**1. Function Values (Spatial Domain)**  
+![Raw View](raw_view.png)  
+*Illustrates actual output of $W(x,y)$*  
 
-#### 1. Raw Function Values
+* **X/Y Axes**: Spatial coordinates [-1, 1] (normalized units)  
+* **Color**: Normalized function value (blue→red = min→max)  
+* **Key Insight**: Reveals emergent fractal patterns when $a·b ≥ 1$  
+* *Pattern Evolution*: Higher $a$ → sharper contrasts; Higher $b$ → finer details  
 
-![Raw View](raw_view.png)
+**2. Value Density (Statistical View)**  
+![Density View](density_view.png)  
+*Shows spatial distribution of values*  
 
-* **X/Y Axes**: Spatial coordinates in [-1, 1] range (normalized units)
-* **Color**: Normalized function value (blue = negative, red = positive)
-* **Title**: "2D Weierstrass Function"
-* Shows actual output of the mathematical function
+* **X/Y Axes**: Spatial coordinates [-1, 1]  
+* **Color**: Probability density (black→yellow = rare→common)  
+* **Key Insight**: Heavy-tailed distributions indicate fractal behavior  
+* *Mathematical Note*: Location-independent - captures global statistics  
 
-#### 2. Density Approximation
+**3. FFT Spectrum (Frequency Domain)**  
+![FFT View](fft_view.png)  
+*Visualizes spatial frequency composition*  
 
-![Density View](density_view.png)
+* **X/Y Axes**: Angular frequency ω (rad/normalized unit)  
+* **Color**: Magnitude in dB (20log₁₀|FFT|)  
+* **Signature Features**:  
+  * Diagonal peaks at (±πbⁿ, ±πbⁿ)  
+  * Four-fold symmetry from cosine products  
+  * Power-law decay when fractal ($a·b ≥ 1$)  
 
-* **X/Y Axes**: Spatial coordinates in [-1, 1] range (normalized units)
-* **Color**: Probability density of values
-* **Title**: "Value Probability Density"
-* Reveals value distribution independent of location
+### 📏 1D Cross-Section Analysis (x=0)
 
-#### 3. FFT Spectrum (2D)
+**1. Function Profile**  
+![1D Weierstrass Function](1d_weierstrass_view.png)  
+*Classical 1D Weierstrass behavior $W(0,y)$*  
 
-![FFT View](fft_view.png)
+* **X-axis**: Position along y-axis [-1, 1]  
+* **Y-axis**: Function value (normalized)  
+* **Characteristic**: Nowhere-differentiable oscillation  
+* *Why x=0?*: Simplifies to $\sum a^n\cos(πb^ny)$ - the original 1D form  
 
-* **X/Y Axes**: Angular frequency (rad/normalized unit)
-* **Color**: **Magnitude (dB)**
-* **Title**: "2D Frequency Spectrum"
-* Shows dominant spatial frequencies and orientations present in the 2D surface. The FFT operates on our **finite smooth approximation** of the Weierstrass function, showing:
-  * **Discrete frequency pairs** at:
+**2. Frequency Spectrum**  
+![FFT of 1D Weierstrass Function](fft_1d_view.png)  
+*Harmonic composition via stem plot*  
 
-    $(\omega_x, \omega_y) = (\pm \pi b^n, \pm \pi b^n) \quad \text{for} \quad n = 0,1,2,\dots,N-1$
+* **X-axis**: Angular frequency (rad/normalized unit, log scale)  
+* **Y-axis**: Magnitude (log scale)  
+* **Distinctive Signature**:  
+  * Discrete stems at ωₙ = πbⁿ  
+  * Exponential decay ∝ aⁿ  
+  * Equal log-spacing Δlogω = log(b)  
 
-    with magnitude proportional to $a^n$
-  * **Four-fold symmetry** due to cosine product terms
-  * Emergent power-law scaling when a·b ≥ 1
-  * **dB Calculation**: 20 × log₁₀(|FFT|)
+### 📦 Fractal Quantification
 
-### 1D Visualization
+![Fractal Dimension View](fractal_dimension.png)  
+*Box-counting dimension measurement*  
 
-This section focuses on a 1D slice of the Weierstrass function (specifically, $x=0$) and its frequency content.
-
-#### 1. 1D Weierstrass Function (x=0)
-
-![1D Weierstrass Function](1d_weierstrass_view.png)
-
-* **X-axis**: **Position along y-axis (normalized unit)**  
-  * Represents spatial position along the line x=0
-  * Range: [-1, 1] (same as 2D visualization)
-* **Y-axis**: Normalized function value `W(0, y)`
-* **Title**: "1D Weierstrass Function (x=0)"
-* Shows a cross-section of the 2D surface at x=0, revealing characteristic oscillations
-
-#### 2. FFT of 1D Weierstrass Function (Stem Plot)
-
-* **X-axis**: **Angular Frequency (rad/normalized unit)**
-  * Represents spatial angular frequencies in the 1D function
-  * Range: 0 to Nyquist angular frequency ($\omega_{\text{Nyquist}} = \pi \cdot \text{size}/2$)
-  * **Only positive frequencies displayed**
-* **Y-axis**: **Magnitude (linear scale, logarithmic display)**
-  * Shows **amplitude** of each frequency component
-* **Plot Type**: **Stem Plot**
-  * Ideal for discrete frequency components in our finite approximation
-* **Interpretation**:
-  * **Distinct stems** at angular frequencies: $\omega_n = \pi b^n$ rad/normalized unit
-  * **Height decreases** with frequency due to $a^n$ amplitude decay
-  * **Highest stem**: Last unaliased harmonic below Nyquist
-  * **Mathematical Note**: Each stem corresponds to a term in $W_N(y) = \sum_{n=0}^{39} a^n \cos(\pi b^n y)$
-
-### Fractal Dimension Calculation
-
-#### 4. Box-Counting Dimension (2D)
-
-![Fractal Dimension View](fractal_dimension.png)
-
-* Calculates fractal dimension using optimized box-counting method
-* Requires `a·b ≥ 1` (fractal condition)
-* Displayed when calculated, with color-coded validity indicator
-* **Algorithm**: Set-based counting for O(N²) complexity
+* **Method**: Occupied boxes vs scale (log-log regression)  
+* **Requirements**: $a·b ≥ 1$ (fractal regime)  
+* **Interpretation Guidance**:  
+  * Theoretical: $D = 3 + \frac{\log a}{\log b}$  
+  * Computed typically 0.2-0.3 lower due to:  
+    * Finite N=40 truncation  
+    * 500×500 resolution limit  
 
 ---
 
