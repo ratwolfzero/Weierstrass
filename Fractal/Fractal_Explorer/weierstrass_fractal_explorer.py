@@ -404,12 +404,12 @@ class WeierstrassVisualizer:
             current_title = f'Value Probability Density (a={a:.2f}, b={int(b)})'
         else:  # Show FFT
             data = self.compute_fft(Z_norm)
-            cmap = 'inferno'
+            cmap = 'viridis'
             clim = (np.min(data), np.max(data))
             # CORRECTED: Standard dB labeling
             label = 'Magnitude (dB)'
             self.current_plot = self.ax0.imshow(
-                data, cmap='viridis', extent=self.extent_freq)
+                data, cmap=cmap, extent=self.extent_freq)
             self.ax0.set_xlim(self.extent_freq[0], self.extent_freq[1])
             self.ax0.set_ylim(self.extent_freq[2], self.extent_freq[3])
             self.ax0.set_xlabel('Angular Frequency ω_x (rad/normalized unit)')
