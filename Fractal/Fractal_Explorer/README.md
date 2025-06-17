@@ -93,7 +93,7 @@ $$
 
 **1. Function Values (Spatial Domain)**  
 ![Raw View](raw_view.png)  
-*Illustrates actual output of $W(x,y)$*  
+*Illustrates actual output of $ W(x,y) $*  
 
 * **X/Y Axes**: Spatial coordinates [-1, 1] (normalized units)  
 * **Color**: Normalized function value (blue→red = min→max)  
