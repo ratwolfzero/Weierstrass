@@ -93,7 +93,7 @@ $$
 
 **1. Function Values (Spatial Domain)**  
 ![Raw View](raw_view.png)  
-*Illustrates actual output of $ W(x,y) $*  
+*Illustrates actual output of W(x,y)*  
 
 * **X/Y Axes**: Spatial coordinates [-1, 1] (normalized units)  
 * **Color**: Normalized function value (blue→red = min→max)  
@@ -125,7 +125,7 @@ $$
 ![1D Weierstrass Function](1d_weierstrass_view.png)  
 
 **1. Function Profile**  
-*Classical 1D Weierstrass behavior $W(0,y)$*  
+*Classical 1D Weierstrass behavior W(0,y)*  
 
 * **X-axis**: Position along y-axis [-1, 1]  
 * **Y-axis**: Function value (normalized)  
