@@ -35,13 +35,14 @@ This interactive Python tool visualizes the **2D Weierstrass function**—a fasc
 The 2D Weierstrass function is defined as:
 
 $$
+\Huge
 W(x, y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n x) \cdot \cos(\pi b^n y)
 $$
 
 Where:
 
-* \(a \in (0,1)\) controls **amplitude decay**.
-* \(b \in \{3, 5, 7, \dots\}\) (odd integers) controls **exponential frequency growth**.
+* \(a in (0,1)\) controls **amplitude decay**.
+* \(b in {3, 5, 7, ...\} (odd integers) controls **exponential frequency growth**.
 * \(N = 40\) is the number of terms used for approximation.
 
 > **Note on Finite Approximation**  
@@ -49,7 +50,7 @@ Where:
 >
 > * Is a trigonometric polynomial (finite sum of continuous cosines).  
 > * Permits standard FFT analysis (unlike the infinite sum).  
-> * Captures emergent fractal properties when \(a \cdot b \geq 1\).  
+> * Captures emergent fractal properties when $(a \cdot b \geq 1)$.  
 >  
 > The FFT visualizations show the exact spectral composition of this approximation.
 
@@ -59,6 +60,7 @@ Where:
 The 1D slice at \(x = 0\) recovers the original 1D Weierstrass function:  
 
 $$
+\Huge
 W(0, y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n y)
 $$
 
@@ -68,7 +70,20 @@ $$
 > * Aligns with the vertical axis in 2D visualizations.  
 > * Shows fractal variation along \(y\).  
 > * The 1D FFT of \(W(0, y)\) gives the spectrum **only along \(y\) at \(x=0\)**.  
-> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** (\(k_x = \pm k_y\)) from \(\cos(\pi b^n x)\cos(\pi b^n y)\), with minimal energy at \(k_x = 0\).  
+> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** $((k_x = \pm k_y))$ from $(\cos(\pi b^n x)\cos(\pi b^n y))$, with minimal energy at $(k_x = 0)$.  
+
+---
+
+> **Note on Spectral Leakage**  
+> The Weierstrass function is continuous but nowhere differentiable, exhibiting **pseudo-periodicity** (local repeating patterns without global periodicity).  
+>
+> When sampled for FFT:  
+>
+> * **Spectral leakage** occurs intrinsically due to non-exact periodicity.  
+> * Leakage spreads frequency peaks (e.g., at $(b^n/2))$ into adjacent bins.  
+> * This reflects the fractal’s dense frequency hierarchy and is **not mitigated by windowing/zero-padding**, as artificial periodicity would obscure true fractal properties.  
+>  
+> Leakage is thus a feature (not a bug) revealing the function’s spectral structure.
 
 ---
 
