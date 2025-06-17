@@ -251,66 +251,54 @@ pos_angular_freqs = freqs_angular[pos_mask]
 
 ---
 
-## 🔑 Key Clarifications
+## 🔑 Key Interpretations & Limitations
 
-1. **Consistent Angular Frequency Units**:
-    * All FFT visualizations use **angular frequency (rad/normalized unit)**
-    * Matches mathematical formulation: $\cos(\pi b^n y)$
-    * Conversion: 1 rad/norm unit = $\frac{1}{2\pi}$ cycles/norm unit
+### 1. Core Mathematical Representation
 
-2. **Physical Interpretation**:
-    * Parameter `b`: Controls angular frequency scaling ($\omega_n = \pi b^n$)
-    * FFT peaks appear exactly at $\pi b^n$ rad/normalized unit
+* **Finite Approximation**: Our implementation uses $N=40$ terms, creating a trigonometric polynomial
+* **Fractal Emergence**: True fractal behavior appears when $a\cdot b \geq 1$
+* **Mathematical vs Computational**:
+  * Infinite series: Requires distributional Fourier analysis
+  * Our approximation: FFT-compatible trigonometric polynomial
 
-3. **Finite vs Infinite**:  
-   * Classical function: Requires distributional Fourier analysis  
-   * Our approximation: Finite trigonometric polynomial (FFT-compatible)  
-   * Emergent fractal properties when a·b ≥ 1  
+### 2. Frequency Domain Consistency
 
-4. **Mathematical ↔ FFT Relationship**:
-   * Theoretical angular frequencies: $\omega_n = \pi b^n$ rad/normalized unit
-   * FFT shows discrete approximations of these frequencies
-   * **Key Considerations**:
-     * FFT frequency resolution: $\Delta \omega = \pi$ rad/normalized unit
-     * Maximum possible frequency error: $\pm \pi/2$ rad/normalized unit
-     * Relative error ($|\delta\omega|/\omega_n$) decreases for higher frequencies
-   * **Example (b=5, size=500)**:
-     * Theoretical angular frequencies:
-       * n=0: $\pi \cdot 5^0 = \pi$ rad/norm unit
-       * n=1: $5\pi$ rad/norm unit
-       * n=2: $25\pi$ rad/norm unit
-       * n=3: $125\pi$ rad/norm unit
-     * Nyquist angular limit: $250\pi$ rad/norm unit
+* **Angular Frequency Standard**: All FFT visualizations use rad/normalized unit
+  * Conversion: 1 rad/norm unit = $\frac{1}{2\pi}$ cycles/norm unit
+* **Parameter Mapping**:
+  * $b$ controls exponential frequency growth ($\omega_n = \pi b^n$)
+  * FFT peaks appear at theoretical frequencies $\pm\pi b^n$
 
-5. **Logarithmic Scale Effect**:
-   * Stems appear equally spaced: $\Delta_{\log} = \log(\omega_{n+1}) - \log(\omega_n) = \log(b)$
-   * Amplitude decays exponentially ($a^n$)
+### 3. Spectral Analysis Insights
 
-6. **High-Frequency Spectral Integrity**:
-   * **Nyquist Enforcement**:
+* **FFT ↔ Theory Relationship**:
+  * Theoretical frequencies: $\omega_n = \pi b^n$ rad/norm unit
+  * Resolution limits: $\Delta\omega = \pi$ rad/norm unit
+  * Max frequency error: $\pm\pi/2$ rad/norm unit
+* **Spectral Leakage**:
+  * Intrinsic to fractal pseudo-periodicity
+  * Not an artifact: Reveals hierarchical frequency structure
+  * Deliberately not windowed to preserve fractal properties
 
-     $\{ \omega \in \mathbb{R} \mid 0 < \omega < \pi \cdot \frac{\text{size}}{2} \}$
+### 4. Critical Visualization Considerations
 
-   * **Highest Visible Harmonic**: max(ω_n) where ω_n < ω_nyq
-   * **Example (b=5, size=500)**:
-     * ω_nyquist = 250π ≈ 785 rad/norm unit
-     * Visible harmonics: n=0 (π), n=1 (5π), n=2 (25π), n=3 (125π)
-   * **Spectral Leakage**:
-     * Increased near Nyquist frequency
-     * Manifests as wider peak bases
-     * Caused by finite sampling + exponential frequency growth
+* **Logarithmic Scaling Effects**:
+  * Equal stem spacing: $\Delta_{\log} = \log b$
+  * Exponential amplitude decay: $a^n$ scaling
+* **Nyquist Enforcement**:
+  * $\omega_{\text{nyq}} = \pi \cdot \frac{\text{size}}{2}$
+  * Highest visible harmonic: $\max(\omega_n < \omega_{\text{nyq}})$
+  * Example (b=5, size=500): Visible n=0-3 ($\pi$ to $125\pi$)
 
-7. **Fractal Dimension Note**:
-   The computed box-counting dimension is typically *lower* than the theoretical value (3 + log(a)/log(b)) due to:
-   * **Finite N (40 terms)**: Missing high-frequency details
-   * **Resolution limit (500×500 grid)**: Unable to resolve microscopic structures
-   * **Box-size range (ε=0.02-0.20)**: Limited scaling range
+### 5. Fractal Dimension Context
 
-   **Example**: For a=0.5, b=7:
-   * Theoretical: 2.644
-   * Computed: ≈2.398
-
-   *The measured dimension characterizes our finite approximation, not the infinite mathematical ideal.*
+* **Theoretical Basis**: $D_{\text{theory}} = 3 + \frac{\log a}{\log b}$
+* **Computation Limitations**:
+  * Finite terms (N=40): Missing high-frequency details
+  * Resolution limit (500×500 grid): Sub-pixel structures unresolved
+  * Box-size range (ε=0.02-0.20): Limited scaling regime
+* **Interpretation Guidance**:
+  > "The measured dimension characterizes our finite approximation, not the infinite mathematical ideal. It remains a valid indicator of emergent fractal behavior."
 
 ---
 
