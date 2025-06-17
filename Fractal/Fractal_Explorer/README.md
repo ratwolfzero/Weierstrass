@@ -122,8 +122,9 @@ $$
 
 ### 📏 1D Cross-Section Analysis (x=0)
 
-**1. Function Profile**  
 ![1D Weierstrass Function](1d_weierstrass_view.png)  
+
+**1. Function Profile**  
 *Classical 1D Weierstrass behavior $W(0,y)$*  
 
 * **X-axis**: Position along y-axis [-1, 1]  
@@ -132,7 +133,6 @@ $$
 * *Why x=0?*: Simplifies to $\sum a^n\cos(πb^ny)$ - the original 1D form  
 
 **2. Frequency Spectrum**  
-![FFT of 1D Weierstrass Function](fft_1d_view.png)  
 *Harmonic composition via stem plot*  
 
 * **X-axis**: Angular frequency (rad/normalized unit, log scale)  
