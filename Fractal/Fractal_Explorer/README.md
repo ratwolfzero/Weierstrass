@@ -41,9 +41,9 @@ $$
 
 Where:
 
-* \(a in (0,1)\) controls **amplitude decay**.
-* \(b in {3, 5, 7, ...\} (odd integers) controls **exponential frequency growth**.
-* \(N = 40\) is the number of terms used for approximation.
+* \a in (0,1)\ controls **amplitude decay**.
+* \b in {3, 5, 7, ...\} (odd integers) controls **exponential frequency growth**.
+* \N = 40\ is the number of terms used for approximation.
 
 > **Note on Finite Approximation**  
 > While the infinite Weierstrass function is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation (\(N = 40\) terms). This truncated version:  
@@ -70,7 +70,7 @@ $$
 > * Aligns with the vertical axis in 2D visualizations.  
 > * Shows fractal variation along \(y\).  
 > * The 1D FFT of \(W(0, y)\) gives the spectrum **only along \(y\) at \(x=0\)**.  
-> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** $((k_x = \pm k_y))$ from $(\cos(\pi b^n x)\cos(\pi b^n y))$, with minimal energy at $(k_x = 0)$.  
+> * **No direct FFT correspondence**: The 2D FFT shows energy along **diagonals** $((k_x = \pm k_y))$ from $(\cos(\pi b^n x)\cos(\pi b^n y)$, with minimal energy at $(k_x = 0)$.  
 
 ---
 
