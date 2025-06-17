@@ -64,6 +64,15 @@ $$
 W(0, y) = \sum_{n=0}^{N} a^n \cdot \cos(0) \cdot \cos(\pi b^n y) = \sum_{n=0}^{N} a^n \cdot \cos(\pi b^n y)
 $$
 
+> Note on Why Slice at `x = 0`?
+>
+>To analyze the 2D Weierstrass function, we extract a 1D slice along the `y`-axis by setting `x = 0`. This choice ensures consistent comparison between the 2D and 1D representations:
+>
+>`x = 0` gives a vertical slice: `f(0, y)`, matching the vertical axis of typical image layouts.
+> The 1D function shows how the fractal varies along `y`, which corresponds to vertical variation in the 2D domain.
+> The 1D FFT of `f(0, y)` aligns with a vertical slice (`kx = 0`) through the 2D FFT, preserving directional consistency.
+> This alignment simplifies visual and spectral interpretation across both dimensions.
+
 This highlights that the 1D function is a sum of cosine waves with geometrically increasing frequencies and exponentially decreasing amplitudes.
 
 It is continuous everywhere but nowhere differentiable, exhibiting pseudo-periodicity — local repeating patterns without a global fundamental period.
