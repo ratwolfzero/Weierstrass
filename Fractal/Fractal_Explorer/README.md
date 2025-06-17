@@ -80,7 +80,7 @@ $$
 > When sampled for FFT:  
 >
 > * **Spectral leakage** occurs intrinsically due to non-exact periodicity.  
-> * Leakage spreads frequency peaks (e.g., at $(b^n/2))$ into adjacent bins.  
+> * Leakage spreads frequency peaks e.g., at $(b^n/2)$ into adjacent bins.  
 > * This reflects the fractal’s dense frequency hierarchy and is **not mitigated by windowing/zero-padding**, as artificial periodicity would obscure true fractal properties.  
 >  
 > Leakage is thus a feature (not a bug) revealing the function’s spectral structure.
