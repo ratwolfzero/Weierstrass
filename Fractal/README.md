@@ -48,6 +48,10 @@ Where:
 
 ---
 
+⚠️ Note on Differentiability in 2D
+
+The 2D version inherits the spirit of fractal complexity, though its strict nowhere-differentiability—unlike in 1D—is not guaranteed and remains structurally limited by its separable form.
+
 ## ⚠️ Note on Parameter Constraint $a b \geq 1$
 
 In the classic 1D Weierstrass function, the condition $a b \geq 1$ with b restricted to odd integers ensures strong fractal behavior—sharp, jagged irregularities at all scales.

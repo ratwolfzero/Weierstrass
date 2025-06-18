@@ -53,6 +53,9 @@ Where:
 > * Captures emergent fractal properties when $(a \cdot b \geq 1)$.  
 >  
 > The FFT visualizations show the exact spectral composition of this approximation.
+>
+> Note on Differentiability in 2D
+> The 2D version inherits the spirit of fractal complexity, though its strict nowhere-differentiability—unlike in 1D—is not guaranteed and remains structurally limited by its separab
 
 ---
 
