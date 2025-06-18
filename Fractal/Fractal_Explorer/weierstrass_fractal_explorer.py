@@ -57,7 +57,7 @@ class WeierstrassVisualizer:
 
     @staticmethod
     @njit
-    def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
+    def compute_weierstrass_2d(X, Y, a_powers, b_freqs):
         """Compute the 2D Weierstrass function."""
         W = np.zeros_like(X)
         for n in range(len(a_powers)):
@@ -184,11 +184,11 @@ class WeierstrassVisualizer:
         self.ax1.set_ylabel('W(y)')
         self.ax1.grid(True)
 
-        # FFT plot (1D) - Corrected to angular frequency
+        # FFT plot (1D)
         self.ax2 = plt.subplot(gs[1, 1])
         self.ax2.set_title('FFT of 1D Weierstrass Function')
         self.ax2.set_xlabel(
-            'Angular Frequency (rad/normalized unit)')  # Correct unit
+            'Angular Frequency (rad/normalized unit)') 
         self.ax2.set_ylabel('Magnitude (log scale)')
         self.ax2.set_xscale('log')
         self.ax2.set_yscale('log')
@@ -293,7 +293,7 @@ class WeierstrassVisualizer:
             [(b ** n) * np.pi for n in range(self.N)], dtype=np.float64)
 
         # Compute 2D surface
-        Z = self.compute_weierstrass_2d_precomputed(
+        Z = self.compute_weierstrass_2d(
             self.X, self.Y, a_powers, b_freqs)
         Z_norm = Z / np.max(np.abs(Z))
         self.current_Z_norm = Z_norm

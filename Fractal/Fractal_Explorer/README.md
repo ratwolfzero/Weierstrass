@@ -163,9 +163,9 @@ $$
 
 ```python
 @njit
-def compute_weierstrass_2d_precomputed(X, Y, a_powers, b_freqs):
-    # Computes FINITE approximation (N=40) 
-    # This smooth trigonometric polynomial is FFT-suitable
+def compute_weierstrass_2d(X, Y, a_powers, b_freqs):
+    # Computes FINITE approximation (N=40) of the 2D Weierstrass function
+    # This differentiable trigonometric polynomial is FFT-suitable
     W = np.zeros_like(X)
     for n in range(len(a_powers)):  # n=0 to 39
         W += a_powers[n] * np.cos(b_freqs[n] * X) * np.cos(b_freqs[n] * Y)
