@@ -32,10 +32,10 @@ $$
 
 where
 
-* \(a \in (0,1)\) controls **amplitude decay**
-* \(b \in \{3, 5, 7, \dots\}\) (odd integers) controls **frequency growth**
-* \(N = 40\) is the number of terms used for the finite approximation
-* \(\theta_k = \frac{2\pi (k-1)}{8}\) are eight equally spaced angles from 0 to \(2\pi\)
+* a in (0,1) controls **amplitude decay**
+* b \in {3, 5, 7, ...} (odd integers) controls **frequency growth**
+* N = 40 is the number of terms used for the finite approximation
+* theta_k = \frac{2\pi (k-1)}{8} are eight equally spaced angles from 0 to 2\pi
 
 ---
 
@@ -53,8 +53,9 @@ where
 ⚠️ **Note on Differentiability and Slicing**
 
 Unlike the classic product 2D form, this isotropic version combines eight directional oscillations.  
-- **No single 1D slice corresponds exactly to a classical 1D Weierstrass function.**  
-- The fractal complexity is spread evenly in all directions, enhancing isotropy but making analytical properties like differentiability subtler and less understood.
+
+* **No single 1D slice corresponds exactly to a classical 1D Weierstrass function.**  
+* The fractal complexity is spread evenly in all directions, enhancing isotropy but making analytical properties like differentiability subtler and less understood.
 
 ---
 

@@ -32,7 +32,7 @@ $$
 Where:
 
 * $a \in (0,1)$ controls **amplitude decay**
-* $b \in \{3, 5, 7, \dots\}$ (odd integers) controls **frequency growth**
+* $b \in \{3, 5, 7, ...}$ (odd integers) controls **frequency growth**
 * $N = 40$ is the number of terms used for finite approximation
 
 ---
