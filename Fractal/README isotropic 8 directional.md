@@ -38,7 +38,7 @@ where
 * $\theta_k = \frac{2\pi (k-1)}{8}$
 
 
-These are eight equally spaced angles from 0 to $\(2\pi\)$.
+These are eight equally spaced angles from 0 to $\2\pi\$.
 
 
 ---
