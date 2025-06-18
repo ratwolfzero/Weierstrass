@@ -41,9 +41,9 @@ $$
 
 Where:
 
-* a in (0,1) controls **amplitude decay**.
-* b in {3, 5, 7, ...} (odd integers) controls **exponential frequency growth**.
-* N = 40 is the number of terms used for approximation.
+* $a \in (0,1)$ controls **amplitude decay**
+* $b \in (3, 5, 7, ...)$ (odd integers) controls **frequency growth**
+* $N = 40$ is the number of terms used for finite approximation
 
 > **Note on Finite Approximation**  
 > While the infinite Weierstrass function is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation N = 40 terms. This truncated version:  
