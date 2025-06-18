@@ -46,7 +46,7 @@ Where:
 * N = 40 is the number of terms used for approximation.
 
 > **Note on Finite Approximation**  
-> While the infinite Weierstrass function is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation (\(N = 40\) terms). This truncated version:  
+> While the infinite Weierstrass function is continuous everywhere but nowhere differentiable, our visualization uses a finite approximation N = 40 terms. This truncated version:  
 >
 > * Is a trigonometric polynomial (finite sum of continuous cosines).  
 > * Permits standard FFT analysis (unlike the infinite sum).  
