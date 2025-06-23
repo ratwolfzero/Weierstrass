@@ -20,12 +20,12 @@ $$
 subject to the conditions:
 
 * $\large 0 < a < 1$
-* $\large b$ is an odd integer
+* $\large b$ is a positive integer
 * $\large a \times b > 1 + \frac{3\pi}{2}$
 
 These constraints guarantee the function’s fractal, nowhere differentiable behavior, ensuring it oscillates wildly no matter how closely you zoom in.
 
-Weierstrass originally required ab > 1 + 3π/2. Later work by G.H. Hardy (1916) proved that the weaker condition ab ≥ 1 is sufficient, provided b is an odd integer.
+Weierstrass originally required ab > 1 + 3π/2. Later work by G.H. Hardy (1916) proved that the weaker condition ab ≥ 1 is sufficient, provided b is an odd integer. This implementation enforces Weierstrass's stricter condition to ensure mathematical certainty of the function's fractal behaviour at all scales.
 
 ---
 
