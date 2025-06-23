@@ -21,7 +21,7 @@ subject to the conditions:
 
 * $\large 0 < a < 1$
 * $\large b$ is a positive integer
-* $\large a \times b > 1 + \frac{3\pi}{2}$
+* $\large ab > 1 + \frac{3\pi}{2}$
 
 These constraints guarantee the function’s fractal, nowhere differentiable behavior, ensuring it oscillates wildly no matter how closely you zoom in.
 
