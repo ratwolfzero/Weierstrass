@@ -124,5 +124,3 @@ plt.plot(t, E)  # Should be ~constant for good integration
 1. Weierstrass function: Hardy (1916)
 2. Parametric oscillators: Nayfeh & Mook (1979)
 3. Chaos theory: Strogatz (2014)
-
-```md
