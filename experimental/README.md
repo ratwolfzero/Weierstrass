@@ -126,11 +126,3 @@ plt.plot(t, E)  # Should be ~constant for good integration
 3. Chaos theory: Strogatz (2014)
 
 ```md
-
-This README provides:
-1. **Clear physics context** for the simulation
-2. **Ready-to-run code examples**
-3. **Visual examples** of expected outputs
-4. **Parameter tuning guide**
-5. **Advanced diagnostics**
-
