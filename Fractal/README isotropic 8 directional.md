@@ -43,12 +43,12 @@ These are eight equally spaced angles from 0 to $\(2\pi\)$
 
 ## Key Properties
 
-| Property                        | Description                                                    |
-| ------------------------------- | -------------------------------------------------------------- |
-| **Isotropy**                   | Sum over eight directions produces rotationally symmetric texture |
-| **Continuity**                  | Uniformly convergent sum → continuous fractal surface          |
-| **Complex fractal texture**    | Richer directional complexity than separable product form      |
-| **Parameter-sensitive**         | Small changes in `a` or `b` yield visually distinct fractal patterns |
+| Property                    | Description                                                          |
+| --------------------------- | -------------------------------------------------------------------- |
+| **Isotropy**                | Sum over eight directions produces rotationally symmetric texture    |
+| **Continuity**              | Uniformly convergent sum → continuous fractal surface                |
+| **Complex fractal texture** | Richer directional complexity than separable product form            |
+| **Parameter-sensitive**     | Small changes in `a` or `b` yield visually distinct fractal patterns |
 
 ---
 
@@ -90,9 +90,9 @@ The isotropic 2D sum creates **directionally uniform fractal surfaces**, suitabl
 
 ### Parameter Effects
 
-| Parameter | Role                      | Visual Impact                                           |
-| --------- | ------------------------- | ------------------------------------------------------- |
-| `a`       | Controls term amplitude   | ↑ `a` = rougher terrain, sharper contrasts              |
+| Parameter | Role                      | Visual Impact                                             |
+| --------- | ------------------------- | --------------------------------------------------------- |
+| `a`       | Controls term amplitude   | ↑ `a` = rougher terrain, sharper contrasts                |
 | `b`       | Controls frequency growth | ↑ `b` = more fine-grained fractal details, richer texture |
 
 ---

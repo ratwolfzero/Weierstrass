@@ -229,13 +229,13 @@ pos_angular_freqs = freqs_angular[pos_mask]
 
 ## 📊 Visualization Legend
 
-| Element          | Raw View (2D)        | Density View (2D)    | FFT View (2D)               | 1D Plot (x=0)        | 1D FFT (Stem)             |
-|------------------|----------------------|----------------------|-----------------------------|----------------------|---------------------------|
-| **X-axis** | X Coord (norm unit) | X Coord (norm unit)  | ω_x (rad/norm unit)         | Position along y-axis (norm unit)        | Angular Freq (rad/norm unit) |
-| **Y-axis** | Y Coord (norm unit) | Y Coord (norm unit)  | ω_y (rad/norm unit)         | W(0,y) Value         | Magnitude (log)           |
-| **Color/Lines** | Function value      | Probability density  | **Magnitude (dB)**          | Blue line            | Red stems                 |
-| **Range (X/Y)** | [-1, 1]             | [-1, 1]              | [-ω_max, ω_max]             | [-1, 1]              | [0, ω_nyquist]            |
-| **Aspect Ratio** | 1:1                 | 1:1                  | 1:1                         | N/A                  | N/A                       |
+| Element          | Raw View (2D)       | Density View (2D)   | FFT View (2D)       | 1D Plot (x=0)                     | 1D FFT (Stem)                |
+| ---------------- | ------------------- | ------------------- | ------------------- | --------------------------------- | ---------------------------- |
+| **X-axis**       | X Coord (norm unit) | X Coord (norm unit) | ω_x (rad/norm unit) | Position along y-axis (norm unit) | Angular Freq (rad/norm unit) |
+| **Y-axis**       | Y Coord (norm unit) | Y Coord (norm unit) | ω_y (rad/norm unit) | W(0,y) Value                      | Magnitude (log)              |
+| **Color/Lines**  | Function value      | Probability density | **Magnitude (dB)**  | Blue line                         | Red stems                    |
+| **Range (X/Y)**  | [-1, 1]             | [-1, 1]             | [-ω_max, ω_max]     | [-1, 1]                           | [0, ω_nyquist]               |
+| **Aspect Ratio** | 1:1                 | 1:1                 | 1:1                 | N/A                               | N/A                          |
 
 ---
 
@@ -292,11 +292,11 @@ pos_angular_freqs = freqs_angular[pos_mask]
 
 ## 🧩 Parameter Effects
 
-| Parameter Change | Raw View          | Density View       | FFT View (2D)          | 1D Plot           | 1D FFT (Stem)     | Dimension   |
-|------------------|-------------------|--------------------|------------------------|-------------------|-------------------|-------------|
-| **a ↑** | Sharper contrasts | Wider distribution | More HF energy         | Larger amplitudes | Higher stems      | ↑ (0.1-0.3) |
-| **b ↑** | Finer details     | More complex peaks | Energy shifts right    | More oscillations | Stems shift right + compress | ↑ (0.1-0.4) |
-| **a·b ≥ 1** | Fractal patterns  | Heavy tails        | Power-law spectrum     | Highly jagged     | Clear peaks       | Valid result|
+| Parameter Change | Raw View          | Density View       | FFT View (2D)       | 1D Plot           | 1D FFT (Stem)                | Dimension    |
+| ---------------- | ----------------- | ------------------ | ------------------- | ----------------- | ---------------------------- | ------------ |
+| **a ↑**          | Sharper contrasts | Wider distribution | More HF energy      | Larger amplitudes | Higher stems                 | ↑ (0.1-0.3)  |
+| **b ↑**          | Finer details     | More complex peaks | Energy shifts right | More oscillations | Stems shift right + compress | ↑ (0.1-0.4)  |
+| **a·b ≥ 1**      | Fractal patterns  | Heavy tails        | Power-law spectrum  | Highly jagged     | Clear peaks                  | Valid result |
 
 ---
 
